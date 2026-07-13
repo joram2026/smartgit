@@ -1,0 +1,8 @@
+[build]
+  publish = "smart-meal-plan-generator-main/FRONTEND"
+
+[[redirects]]
+  from = "/"
+  to = "/user/home.html"
+  status = 301
+  force = true
