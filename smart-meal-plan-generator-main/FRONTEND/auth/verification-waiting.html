@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Pending — Smart Lishe</title>
+  <link rel="stylesheet" href="auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .waiting-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      padding: 20px;
+    }
+    .waiting-card {
+      max-width: 480px;
+      width: 100%;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--basket-line);
+      padding: 48px 40px;
+      box-shadow: var(--shadow-lift);
+      text-align: center;
+    }
+    @media(max-width: 480px) { .waiting-card { padding: 32px 20px; } }
+    .waiting-icon {
+      font-size: 4rem;
+      color: var(--maize-deep);
+      margin-bottom: 16px;
+    }
+    .waiting-icon i {
+      background: rgba(232, 163, 61, 0.12);
+      padding: 20px;
+      border-radius: 50%;
+    }
+    .waiting-card h1 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    .waiting-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(232, 163, 61, 0.15);
+      color: var(--maize-deep);
+      margin: 12px 0;
+    }
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--basket-line);
+      border-top-color: var(--sukuma);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 24px 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 24px auto;
+      max-width: 380px;
+      text-align: left;
+    }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--basket-line);
+    }
+    .step-item .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--char);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+    .step-item .step-text strong { display: block; font-size: 0.87rem; }
+    .step-item .step-text span { font-size: 0.78rem; color: var(--text-muted); }
+    .ref-code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--basket-line);
+      display: inline-block;
+      margin-top: 6px;
+      color: var(--text-secondary);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      width: 100%;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--basket-line);
+    }
+    .btn-secondary:hover { background: var(--basket-line); }
+    .refresh-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+    .refresh-hint a {
+      color: var(--sukuma);
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .refresh-hint a:hover { text-decoration: underline; }
+    .toast {
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      border-left: 4px solid var(--sukuma);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lift);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.87rem;
+      font-weight: 600;
+      animation: toastIn 0.35s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .toast.error { border-left-color: var(--char); }
+    .toast i { font-size: 1.1rem; color: var(--sukuma); }
+    .toast.error i { color: var(--char); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="waiting-wrapper">
+    <div class="waiting-card">
+      <div class="waiting-icon">
+        <i class="fa-regular fa-clock"></i>
+      </div>
+
+      <h1>Verification Pending</h1>
+      <p>Your professional profile has been submitted for review by our admin team.</p>
+
+      <div class="status-badge">
+        <i class="fa-regular fa-hourglass-half"></i> Under Review
+      </div>
+
+      <div class="spinner"></div>
+
+      <p style="font-size:0.88rem;color:var(--text-secondary);">
+        <i class="fa-regular fa-envelope"></i> We'll notify you via email once your account is verified.
+      </p>
+
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Documents reviewed</strong>
+            <span>Our team verifies your credentials and licence — usually within 1 business day.</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Admin approval</strong>
+            <span>An admin approves your account and sets your access level.</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <strong>Email notification</strong>
+            <span>You receive a confirmation email with login instructions and next steps.</span>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:0.82rem;color:var(--text-muted);">Your application reference:</p>
+      <div class="ref-code" id="refCode">SL-PRO-XXXXX</div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:24px;">
+        <button class="btn btn-secondary" onclick="checkStatus()">
+          <i class="fa-regular fa-rotate"></i> Check Status
+        </button>
+        <a href="login.html" class="btn btn-secondary">
+          <i class="fa-regular fa-right-to-bracket"></i> Go to Login
+        </a>
+      </div>
+
+      <div class="refresh-hint">
+        <a onclick="checkStatus()">Refresh status</a> •
+        <a href="../home.html">Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastStack"></div>
+
+  <script>
+    /* ============================================================
+       SMART LISHE — VERIFICATION WAITING
+       Auto-checks status every 30 seconds
+       ============================================================ */
+
+    function showToast(msg, type = 'success') {
+      const stack = document.getElementById('toastStack');
+      const old = document.querySelector('.toast');
+      if(old) old.remove();
+      const t = document.createElement('div');
+      t.className = 'toast' + (type === 'error' ? ' error' : '');
+      t.style.cssText = 'position:fixed;bottom:26px;right:26px;z-index:999;max-width:340px;';
+      const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+      t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; setTimeout(() => t.remove(), 350); }, 3500);
+    }
+
+    // Generate reference code
+    function generateRef() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let ref = 'SL-PRO-';
+      for(let i = 0; i < 5; i++) {
+        ref += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return ref;
+    }
+
+    // Set reference
+    const refCode = document.getElementById('refCode');
+    const storedRef = localStorage.getItem('professionalRef');
+    if(storedRef) {
+      refCode.textContent = storedRef;
+    } else {
+      const newRef = generateRef();
+      refCode.textContent = newRef;
+      localStorage.setItem('professionalRef', newRef);
+    }
+
+    // Check status function
+    window.checkStatus = function() {
+      const session = JSON.parse(localStorage.getItem('smartLisheUser'));
+      if(!session) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('smartLisheUsers') || '[]');
+      const user = users.find(u => u.email === session.email);
+
+      if(!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if(user.status === 'verified') {
+        session.status = 'verified';
+        localStorage.setItem('smartLisheUser', JSON.stringify(session));
+        showToast('🎉 Your account has been verified!', 'success');
+        setTimeout(() => {
+          window.location.href = '../professional/home.html';
+        }, 1000);
+      } else if(user.status === 'rejected') {
+        showToast('Your verification was rejected. Please contact support.', 'error');
+      } else {
+        showToast('Still pending verification. We\'ll notify you soon!', 'success');
+      }
+    };
+
+    // Auto-check every 30 seconds
+    let checkInterval = setInterval(checkStatus, 30000);
+
+    // Clean up interval when leaving
+    window.addEventListener('beforeunload', () => {
+      clearInterval(checkInterval);
+    });
+
+    // Initial check after 5 seconds
+    setTimeout(checkStatus, 5000);
+  </script>
+</body>
+</html>

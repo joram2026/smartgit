@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Smart Lishe</title>
+  <link rel="stylesheet" href="auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ===== PAGE-SPECIFIC STYLES ===== */
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 8px 0 22px;
+    }
+    @media(max-width: 420px) {
+      .role-selector { grid-template-columns: 1fr; }
+    }
+    .role-card {
+      padding: 18px 12px;
+      border-radius: 14px;
+      border: 2px solid var(--basket-line, #e2e8f0);
+      background: var(--bg-card, #ffffff);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .role-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      border-color: #cbd5e1;
+    }
+    .role-card.selected {
+      border-color: var(--sukuma, #1a7a64);
+      background: rgba(26, 122, 100, 0.06);
+      box-shadow: 0 4px 12px rgba(26, 122, 100, 0.12);
+      transform: translateY(-2px);
+    }
+    .role-card .rc-icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .role-card:hover .rc-icon {
+      transform: scale(1.05);
+    }
+    .role-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: var(--text-primary, #1e293b);
+      letter-spacing: -0.01em;
+    }
+    .role-card p {
+      font-size: 0.72rem;
+      color: var(--text-muted, #94a3b8);
+      margin: 0;
+      line-height: 1.4;
+    }
+    .role-card .rc-check {
+      display: none;
+      margin-top: 10px;
+      color: var(--sukuma, #1a7a64);
+      font-size: 0.75rem;
+      font-weight: 700;
+      animation: fadeInUp 0.3s ease;
+    }
+    .role-card.selected .rc-check { display: block; }
+    .role-card.pro-card.selected {
+      border-color: #c2410c;
+      background: rgba(194, 65, 12, 0.06);
+      box-shadow: 0 4px 12px rgba(194, 65, 12, 0.12);
+    }
+    .role-card.pro-card.selected .rc-check { color: #c2410c; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .role-note {
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--bg-elevated, #f8fafc);
+      border: 1px solid var(--basket-line, #e2e8f0);
+      font-size: 0.8rem;
+      color: var(--text-secondary, #64748b);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      display: none;
+      transition: all 0.3s ease;
+    }
+    .role-note.show {
+      display: block;
+      animation: fadeInUp 0.3s ease;
+    }
+    .role-note.pro-note {
+      border-color: rgba(194, 65, 12, 0.2);
+      background: rgba(194, 65, 12, 0.04);
+    }
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted, #94a3b8);
+      font-weight: 600;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+    }
+    .back-home:hover {
+      color: var(--text-primary, #1e293b);
+      border-bottom-color: var(--sukuma, #1a7a64);
+    }
+
+    /* ===== LARGER INPUTS WITH INSIDE ICONS ===== */
+    .field-group .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .field-group .input-wrap input {
+      width: 100%;
+      padding: 16px 54px 16px 52px;
+      font-size: 1rem;
+      border-radius: 12px;
+      background: var(--bg-card, #ffffff);
+      border: 1.5px solid var(--basket-line, #e2e8f0);
+      transition: all 0.3s ease;
+      height: 58px;
+      letter-spacing: 0.01em;
+    }
+    .field-group .input-wrap input:focus {
+      border-color: var(--sukuma, #1a7a64);
+      box-shadow: 0 0 0 4px rgba(26, 122, 100, 0.08);
+      background: #ffffff;
+    }
+    .field-group .input-wrap input::placeholder {
+      color: var(--text-muted, #94a3b8);
+      opacity: 0.7;
+      font-size: 0.95rem;
+    }
+
+    /* ===== LEFT ICON (email / lock) ===== */
+    .field-group .input-wrap .left-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--text-muted, #94a3b8);
+      transition: color 0.3s ease;
+      pointer-events: none;
+    }
+    .field-group .input-wrap input:focus ~ .left-icon {
+      color: var(--sukuma, #1a7a64);
+    }
+
+    /* ===== RIGHT ICON (eye / clear) ===== */
+    .field-group .input-wrap .right-action {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted, #94a3b8);
+      font-size: 1.2rem;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      transition: all 0.2s ease;
+    }
+    .field-group .input-wrap .right-action:hover {
+      background: var(--bg-elevated, #f1f5f9);
+      color: var(--text-primary, #1e293b);
+    }
+    .field-group .input-wrap .right-action:active {
+      transform: translateY(-50%) scale(0.92);
+    }
+
+    /* ===== PASSWORD TOGGLE SPECIFIC ===== */
+    .field-group .input-wrap .right-action.password-toggle.active {
+      color: var(--sukuma, #1a7a64);
+    }
+
+    /* ===== CLEAR BUTTON FOR EMAIL ===== */
+    .field-group .input-wrap .right-action.clear-btn {
+      display: none;
+    }
+    .field-group .input-wrap .right-action.clear-btn.visible {
+      display: flex;
+    }
+
+    /* ===== REMEMBER ME & FORGOT ===== */
+    .auth-check {
+      font-size: 0.92rem;
+      margin: 20px 0 28px;
+    }
+    .auth-check label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      color: var(--text-secondary, #64748b);
+      font-weight: 500;
+    }
+    .auth-check input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--sukuma, #1a7a64);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .auth-check a {
+      color: var(--sukuma, #1a7a64);
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .auth-check a:hover {
+      color: var(--sukuma-dark, #0d4f40);
+      text-decoration: underline;
+    }
+
+    /* ===== SIGN IN BUTTON ===== */
+    .btn-primary {
+      padding: 16px 26px;
+      border-radius: 40px;
+      background: linear-gradient(135deg, #1a7a64, #146354);
+      box-shadow: 0 8px 24px rgba(26, 122, 100, 0.25);
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      height: 58px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(26, 122, 100, 0.35);
+      background: linear-gradient(135deg, #146354, #0d4f40);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(26, 122, 100, 0.2);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      transform: none !important;
+      box-shadow: 0 4px 12px rgba(26, 122, 100, 0.1);
+    }
+    .btn-loading .spinner-small {
+      width: 24px;
+      height: 24px;
+      border-width: 2.5px;
+      border-top-color: #fff;
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      border-radius: 16px;
+      padding: 16px 22px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(226, 232, 240, 0.6);
+    }
+    .toast i {
+      font-size: 1.2rem;
+    }
+    .toast.error { border-left-color: #dc2626; }
+    .toast.error i { color: #dc2626; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(40px) scale(0.96); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    .toast {
+      animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ===== AUTH LINKS ===== */
+    .auth-links {
+      margin-top: 24px;
+      font-size: 0.92rem;
+    }
+    .auth-links a {
+      color: var(--sukuma, #1a7a64);
+      font-weight: 700;
+      transition: color 0.2s ease;
+    }
+    .auth-links a:hover {
+      color: var(--sukuma-dark, #0d4f40);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="auth-brand">
+      <div class="brand-icon"><i class="fa-solid fa-seedling"></i></div>
+      <h1>Welcome Back</h1>
+      <p>Sign in to continue your journey</p>
+    </div>
+
+    <a href="../user/home.html" class="back-home">
+      <i class="fa-solid fa-arrow-left"></i> Back To Home
+    </a>
+
+    <form id="loginForm" novalidate>
+
+      <label style="display:block;font-size:0.78rem;font-weight:700;color:var(--text-secondary,#64748b);margin-bottom:7px;letter-spacing:0.02em;text-transform:uppercase;">
+        Login As <span style="color:var(--char);">*</span>
+      </label>
+      <div class="role-selector" id="roleSelector">
+        <div class="role-card selected" data-role="User">
+          <span class="rc-icon">👤</span>
+          <h4>User</h4>
+          <p>Personal health & nutrition</p>
+          <div class="rc-check"><i class="fa-solid fa-circle-check"></i> Selected</div>
+        </div>
+        <div class="role-card pro-card" data-role="Professional">
+          <span class="rc-icon">👨‍⚕️</span>
+          <h4>Professional</h4>
+          <p>Dietitian / Nutritionist</p>
+          <div class="rc-check"><i class="fa-solid fa-circle-check"></i> Selected</div>
+        </div>
+      </div>
+
+      <div class="role-note" id="userRoleNote">
+        <strong><i class="fa-solid fa-user" style="color:var(--sukuma, #1a7a64);margin-right:6px;"></i>User login</strong><br>
+        You'll be taken to your personal health dashboard.
+      </div>
+      <div class="role-note pro-note" id="proRoleNote">
+        <strong><i class="fa-solid fa-user-md" style="color:#c2410c;margin-right:6px;"></i>Professional login</strong><br>
+        You'll be taken to your professional dashboard with client management tools.
+      </div>
+
+      <!-- ===== EMAIL FIELD with Clear Button (X) ===== -->
+      <div class="field-group">
+        <label for="loginEmail">Email Address</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-envelope left-icon"></i>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" required>
+          <button type="button" class="right-action clear-btn" id="clearEmailBtn" aria-label="Clear email">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== PASSWORD FIELD with Eye Toggle ===== -->
+      <div class="field-group">
+        <label for="loginPassword">Password</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock left-icon"></i>
+          <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+          <button type="button" class="right-action password-toggle" id="toggleLoginPw" aria-label="Toggle password visibility">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-check">
+        <label>
+          <input type="checkbox" id="rememberMe"> Remember Me
+        </label>
+        <a href="forgot-password.html">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="loginBtn">
+        <span class="btn-text"><i class="fa-regular fa-right-to-bracket"></i> Sign In</span>
+        <span class="spinner-small" style="display: none;"></span>
+      </button>
+    </form>
+
+    <div class="auth-links">
+      Don't have an account? <a href="register.html">Register</a>
+    </div>
+
+  </div>
+</div>
+
+<div id="toastStack"></div>
+
+<script>
+/* ============================================================
+   SMART LISHE — LOGIN
+   ============================================================ */
+
+let selectedRole = 'User';
+
+// ===== Role Selection =====
+document.querySelectorAll('.role-card').forEach(card => {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+    this.classList.add('selected');
+    selectedRole = this.dataset.role;
+    document.getElementById('userRoleNote').classList.toggle('show', selectedRole === 'User');
+    document.getElementById('proRoleNote').classList.toggle('show', selectedRole === 'Professional');
+  });
+});
+
+// ===== Password Visibility Toggle =====
+const passwordInput = document.getElementById('loginPassword');
+const toggleBtn = document.getElementById('toggleLoginPw');
+
+toggleBtn.addEventListener('click', function() {
+  const icon = this.querySelector('i');
+  if(passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    icon.className = 'fa-regular fa-eye-slash';
+    this.classList.add('active');
+  } else {
+    passwordInput.type = 'password';
+    icon.className = 'fa-regular fa-eye';
+    this.classList.remove('active');
+  }
+});
+
+// ===== Email Clear Button (X) =====
+const emailInput = document.getElementById('loginEmail');
+const clearBtn = document.getElementById('clearEmailBtn');
+
+emailInput.addEventListener('input', function() {
+  if(this.value.length > 0) {
+    clearBtn.classList.add('visible');
+  } else {
+    clearBtn.classList.remove('visible');
+  }
+});
+
+clearBtn.addEventListener('click', function() {
+  emailInput.value = '';
+  emailInput.focus();
+  this.classList.remove('visible');
+});
+
+// ===== Toast =====
+function showToast(msg, type = 'success') {
+  const stack = document.getElementById('toastStack');
+  const old = document.querySelector('.toast');
+  if(old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  document.body.appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px) scale(0.96)';
+    setTimeout(() => t.remove(), 350);
+  }, 3500);
+}
+
+// ===== Login Handler =====
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  if(!email || !password) {
+    showToast('Please fill in all fields.', 'error');
+    return;
+  }
+  if(!email.includes('@') || !email.includes('.')) {
+    showToast('Please enter a valid email address.', 'error');
+    return;
+  }
+  if(password.length < 6) {
+    showToast('Password must be at least 6 characters.', 'error');
+    return;
+  }
+
+  const firstName = localStorage.getItem('firstName') || email.split('@')[0];
+
+  localStorage.setItem('email', email);
+  localStorage.setItem('smartlishe_logged_in', 'true');
+  localStorage.setItem('smartlishe_role', selectedRole);
+  localStorage.setItem('role', selectedRole);
+
+  let existingProfile = {};
+  try {
+    const raw = localStorage.getItem('smartlishe_profile');
+    if(raw) existingProfile = JSON.parse(raw);
+  } catch(e) {}
+
+  const profile = {
+    ...existingProfile,
+    name: firstName,
+    firstName: firstName,
+    email: email,
+    role: selectedRole,
+    setupComplete: true
+  };
+  localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
+
+  const btn = document.getElementById('loginBtn');
+  btn.classList.add('btn-loading');
+  btn.querySelector('.spinner-small').style.display = 'block';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    showToast('Login successful! Redirecting...');
+    setTimeout(() => {
+      if(selectedRole === 'Professional') {
+        window.location.href = '../professional/home.html';
+      } else {
+        window.location.href = '../user/dashboard.html';
+      }
+    }, 600);
+  }, 1200);
+});
+
+console.log('🔑 Demo credentials:');
+console.log('  User: demo@smartlishe.co.ke / demo123');
+console.log('  Professional: james@nutritionist.co.ke / prof123');
+</script>
+
+</body>
+</html>

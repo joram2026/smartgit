@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing — Smart Lishe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ============================================================
+   SMART LISHE — BILLING LEDGER
+   A billing page styled like a market vendor's receipt book:
+   stamped tickets, punch-hole tear edges, ruled ledger rows.
+   ============================================================ */
+
+:root{
+  --paper:        #EAE1C8;
+  --paper-deep:   #DED1AC;
+  --card:         #F8F3E4;
+  --ink:          #2E2A20;
+  --ink-soft:     #6B6252;
+  --ink-faint:    #9A8F79;
+  --sukuma:       #3B6A38;
+  --sukuma-deep:  #294B27;
+  --maize:        #CE9A2B;
+  --maize-deep:   #A67618;
+  --terracotta:   #B0512E;
+  --rule:         #C9BC9A;
+  --rule-soft:    #DAD0B4;
+  --radius:       10px;
+  --shadow:       0 10px 24px -12px rgba(46,42,32,.28);
+  --font-display: "Fraunces", serif;
+  --font-body:    "Inter", sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+}
+
+html[data-theme="dark"]{
+  --paper:        #1E1B15;
+  --paper-deep:   #171410;
+  --card:         #29241C;
+  --ink:          #EFE6D2;
+  --ink-soft:     #B7AA8C;
+  --ink-faint:    #7C7261;
+  --sukuma:       #6FA766;
+  --sukuma-deep:  #4C7C48;
+  --maize:        #E4B650;
+  --maize-deep:   #C79328;
+  --terracotta:   #DB8058;
+  --rule:         #3C362A;
+  --rule-soft:    #2E2A20;
+  --shadow:       0 10px 28px -12px rgba(0,0,0,.55);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  transition:background .35s ease, color .35s ease;
+}
+::selection{ background:var(--maize); color:var(--ink); }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+:focus-visible{ outline:2px solid var(--maize-deep); outline-offset:2px; }
+
+/* subtle paper grain */
+body::before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(46,42,32,.035) 0, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(46,42,32,.03) 0, transparent 45%);
+}
+
+/* ---------------------------------- SHELL ---------------------------------- */
+.app-shell{ min-height:100vh; position:relative; z-index:1; }
+.main-content{ min-width:0; }
+
+.theme-toggle{
+  position:absolute; top:0; right:0;
+  width:38px; height:38px; border-radius:50%;
+  background:var(--card); border:1px solid var(--rule);
+  display:flex; align-items:center; justify-content:center; color:var(--ink);
+}
+.theme-toggle:hover{ border-color:var(--ink-faint); }
+
+.page-inner{ max-width:1180px; margin:0 auto; padding:48px 34px 70px; }
+@media(max-width:760px){
+  .page-inner{ padding:30px 18px 60px; }
+}
+
+.page-header{ margin-bottom:30px; max-width:640px; position:relative; padding-right:52px; }
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--sukuma-deep); font-weight:700; margin-bottom:10px;
+}
+.eyebrow::before{ content:""; width:16px; height:1.5px; background:var(--sukuma-deep); }
+.page-header h1{ font-family:var(--font-display); font-size:2.3rem; font-weight:700; margin:0 0 8px; letter-spacing:-.01em; }
+.page-header p{ color:var(--ink-soft); font-size:.95rem; margin:0; }
+
+/* ---------------------------------- PANELS ---------------------------------- */
+.panel{
+  background:var(--card); border:1px solid var(--rule); border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.panel-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:18px 22px; border-bottom:1px solid var(--rule-soft);
+}
+.panel-head h2{ font-family:var(--font-display); font-size:1.08rem; font-weight:700; margin:0; display:flex; align-items:center; gap:9px; }
+.panel-head h2 i{ color:var(--sukuma); font-size:.95rem; }
+.panel-body{ padding:20px 22px; }
+.link-action{ font-size:.78rem; font-weight:700; color:var(--sukuma-deep); display:inline-flex; align-items:center; gap:6px; }
+
+/* ---------------------------------- BUTTONS ---------------------------------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  border-radius:8px; padding:9px 16px; font-size:.82rem; font-weight:700;
+  border:1px solid transparent; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  white-space:nowrap;
+}
+.btn:active{ transform:translateY(1px); }
+.btn-primary{ background:var(--sukuma); color:#fff; box-shadow:0 4px 10px -4px rgba(59,106,56,.6); }
+.btn-primary:hover{ background:var(--sukuma-deep); }
+.btn-secondary{ background:transparent; color:var(--ink); border-color:var(--rule); }
+.btn-secondary:hover{ border-color:var(--ink-faint); }
+.btn-accent{ background:var(--maize); color:var(--ink); }
+.btn-accent:hover{ background:var(--maize-deep); color:#fff; }
+.btn-sm{ padding:7px 13px; font-size:.76rem; }
+.btn-icon{ width:34px; height:34px; padding:0; border-radius:7px; }
+
+/* ---------------------------------- STAT / PASSBOOK STRIP ---------------------------------- */
+.passbook{
+  background:var(--card); border:1px solid var(--rule); border-radius:var(--radius);
+  box-shadow:var(--shadow); overflow:hidden; margin-bottom:6px;
+}
+.passbook-strip{ display:grid; grid-template-columns:repeat(4,1fr); }
+.passbook-cell{
+  padding:22px 22px 20px;
+  border-right:1px dashed var(--rule);
+}
+.passbook-cell:last-child{ border-right:none; }
+.passbook-cell .p-label{ font-family:var(--font-mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); font-weight:700; }
+.passbook-cell .p-value{ font-family:var(--font-display); font-size:1.55rem; font-weight:700; margin-top:6px; }
+.passbook-cell .p-sub{ font-size:.76rem; color:var(--ink-soft); margin-top:5px; display:flex; align-items:center; gap:6px; }
+.passbook-cell .p-sub .pulse{ width:7px; height:7px; border-radius:50%; background:var(--sukuma); box-shadow:0 0 0 3px rgba(59,106,56,.18); }
+
+/* torn / perforated edge */
+.torn-edge{
+  height:15px; width:100%;
+  background:
+    radial-gradient(circle 8px at 8px 0, transparent 99%, var(--card) 100%) top left,
+    radial-gradient(circle at 15px 8px, var(--paper) 8px, transparent 8.5px);
+  background-size:30px 100%, 30px 16px;
+  background-repeat:repeat-x;
+  background-color:var(--card);
+}
+
+@media(max-width:900px){ .passbook-strip{ grid-template-columns:repeat(2,1fr); } .passbook-cell:nth-child(2){ border-right:none; } }
+@media(max-width:520px){ .passbook-strip{ grid-template-columns:1fr; } .passbook-cell{ border-right:none; border-bottom:1px dashed var(--rule); } }
+
+/* ---------------------------------- PAYMENT METHOD CARDS ---------------------------------- */
+.method-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:820px){ .method-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:460px){ .method-grid{ grid-template-columns:1fr; } }
+
+.method-card{
+  position:relative;
+  border:1.5px solid var(--rule); border-radius:10px; background:var(--paper);
+  padding:18px 16px 16px; text-align:left; cursor:pointer;
+  transition:border-color .18s, transform .18s, box-shadow .18s;
+}
+.method-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); }
+.method-card.selected{ border-color:var(--sukuma); background:rgba(59,106,56,.07); box-shadow:0 0 0 3px rgba(59,106,56,.14); }
+.method-card .m-top{ display:flex; align-items:center; justify-content:space-between; }
+.method-card i.m-icon{ font-size:1.5rem; color:var(--ink-soft); }
+.method-card.selected i.m-icon{ color:var(--sukuma); }
+.method-card .m-check{ width:18px; height:18px; border-radius:50%; border:1.5px solid var(--rule); flex-shrink:0; }
+.method-card.selected .m-check{ background:var(--sukuma); border-color:var(--sukuma); position:relative; }
+.method-card.selected .m-check::after{ content:"\f00c"; font-family:"Font Awesome 6 Free"; font-weight:900; color:#fff; font-size:.55rem; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.method-card .m-name{ display:block; font-weight:700; font-size:.86rem; margin-top:12px; }
+.method-card .m-detail{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); margin-top:2px; }
+.method-card .m-default{ display:inline-block; margin-top:8px; font-size:.66rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--maize-deep); }
+
+.method-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+.method-actions .btn{ flex:1; min-width:130px; }
+
+/* ---------------------------------- LEDGER (invoices) ---------------------------------- */
+.ledger-row{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr auto;
+  align-items:center; gap:14px;
+  padding:16px 4px;
+  border-bottom:1px dashed var(--rule);
+  position:relative;
+}
+.ledger-row:last-child{ border-bottom:none; }
+.ledger-head{
+  font-family:var(--font-mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-faint); font-weight:700; padding-bottom:10px; border-bottom:1px solid var(--rule);
+}
+.l-id{ font-family:var(--font-mono); font-weight:700; font-size:.85rem; }
+.l-sub{ font-size:.74rem; color:var(--ink-faint); margin-top:2px; }
+.l-amount{ font-family:var(--font-mono); font-weight:700; font-size:.92rem; }
+
+.stamp{
+  display:inline-flex; align-items:center; gap:6px;
+  border:2px solid currentColor; border-radius:5px;
+  padding:3px 9px; font-family:var(--font-display); font-weight:700;
+  font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+  transform:rotate(-6deg); mix-blend-mode:multiply;
+}
+html[data-theme="dark"] .stamp{ mix-blend-mode:normal; }
+.stamp.paid{ color:var(--sukuma-deep); }
+.stamp.pending{ color:var(--terracotta); }
+
+.ledger-actions{ display:flex; gap:6px; justify-self:end; }
+.ledger-actions button{
+  width:30px; height:30px; border-radius:6px; border:1px solid var(--rule); background:var(--paper);
+  color:var(--ink-soft); font-size:.76rem; display:flex; align-items:center; justify-content:center;
+}
+.ledger-actions button:hover{ border-color:var(--sukuma); color:var(--sukuma-deep); }
+
+@media(max-width:760px){
+  .ledger-head{ display:none; }
+  .ledger-row{ grid-template-columns:1fr 1fr; row-gap:8px; padding:16px 4px; }
+  .ledger-actions{ grid-column:1/-1; justify-self:start; }
+}
+
+.pagination-bar{ display:flex; align-items:center; justify-content:space-between; margin-top:18px; flex-wrap:wrap; gap:12px; }
+.pagination-info{ font-size:.78rem; color:var(--ink-faint); font-family:var(--font-mono); }
+.pagination-btns{ display:flex; gap:6px; }
+.pagination-btns button{
+  width:32px; height:32px; border-radius:6px; border:1px solid var(--rule); background:var(--paper); color:var(--ink-soft);
+  font-family:var(--font-mono); font-weight:700; font-size:.78rem;
+}
+.pagination-btns button.active{ background:var(--sukuma); color:#fff; border-color:var(--sukuma); }
+.pagination-btns button:hover:not(.active){ border-color:var(--ink-faint); }
+
+/* ---------------------------------- TWO COLUMN ---------------------------------- */
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media(max-width:880px){ .two-col{ grid-template-columns:1fr; } }
+
+.tier-row{ display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-bottom:1px dashed var(--rule); }
+.tier-row:last-child{ border-bottom:none; }
+.tier-name{ font-weight:700; font-size:.92rem; }
+.tier-price{ font-family:var(--font-mono); font-size:.78rem; color:var(--ink-faint); margin-top:2px; }
+.tier-save{ font-size:.78rem; color:var(--sukuma-deep); font-weight:700; margin-top:2px; }
+
+.support-row{ display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px dashed var(--rule); }
+.support-row:last-child{ border-bottom:none; }
+.support-icon{ width:38px; height:38px; border-radius:50%; background:var(--paper); border:1px solid var(--rule); display:flex; align-items:center; justify-content:center; color:var(--sukuma-deep); flex-shrink:0; }
+.support-label{ font-weight:700; font-size:.86rem; }
+.support-value{ font-size:.76rem; color:var(--ink-faint); font-family:var(--font-mono); }
+
+/* ---------------------------------- USAGE ---------------------------------- */
+.usage-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:760px){ .usage-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:460px){ .usage-grid{ grid-template-columns:1fr; } }
+.usage-card{ text-align:center; padding:18px 12px; background:var(--paper); border:1px solid var(--rule); border-radius:9px; }
+.usage-num{ font-family:var(--font-mono); font-size:1.35rem; font-weight:800; color:var(--sukuma-deep); }
+.usage-label{ font-size:.76rem; color:var(--ink-soft); margin-top:4px; font-weight:600; }
+.usage-period{ font-size:.68rem; color:var(--ink-faint); margin-top:2px; }
+
+/* ---------------------------------- SPACING ---------------------------------- */
+.section-gap{ margin-top:26px; }
+
+/* ---------------------------------- TOAST ---------------------------------- */
+.toast-wrap{ position:fixed; bottom:24px; right:24px; display:flex; flex-direction:column; gap:10px; z-index:999; }
+.toast{
+  display:flex; align-items:center; gap:10px;
+  background:var(--ink); color:var(--card); font-size:.82rem; font-weight:600;
+  padding:12px 18px; border-radius:9px; box-shadow:0 8px 22px -8px rgba(0,0,0,.4);
+  transform:translateY(12px); opacity:0; animation:toast-in .35s ease forwards;
+}
+.toast i{ color:var(--maize); }
+@keyframes toast-in{ to{ transform:translateY(0); opacity:1; } }
+.toast.out{ animation:toast-out .3s ease forwards; }
+@keyframes toast-out{ to{ transform:translateY(12px); opacity:0; } }
+
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="main-content">
+    <section class="page-inner">
+
+      <div class="page-header">
+        <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <div class="eyebrow">Billing ledger</div>
+        <h1>Your account, tallied.</h1>
+        <p>Everything about your plan, payment methods, and receipts — kept the way a good vendor keeps their books.</p>
+      </div>
+
+      <!-- PASSBOOK SUMMARY -->
+      <div class="passbook">
+        <div class="passbook-strip">
+          <div class="passbook-cell">
+            <div class="p-label">Current plan</div>
+            <div class="p-value" style="color:var(--sukuma-deep);">Premium</div>
+            <div class="p-sub">KES 999 / month</div>
+          </div>
+          <div class="passbook-cell">
+            <div class="p-label">Status</div>
+            <div class="p-value">Active</div>
+            <div class="p-sub"><span class="pulse"></span> Renews 15 Jul 2026</div>
+          </div>
+          <div class="passbook-cell">
+            <div class="p-label">Next payment</div>
+            <div class="p-value" style="color:var(--maize-deep);">KES 999</div>
+            <div class="p-sub">Due in 12 days</div>
+          </div>
+          <div class="passbook-cell">
+            <div class="p-label">Total invoices</div>
+            <div class="p-value">12</div>
+            <div class="p-sub">10 paid · 2 pending</div>
+          </div>
+        </div>
+        <div class="torn-edge"></div>
+      </div>
+
+      <!-- PAYMENT METHODS -->
+      <div class="panel section-gap">
+        <div class="panel-head">
+          <h2><i class="fa-solid fa-credit-card"></i>Payment methods</h2>
+          <button class="btn btn-primary btn-sm" onclick="showToast('fa-plus','Opening new payment form…')"><i class="fa-solid fa-plus"></i> Add payment</button>
+        </div>
+        <div class="panel-body">
+          <div class="method-grid" id="methodGrid">
+            <button class="method-card selected" data-name="Visa •••• 4242">
+              <div class="m-top"><i class="fa-brands fa-cc-visa m-icon"></i><span class="m-check"></span></div>
+              <span class="m-name">Visa •••• 4242</span>
+              <div class="m-detail">Expires 12/2028</div>
+              <span class="m-default">Default</span>
+            </button>
+            <button class="method-card" data-name="MasterCard •••• 1234">
+              <div class="m-top"><i class="fa-brands fa-cc-mastercard m-icon"></i><span class="m-check"></span></div>
+              <span class="m-name">MasterCard •••• 1234</span>
+              <div class="m-detail">Expires 06/2027</div>
+            </button>
+            <button class="method-card" data-name="M-Pesa">
+              <div class="m-top"><i class="fa-solid fa-mobile-screen-button m-icon"></i><span class="m-check"></span></div>
+              <span class="m-name">M-Pesa</span>
+              <div class="m-detail">0712 345 678</div>
+            </button>
+            <button class="method-card" data-name="Bank transfer — KCB">
+              <div class="m-top"><i class="fa-solid fa-building-columns m-icon"></i><span class="m-check"></span></div>
+              <span class="m-name">Bank transfer</span>
+              <div class="m-detail">KCB Bank •••• 9876</div>
+            </button>
+          </div>
+          <div class="method-actions">
+            <button class="btn btn-primary btn-sm" onclick="showToast('fa-circle-check','Payment processed with ' + selectedMethod)"><i class="fa-solid fa-credit-card"></i> Pay now</button>
+            <button class="btn btn-secondary btn-sm" onclick="showToast('fa-file-pdf','Downloading receipt…')"><i class="fa-solid fa-file-pdf"></i> Receipt</button>
+            <button class="btn btn-accent btn-sm" onclick="showToast('fa-gear','Opening subscription settings…')"><i class="fa-solid fa-gear"></i> Manage plan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEDGER / BILLING HISTORY -->
+      <div class="panel section-gap">
+        <div class="panel-head">
+          <h2><i class="fa-solid fa-book-open"></i>Billing history</h2>
+          <a href="#" class="link-action" onclick="showToast('fa-download','Downloading all invoices…');return false;"><i class="fa-solid fa-download"></i> Download all</a>
+        </div>
+        <div class="panel-body">
+          <div class="ledger-row ledger-head">
+            <span>Invoice</span><span>Plan</span><span>Date</span><span>Amount</span><span>Status</span>
+          </div>
+          <div id="ledgerBody"></div>
+          <div class="pagination-bar">
+            <span class="pagination-info" id="pageInfo">Showing 1–6 of 12 invoices</span>
+            <div class="pagination-btns">
+              <button id="prevPage"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="active" data-page="1">1</button>
+              <button data-page="2">2</button>
+              <button id="nextPage"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPGRADE + SUPPORT -->
+      <div class="two-col section-gap">
+        <div class="panel">
+          <div class="panel-head"><h2><i class="fa-solid fa-arrow-trend-up"></i>Upgrade plan</h2></div>
+          <div class="panel-body">
+            <div class="tier-row">
+              <div><div class="tier-name">Professional</div><div class="tier-price">KES 3,999 / month</div></div>
+              <button class="btn btn-primary btn-sm" onclick="showToast('fa-arrow-trend-up','Upgrading to Professional…')">Upgrade</button>
+            </div>
+            <div class="tier-row">
+              <div><div class="tier-name">Clinic</div><div class="tier-price">KES 12,999 / month</div></div>
+              <button class="btn btn-primary btn-sm" onclick="showToast('fa-arrow-trend-up','Upgrading to Clinic…')">Upgrade</button>
+            </div>
+            <div class="tier-row">
+              <div><div class="tier-name">Annual billing</div><div class="tier-save"><i class="fa-solid fa-tag"></i> Save 20%</div></div>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('fa-tag','Switching to annual billing…')">Switch</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2><i class="fa-solid fa-circle-question"></i>Billing help</h2></div>
+          <div class="panel-body">
+            <div class="support-row">
+              <div class="support-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div style="flex:1;"><div class="support-label">Email support</div><div class="support-value">billing@smartlishe.co.ke</div></div>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('fa-envelope','Opening email…')">Contact</button>
+            </div>
+            <div class="support-row">
+              <div class="support-icon"><i class="fa-solid fa-phone"></i></div>
+              <div style="flex:1;"><div class="support-label">Phone support</div><div class="support-value">+254 700 123 456</div></div>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('fa-phone','Calling support…')">Call</button>
+            </div>
+            <div class="support-row">
+              <div class="support-icon"><i class="fa-solid fa-circle-info"></i></div>
+              <div style="flex:1;"><div class="support-label">Billing FAQ</div><div class="support-value">Common questions answered</div></div>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('fa-circle-info','Opening FAQ…')">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USAGE -->
+      <div class="panel section-gap">
+        <div class="panel-head"><h2><i class="fa-solid fa-chart-bar"></i>Usage this cycle</h2></div>
+        <div class="panel-body">
+          <div class="usage-grid">
+            <div class="usage-card"><div class="usage-num">42</div><div class="usage-label">Meal plans generated</div><div class="usage-period">This month</div></div>
+            <div class="usage-card"><div class="usage-num">28</div><div class="usage-label">NutriScans used</div><div class="usage-period">This month</div></div>
+            <div class="usage-card"><div class="usage-num">156</div><div class="usage-label">Recipes viewed</div><div class="usage-period">All time</div></div>
+            <div class="usage-card"><div class="usage-num">8</div><div class="usage-label">Programs created</div><div class="usage-period">Active</div></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ---------- theme ---------- */
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+function applyTheme(t){
+  root.setAttribute('data-theme', t);
+  themeIcon.className = t === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  localStorage.setItem('smartlishe_theme', t);
+}
+applyTheme(localStorage.getItem('smartlishe_theme') || 'light');
+themeToggle.addEventListener('click', () => {
+  applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+
+/* ---------- toast ---------- */
+function showToast(icon, msg){
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 300);
+  }, 2600);
+}
+
+/* ---------- payment method selection ---------- */
+let selectedMethod = 'Visa •••• 4242';
+document.querySelectorAll('.method-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedMethod = card.dataset.name;
+    showToast('fa-check', selectedMethod + ' selected');
+  });
+});
+
+/* ---------- invoice ledger data + pagination ---------- */
+const invoices = [
+  { id:'#INV-2026-012', plan:'Premium', date:'2026-06-15', amount:'KES 999', status:'paid' },
+  { id:'#INV-2026-011', plan:'Premium', date:'2026-05-15', amount:'KES 999', status:'paid' },
+  { id:'#INV-2026-010', plan:'Premium', date:'2026-04-15', amount:'KES 999', status:'paid' },
+  { id:'#INV-2026-009', plan:'Free',    date:'2026-03-15', amount:'KES 0',   status:'paid' },
+  { id:'#INV-2026-008', plan:'Free',    date:'2026-02-15', amount:'KES 0',   status:'paid' },
+  { id:'#INV-2026-007', plan:'Free',    date:'2026-01-15', amount:'KES 0',   status:'paid' },
+  { id:'#INV-2025-006', plan:'Premium', date:'2025-12-15', amount:'KES 999', status:'pending' },
+  { id:'#INV-2025-005', plan:'Premium', date:'2025-11-15', amount:'KES 999', status:'pending' },
+  { id:'#INV-2025-004', plan:'Premium', date:'2025-10-15', amount:'KES 999', status:'paid' },
+  { id:'#INV-2025-003', plan:'Premium', date:'2025-09-15', amount:'KES 999', status:'paid' },
+  { id:'#INV-2025-002', plan:'Free',    date:'2025-08-15', amount:'KES 0',   status:'paid' },
+  { id:'#INV-2025-001', plan:'Free',    date:'2025-07-15', amount:'KES 0',   status:'paid' },
+];
+const PAGE_SIZE = 6;
+let currentPage = 1;
+
+function renderLedger(){
+  const body = document.getElementById('ledgerBody');
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = invoices.slice(start, start + PAGE_SIZE);
+  body.innerHTML = pageItems.map(inv => `
+    <div class="ledger-row">
+      <div><div class="l-id">${inv.id}</div><div class="l-sub">${inv.plan} plan</div></div>
+      <div>${inv.plan}</div>
+      <div class="l-sub" style="font-family:var(--font-mono);">${inv.date}</div>
+      <div class="l-amount">${inv.amount}</div>
+      <div><span class="stamp ${inv.status}">${inv.status === 'paid' ? 'Paid' : 'Pending'}</span></div>
+      <div class="ledger-actions">
+        <button title="View" onclick="showToast('fa-eye','Viewing ${inv.id}…')"><i class="fa-solid fa-eye"></i></button>
+        <button title="Download" onclick="showToast('fa-download','Downloading ${inv.id}…')"><i class="fa-solid fa-download"></i></button>
+        <button title="Print" onclick="window.print()"><i class="fa-solid fa-print"></i></button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('pageInfo').textContent =
+    `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, invoices.length)} of ${invoices.length} invoices`;
+  document.querySelectorAll('.pagination-btns button[data-page]').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.page) === currentPage);
+  });
+}
+document.querySelectorAll('.pagination-btns button[data-page]').forEach(b => {
+  b.addEventListener('click', () => { currentPage = Number(b.dataset.page); renderLedger(); });
+});
+document.getElementById('prevPage').addEventListener('click', () => {
+  if (currentPage > 1){ currentPage--; renderLedger(); }
+});
+document.getElementById('nextPage').addEventListener('click', () => {
+  if (currentPage < 2){ currentPage++; renderLedger(); }
+});
+renderLedger();
+</script>
+</body>
+</html>

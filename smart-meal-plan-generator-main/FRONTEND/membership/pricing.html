@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing Plans — Smart Lishe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Kenya</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="../home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="../dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      
+      <div class="nav-section-divider"><span>Plan &amp; Discover</span><i class="fa-solid fa-layer-group"></i></div>
+      <div class="service-group" data-group="plan">
+        <button type="button" class="service-group-header" data-group-toggle="plan">
+          <div class="sg-icon-wrap" style="background:var(--sukuma);"><i class="fa-solid fa-bowl-food"></i></div>
+          <span class="sg-title">Plan &amp; Discover</span>
+          <span class="sg-count">5</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="../meal-generator.html" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Meal Generator</a>
+          <a href="../nutriscan.html" class="nav-link"><i class="fa-solid fa-camera-retro"></i> NutriScan</a>
+          <a href="../health-conditions.html" class="nav-link"><i class="fa-solid fa-heart-pulse"></i> Health Conditions</a>
+          <a href="../meal-planner.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Meal Planner</a>
+          <a href="../recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        </div>
+      </div>
+      
+      <div class="nav-section-divider"><span>Track &amp; Achieve</span><i class="fa-solid fa-chart-simple"></i></div>
+      <div class="service-group" data-group="track">
+        <button type="button" class="service-group-header" data-group-toggle="track">
+          <div class="sg-icon-wrap" style="background:var(--char);"><i class="fa-solid fa-chart-simple"></i></div>
+          <span class="sg-title">Track &amp; Achieve</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="../goal-tracker.html" class="nav-link"><i class="fa-solid fa-bullseye"></i> Goal Tracker</a>
+          <a href="../water-tracker.html" class="nav-link"><i class="fa-solid fa-droplet"></i> Water Tracker</a>
+          <a href="../analytics.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Nutrition Analytics</a>
+          <a href="../shopping-list.html" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Shopping List</a>
+        </div>
+      </div>
+      
+      <div class="nav-section-divider"><span>Profile</span><i class="fa-solid fa-user-gear"></i></div>
+      <div class="service-group" data-group="profile">
+        <button type="button" class="service-group-header" data-group-toggle="profile">
+          <div class="sg-icon-wrap" style="background:#3D6FA8;"><i class="fa-solid fa-user"></i></div>
+          <span class="sg-title">Profile</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="../profile.html" class="nav-link"><i class="fa-solid fa-id-card"></i> User Profile</a>
+          <a href="../settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+          <a href="../about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+          <a href="../contact.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+        </div>
+      </div>
+
+      <!-- ✅ MEMBERSHIP: same folder (NO ../) -->
+      <div class="nav-section-divider"><span>Membership</span><i class="fa-solid fa-crown"></i></div>
+      <div class="service-group open" data-group="membership">
+        <button type="button" class="service-group-header" data-group-toggle="membership">
+          <div class="sg-icon-wrap" style="background:var(--accent-2);"><i class="fa-solid fa-crown"></i></div>
+          <span class="sg-title">Membership</span>
+          <span class="sg-count">9</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="membership.html" class="nav-link"><i class="fa-solid fa-id-card"></i> Current Membership</a>
+          <a href="pricing.html" class="nav-link active"><i class="fa-solid fa-tags"></i> Pricing Plans</a>
+          <a href="benefits.html" class="nav-link"><i class="fa-solid fa-gift"></i> Benefits</a>
+          <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+          <a href="invoices.html" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Invoices</a>
+          <a href="upgrade.html" class="nav-link"><i class="fa-solid fa-arrow-trend-up"></i> Upgrade Plan</a>
+          <a href="history.html" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Subscription History</a>
+          <a href="professional-access.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> Professional Access</a>
+          <a href="clinic-access.html" class="nav-link"><i class="fa-solid fa-hospital"></i> Clinic Access</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); showToast('Logging out...');" style="color:var(--char);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search recipes, meals, conditions...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <a href="../profile.html" class="profile-chip" style="cursor:pointer;">
+          <div class="avatar" id="topbarAvatar">W</div>
+          <span class="label" id="topbarName">Wanjiru</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="page active">
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="section-eyebrow">Membership</div>
+          <h2>Pricing Plans</h2>
+          <p>Choose the plan that fits your needs — from individual wellness to professional practice management.</p>
+        </div>
+
+        <!-- ===== BILLING SELECTOR ===== -->
+        <div class="billing-selector">
+          <span style="font-weight:600;font-size:0.85rem;">Billing:</span>
+          <div class="toggle-wrap">
+            <button class="active" id="billingMonthly" onclick="setBilling('monthly')">Monthly</button>
+            <button id="billingYearly" onclick="setBilling('yearly')">Yearly</button>
+          </div>
+          <span class="save-badge"><i class="fa-solid fa-tag"></i> Save 20%</span>
+        </div>
+
+        <!-- ===== PRICING CARDS ===== -->
+        <div class="pricing-grid">
+
+          <!-- FREE -->
+          <div class="pricing-card">
+            <div class="plan-name">Free</div>
+            <div class="plan-price">KES 0 <span>/month</span></div>
+            <div class="plan-desc">Basic features for casual users</div>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> Dashboard</li>
+              <li><i class="fa-solid fa-check"></i> AI Meal Generator (5/week)</li>
+              <li><i class="fa-solid fa-check"></i> Basic Recipes</li>
+              <li><i class="fa-solid fa-check"></i> Meal Planner</li>
+              <li><i class="fa-solid fa-check"></i> Goal Tracker</li>
+              <li><i class="fa-solid fa-check"></i> Water Tracker</li>
+              <li><i class="fa-solid fa-check"></i> Profile</li>
+              <li><i class="fa-solid fa-check"></i> Basic Analytics</li>
+              <li><i class="fa-solid fa-xmark"></i> NutriScan</li>
+              <li><i class="fa-solid fa-xmark"></i> Shopping Lists</li>
+              <li><i class="fa-solid fa-xmark"></i> Professional Tools</li>
+            </ul>
+            <button class="btn btn-secondary" onclick="subscribe('free')">Current Plan</button>
+          </div>
+
+          <!-- PREMIUM -->
+          <div class="pricing-card popular">
+            <span class="popular-badge">Popular</span>
+            <div class="plan-name">Premium</div>
+            <div class="plan-price">KES 999 <span>/month</span></div>
+            <div class="plan-desc">Unlimited features for serious wellness</div>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> All Free features</li>
+              <li><i class="fa-solid fa-check"></i> Unlimited Meal Plans</li>
+              <li><i class="fa-solid fa-check"></i> NutriScan</li>
+              <li><i class="fa-solid fa-check"></i> Advanced Analytics</li>
+              <li><i class="fa-solid fa-check"></i> Shopping Lists</li>
+              <li><i class="fa-solid fa-check"></i> Premium Recipes</li>
+              <li><i class="fa-solid fa-check"></i> AI Recommendations</li>
+              <li><i class="fa-solid fa-check"></i> Priority Support</li>
+              <li><i class="fa-solid fa-check"></i> Progress Reports</li>
+              <li><i class="fa-solid fa-xmark"></i> Professional Tools</li>
+            </ul>
+            <button class="btn btn-primary" onclick="subscribe('premium')">Subscribe</button>
+          </div>
+
+          <!-- PROFESSIONAL -->
+          <div class="pricing-card">
+            <div class="plan-name">Professional</div>
+            <div class="plan-price">KES 3,999 <span>/month</span></div>
+            <div class="plan-desc">For dietitians, coaches &amp; wellness experts</div>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> All Premium features</li>
+              <li><i class="fa-solid fa-check"></i> Unlimited Clients</li>
+              <li><i class="fa-solid fa-check"></i> Client Management</li>
+              <li><i class="fa-solid fa-check"></i> Meal Builder</li>
+              <li><i class="fa-solid fa-check"></i> Programs</li>
+              <li><i class="fa-solid fa-check"></i> Recommendations</li>
+              <li><i class="fa-solid fa-check"></i> Compliance</li>
+              <li><i class="fa-solid fa-check"></i> Messaging</li>
+              <li><i class="fa-solid fa-check"></i> Reports</li>
+              <li><i class="fa-solid fa-check"></i> Appointments</li>
+            </ul>
+            <button class="btn btn-primary" onclick="subscribe('professional')">Subscribe</button>
+          </div>
+
+          <!-- CLINIC -->
+          <div class="pricing-card">
+            <div class="plan-name">Clinic</div>
+            <div class="plan-price">KES 12,999 <span>/month</span></div>
+            <div class="plan-desc">For hospitals, clinics &amp; organizations</div>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> All Professional features</li>
+              <li><i class="fa-solid fa-check"></i> Multiple Professionals</li>
+              <li><i class="fa-solid fa-check"></i> Staff Management</li>
+              <li><i class="fa-solid fa-check"></i> Departments</li>
+              <li><i class="fa-solid fa-check"></i> Enterprise Reports</li>
+              <li><i class="fa-solid fa-check"></i> Compliance Monitoring</li>
+              <li><i class="fa-solid fa-check"></i> Centralized Billing</li>
+              <li><i class="fa-solid fa-check"></i> Clinic Analytics</li>
+              <li><i class="fa-solid fa-check"></i> White Label Support</li>
+              <li><i class="fa-solid fa-check"></i> API Access</li>
+            </ul>
+            <button class="btn btn-primary" onclick="subscribe('clinic')">Subscribe</button>
+          </div>
+        </div>
+
+        <!-- ===== COMPARISON TABLE ===== -->
+        <div class="comparison-table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr><th>Feature</th><th>Free</th><th>Premium</th><th>Professional</th><th>Clinic</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Dashboard</td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Meal Generator</td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Recipes</td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Analytics</td><td>Basic</td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Shopping List</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>NutriScan</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Programs</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Reports</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Messaging</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Appointments</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>AI Assistant</td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Compliance</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Professional Dashboard</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Client Portal</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+              <tr><td>Clinic Access</td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-xmark"></i></td><td><i class="fa-solid fa-check"></i></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<button class="chatbot-fab" id="chatbotFab"><i class="fa-solid fa-robot"></i><span class="ping"></span></button>
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-head">
+    <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="info"><strong>Smart Lishe Assistant</strong><span>Online</span></div>
+    <button class="chatbot-close" id="chatbotClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chatbot-body" id="chatbotBody"></div>
+  <div class="chatbot-suggestions" id="chatbotSuggestions">
+    <button class="chip-suggestion" data-q="weight loss">Weight loss tips</button>
+    <button class="chip-suggestion" data-q="diabetes meal">Diabetes-friendly meal</button>
+    <button class="chip-suggestion" data-q="water intake">How much water?</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbotInput" placeholder="Ask about meals, health, recipes...">
+    <button class="chatbot-send" id="chatbotSend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// PRICING — Complete JavaScript (Safe Navigation)
+// ============================================================
+
+const Store = {
+  get(key, fallback){
+    try{
+      const raw = localStorage.getItem('smartlishe_' + key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){ return fallback; }
+  },
+  set(key, value){
+    try{
+      localStorage.setItem('smartlishe_' + key, JSON.stringify(value));
+      return true;
+    }catch(e){ return false; }
+  }
+};
+
+function showToast(message, type = 'success'){
+  const stack = document.getElementById('toastStack');
+  if(!stack) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+  stack.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+window.showToast = showToast;
+
+function initTheme(){
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  const themeIcon = document.getElementById('themeIcon');
+  if(themeIcon) {
+    themeIcon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  }
+  const themeToggle = document.getElementById('themeToggle');
+  if(themeToggle){
+    themeToggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', next);
+      if(themeIcon) {
+        themeIcon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      }
+      Store.set('theme', next);
+    });
+  }
+}
+
+function initSidebar(){
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  
+  function openSidebar(){ 
+    if(sidebar) sidebar.classList.add('open'); 
+    if(overlay) overlay.classList.add('show'); 
+  }
+  function closeSidebar(){ 
+    if(sidebar) sidebar.classList.remove('open'); 
+    if(overlay) overlay.classList.remove('show'); 
+  }
+  
+  if(hamburger) hamburger.addEventListener('click', openSidebar);
+  if(overlay) overlay.addEventListener('click', closeSidebar);
+  
+  document.querySelectorAll('.service-group-header').forEach(header => {
+    header.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const group = header.closest('.service-group');
+      if(!group) return;
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.service-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen) group.classList.add('open');
+    });
+  });
+  
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', closeSidebar);
+  });
+}
+
+function initScrollTop(){
+  const btn = document.getElementById('scrollTopBtn');
+  if(!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('show', window.scrollY > 400);
+  });
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+}
+
+// ---------- BILLING SELECTOR ----------
+function setBilling(period) {
+  document.querySelectorAll('.toggle-wrap button').forEach(function(b) { b.classList.remove('active'); });
+  if (period === 'monthly') {
+    document.getElementById('billingMonthly').classList.add('active');
+  } else {
+    document.getElementById('billingYearly').classList.add('active');
+    showToast('Yearly billing selected — save 20%!');
+  }
+}
+
+// ---------- SUBSCRIBE ----------
+function subscribe(plan) {
+  var planNames = {
+    free: 'Free',
+    premium: 'Premium',
+    professional: 'Professional',
+    clinic: 'Clinic'
+  };
+  showToast('You\'ve selected the ' + planNames[plan] + ' plan. Redirecting to checkout...');
+}
+
+// ---------- CHATBOT ----------
+function initChatbot(){
+  const fab = document.getElementById('chatbotFab');
+  const panel = document.getElementById('chatbotPanel');
+  const closeBtn = document.getElementById('chatbotClose');
+  const input = document.getElementById('chatbotInput');
+  const sendBtn = document.getElementById('chatbotSend');
+  if(!fab || !panel) return;
+  
+  let hasGreeted = false;
+  fab.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !hasGreeted){
+      hasGreeted = true;
+      addChatMessage("Habari! I'm your Smart Lishe assistant. Ask me about meals, weight goals, health conditions, or hydration.", 'bot');
+    }
+  });
+  if(closeBtn) closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+  if(sendBtn) sendBtn.addEventListener('click', () => sendChatMessage(input ? input.value : ''));
+  if(input){
+    input.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') sendChatMessage(input.value);
+    });
+  }
+  document.querySelectorAll('.chip-suggestion').forEach(chip => {
+    chip.addEventListener('click', () => sendChatMessage(chip.dataset.q));
+  });
+}
+
+const chatKnowledge = [
+  { keys:['weight loss','lose weight','slim'], reply:"For healthy weight loss, aim for a moderate calorie deficit — about 300–500 kcal below your maintenance level." },
+  { keys:['diabetes','diabetic','blood sugar'], reply:"For diabetes-friendly eating, choose high-fibre carbs in moderate portions — mukimo, githeri, and brown rice are better than white rice alone." },
+  { keys:['water','hydration','how much water'], reply:"Most adults should aim for about 2 to 2.5 litres of water a day — roughly 8 glasses." },
+];
+
+function findBotReply(text){
+  const lower = text.toLowerCase();
+  for(const entry of chatKnowledge){
+    if(entry.keys.some(k => lower.includes(k))) return entry.reply;
+  }
+  return "I'm still learning that one. Try asking me about weight loss, diabetes, or hydration.";
+}
+
+function formatTime(date){ return date.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }); }
+
+function addChatMessage(text, sender){
+  const body = document.getElementById('chatbotBody');
+  if(!body) return;
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg ' + sender;
+  msg.innerHTML = `<div class="bubble">${text}</div><span class="timestamp">${formatTime(new Date())}</span>`;
+  body.appendChild(msg);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTypingIndicator(){
+  const body = document.getElementById('chatbotBody');
+  if(!body) return;
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.id = 'typingIndicator';
+  typing.innerHTML = `<div class="bubble typing-dots"><span></span><span></span><span></span></div>`;
+  body.appendChild(typing);
+  body.scrollTop = body.scrollHeight;
+}
+
+function removeTypingIndicator(){ const el = document.getElementById('typingIndicator'); if(el) el.remove(); }
+
+function sendChatMessage(text){
+  if(!text.trim()) return;
+  addChatMessage(text, 'user');
+  const input = document.getElementById('chatbotInput');
+  if(input) input.value = '';
+  showTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addChatMessage(findBotReply(text), 'bot');
+  }, 700 + Math.random() * 500);
+}
+
+function initNotifications(){
+  const btn = document.getElementById('notifBtn');
+  if(btn){
+    btn.addEventListener('click', () => showToast("You're all caught up — no new notifications."));
+  }
+}
+
+function initGlobalSearch(){
+  const input = document.getElementById('globalSearch');
+  if(input){
+    input.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter' && e.target.value.trim()) showToast(`Searching for "${e.target.value.trim()}"...`);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initSidebar();
+  initScrollTop();
+  initChatbot();
+  initNotifications();
+  initGlobalSearch();
+});
+</script>
+</body>
+</html>

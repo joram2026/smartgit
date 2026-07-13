@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goal Tracker — Smart Lishe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Kenya</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-section-divider"><span>Plan &amp; Discover</span><i class="fa-solid fa-layer-group"></i></div>
+      <div class="service-group" data-group="plan">
+        <button type="button" class="service-group-header" data-group-toggle="plan">
+          <div class="sg-icon-wrap" style="background:var(--sukuma);"><i class="fa-solid fa-bowl-food"></i></div>
+          <span class="sg-title">Plan &amp; Discover</span>
+          <span class="sg-count">5</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="meal-generator.html" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Meal Generator</a>
+          <a href="nutriscan.html" class="nav-link"><i class="fa-solid fa-camera-retro"></i> NutriScan</a>
+          <a href="health-conditions.html" class="nav-link"><i class="fa-solid fa-heart-pulse"></i> Health Conditions</a>
+          <a href="meal-planner.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Meal Planner</a>
+          <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        </div>
+      </div>
+      <div class="nav-section-divider"><span>Track &amp; Achieve</span><i class="fa-solid fa-chart-simple"></i></div>
+      <div class="service-group open" data-group="track">
+        <button type="button" class="service-group-header" data-group-toggle="track">
+          <div class="sg-icon-wrap" style="background:var(--char);"><i class="fa-solid fa-chart-simple"></i></div>
+          <span class="sg-title">Track &amp; Achieve</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="goal-tracker.html" class="nav-link active"><i class="fa-solid fa-bullseye"></i> Goal Tracker</a>
+          <a href="water-tracker.html" class="nav-link"><i class="fa-solid fa-droplet"></i> Water Tracker</a>
+          <a href="analytics.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Nutrition Analytics</a>
+          <a href="shopping-list.html" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Shopping List</a>
+        </div>
+      </div>
+      <div class="nav-section-divider"><span>Profile</span><i class="fa-solid fa-user-gear"></i></div>
+      <div class="service-group" data-group="profile">
+        <button type="button" class="service-group-header" data-group-toggle="profile">
+          <div class="sg-icon-wrap" style="background:#3D6FA8;"><i class="fa-solid fa-user"></i></div>
+          <span class="sg-title">Profile</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="profile.html" class="nav-link"><i class="fa-solid fa-id-card"></i> User Profile</a>
+          <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+          <a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+          <a href="contact.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+        </div>
+      </div>
+
+      <!-- ===== MEMBERSHIP ===== -->
+      <div class="nav-section-divider"><span>Membership</span><i class="fa-solid fa-crown"></i></div>
+      <div class="service-group" data-group="membership">
+        <button type="button" class="service-group-header" data-group-toggle="membership">
+          <div class="sg-icon-wrap" style="background:var(--accent-2);"><i class="fa-solid fa-crown"></i></div>
+          <span class="sg-title">Membership</span>
+          <span class="sg-count">9</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="membership/membership.html" class="nav-link"><i class="fa-solid fa-id-card"></i> Current Membership</a>
+          <a href="membership/pricing.html" class="nav-link"><i class="fa-solid fa-tags"></i> Pricing Plans</a>
+          <a href="membership/benefits.html" class="nav-link"><i class="fa-solid fa-gift"></i> Benefits</a>
+          <a href="membership/billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+          <a href="membership/invoices.html" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Invoices</a>
+          <a href="membership/upgrade.html" class="nav-link"><i class="fa-solid fa-arrow-trend-up"></i> Upgrade Plan</a>
+          <a href="membership/history.html" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Subscription History</a>
+          <a href="membership/professional-access.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> Professional Access</a>
+          <a href="membership/clinic-access.html" class="nav-link"><i class="fa-solid fa-hospital"></i> Clinic Access</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); showToast('Logging out...');" style="color:var(--char);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search recipes, meals, conditions...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <a href="profile.html" class="profile-chip" style="cursor:pointer;">
+          <div class="avatar" id="topbarAvatar">W</div>
+          <span class="label" id="topbarName">Wanjiru</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="page active">
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="section-eyebrow">Goal Tracker</div>
+          <h2>Set a goal, watch it move</h2>
+          <p>Track your weight goal and daily calorie target, log weekly progress, and earn badges as you build consistency.</p>
+        </div>
+
+        <div class="goal-progress-hero">
+          <div class="gp-numbers">
+            <div><strong id="gpCurrentWeight">71.2 kg</strong><span>Current weight</span></div>
+            <div><strong id="gpTargetWeight">66 kg</strong><span>Target weight</span></div>
+            <div><strong id="gpToGo">5.2 kg to go</strong><span>Remaining</span></div>
+          </div>
+          <div class="gp-ring">
+            <svg width="96" height="96" viewBox="0 0 96 96">
+              <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="9"></circle>
+              <circle id="gpRingProgress" cx="48" cy="48" r="42" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+            </svg>
+            <div class="gp-ring-label" id="gpRingLabel">0%</div>
+          </div>
+        </div>
+
+        <div class="goal-setup-grid">
+          <div class="goal-input-card">
+            <h4><i class="fa-solid fa-weight-scale" style="color:var(--accent-3);margin-right:7px;"></i>Update your weight</h4>
+            <div class="goal-input-row">
+              <div class="field-group">
+                <label for="goalCurrentWeightInput">Current weight (kg)</label>
+                <input type="number" id="goalCurrentWeightInput" step="0.1" placeholder="e.g. 70.5">
+              </div>
+              <button class="btn btn-primary btn-sm" id="goalLogWeightBtn">Log it</button>
+            </div>
+          </div>
+          <div class="goal-input-card">
+            <h4><i class="fa-solid fa-bullseye" style="color:var(--accent-3);margin-right:7px;"></i>Set your target</h4>
+            <div class="goal-input-row">
+              <div class="field-group">
+                <label for="goalTargetWeightInput">Target weight (kg)</label>
+                <input type="number" id="goalTargetWeightInput" step="0.1" placeholder="e.g. 66">
+              </div>
+              <button class="btn btn-secondary btn-sm" id="goalSetTargetBtn">Set target</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="weekly-chart-panel">
+          <h4><i class="fa-solid fa-chart-line" style="color:var(--accent-3);margin-right:7px;"></i>Weight trend</h4>
+          <svg class="weight-line-chart" id="weightLineChart" viewBox="0 0 600 180" preserveAspectRatio="none"></svg>
+        </div>
+
+        <div class="weekly-chart-panel">
+          <h4><i class="fa-solid fa-award" style="color:var(--accent-3);margin-right:7px;"></i>Achievement badges</h4>
+          <div class="badges-grid" id="badgesGrid"></div>
+        </div>
+
+        <div class="weekly-chart-panel">
+          <h4><i class="fa-solid fa-flag-checkered" style="color:var(--accent-3);margin-right:7px;"></i>Milestones</h4>
+          <div class="milestone-list" id="milestoneList"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<button class="chatbot-fab" id="chatbotFab"><i class="fa-solid fa-robot"></i><span class="ping"></span></button>
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-head">
+    <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="info"><strong>Smart Lishe Assistant</strong><span>Online</span></div>
+    <button class="chatbot-close" id="chatbotClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chatbot-body" id="chatbotBody"></div>
+  <div class="chatbot-suggestions" id="chatbotSuggestions">
+    <button class="chip-suggestion" data-q="weight loss">Weight loss tips</button>
+    <button class="chip-suggestion" data-q="diabetes meal">Diabetes-friendly meal</button>
+    <button class="chip-suggestion" data-q="water intake">How much water?</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbotInput" placeholder="Ask about meals, health, recipes...">
+    <button class="chatbot-send" id="chatbotSend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ===== STORE =====
+const Store = {
+  get(key, fallback){
+    try{
+      const raw = localStorage.getItem('smartlishe_' + key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){ return fallback; }
+  },
+  set(key, value){
+    try{
+      localStorage.setItem('smartlishe_' + key, JSON.stringify(value));
+      return true;
+    }catch(e){ return false; }
+  }
+};
+
+// ===== TOAST =====
+function showToast(message, type = 'success'){
+  const stack = document.getElementById('toastStack');
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+  stack.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// ===== THEME =====
+function initTheme(){
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  document.getElementById('themeIcon').className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const current = document.body.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', next);
+    document.getElementById('themeIcon').className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    Store.set('theme', next);
+  });
+}
+
+// ===== SIDEBAR =====
+function initSidebar(){
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  hamburger.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  document.querySelectorAll('.service-group-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const group = header.closest('.service-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.service-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen) group.classList.add('open');
+    });
+  });
+  document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', closeSidebar));
+}
+
+// ===== SCROLL TOP =====
+function initScrollTop(){
+  const btn = document.getElementById('scrollTopBtn');
+  window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 400));
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+}
+
+// ===== GOAL TRACKER =====
+function getGoalData(){
+  return Store.get('goalTrackerData', {
+    startWeight: 74.0,
+    currentWeight: 71.2,
+    targetWeight: 66.0,
+    history: [
+      { date: '2026-05-25', weight: 74.0 },
+      { date: '2026-06-01', weight: 73.4 },
+      { date: '2026-06-08', weight: 72.7 },
+      { date: '2026-06-15', weight: 72.0 },
+      { date: '2026-06-22', weight: 71.2 },
+    ]
+  });
+}
+
+function renderGoalProgress(){
+  const data = getGoalData();
+  document.getElementById('gpCurrentWeight').textContent = data.currentWeight.toFixed(1) + ' kg';
+  document.getElementById('gpTargetWeight').textContent = data.targetWeight.toFixed(1) + ' kg';
+
+  const remaining = data.currentWeight - data.targetWeight;
+  const remainingLabel = remaining > 0 ? `${remaining.toFixed(1)} kg to go` : remaining < 0 ? `${Math.abs(remaining).toFixed(1)} kg past target` : 'Target reached!';
+  document.getElementById('gpToGo').textContent = remainingLabel;
+
+  const totalToLose = data.startWeight - data.targetWeight;
+  const lostSoFar = data.startWeight - data.currentWeight;
+  let pct = totalToLose !== 0 ? Math.round((lostSoFar / totalToLose) * 100) : 0;
+  pct = Math.max(0, Math.min(100, pct));
+
+  const circumference = 264;
+  const offset = circumference - (circumference * pct / 100);
+  document.getElementById('gpRingProgress').style.strokeDashoffset = offset;
+  document.getElementById('gpRingLabel').textContent = pct + '%';
+
+  document.getElementById('goalTargetWeightInput').value = data.targetWeight;
+}
+
+function renderWeightChart(){
+  const data = getGoalData();
+  const svg = document.getElementById('weightLineChart');
+  if(!svg || data.history.length === 0) return;
+
+  const weights = data.history.map(h => h.weight);
+  const minW = Math.min(...weights) - 1;
+  const maxW = Math.max(...weights) + 1;
+  const width = 600, height = 180, padding = 30;
+
+  const points = data.history.map((h, i) => {
+    const x = padding + (i / (data.history.length - 1 || 1)) * (width - padding * 2);
+    const y = height - padding - ((h.weight - minW) / (maxW - minW)) * (height - padding * 2);
+    return { x, y, weight: h.weight, date: h.date };
+  });
+
+  const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  const areaPath = linePath + ` L${points[points.length-1].x.toFixed(1)},${height-padding} L${points[0].x.toFixed(1)},${height-padding} Z`;
+
+  const dots = points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="var(--sukuma)" stroke="var(--bg-elevated)" stroke-width="2"></circle>`).join('');
+  const labels = points.map(p => {
+    const shortDate = new Date(p.date).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+    return `<text x="${p.x.toFixed(1)}" y="${height - 8}" font-size="10" fill="var(--text-muted)" text-anchor="middle">${shortDate}</text>`;
+  }).join('');
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="weightAreaGradient" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--sukuma)" stop-opacity="0.25"></stop>
+        <stop offset="100%" stop-color="var(--sukuma)" stop-opacity="0"></stop>
+      </linearGradient>
+    </defs>
+    <path d="${areaPath}" fill="url(#weightAreaGradient)"></path>
+    <path d="${linePath}" fill="none" stroke="var(--sukuma)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    ${dots}
+    ${labels}
+  `;
+}
+
+function computeBadges(){
+  const data = getGoalData();
+  const weeksLogged = data.history.length;
+  const totalLost = data.startWeight - data.currentWeight;
+  const plannerData = Store.get('mealPlannerData', {});
+  const plannerEntriesCount = Object.keys(plannerData).length;
+
+  return [
+    { icon:'fa-shoe-prints', name:'First Step', desc:'Logged your first weight', earned: weeksLogged >= 1 },
+    { icon:'fa-fire', name:'On a Roll', desc:'4+ weeks of consistent logging', earned: weeksLogged >= 4 },
+    { icon:'fa-weight-scale', name:'2kg Down', desc:'Lost 2kg or more from start', earned: totalLost >= 2 },
+    { icon:'fa-trophy', name:'5kg Milestone', desc:'Lost 5kg or more from start', earned: totalLost >= 5 },
+    { icon:'fa-calendar-check', name:'Planner Pro', desc:'Filled in 10+ meal planner slots', earned: plannerEntriesCount >= 10 },
+    { icon:'fa-bullseye', name:'Goal Setter', desc:'Set a target weight', earned: !!data.targetWeight },
+    { icon:'fa-medal', name:'Halfway There', desc:'Reached 50% of your weight goal', earned: data.startWeight !== data.targetWeight && ((data.startWeight - data.currentWeight) / (data.startWeight - data.targetWeight)) >= 0.5 },
+    { icon:'fa-star', name:'Goal Reached', desc:'Hit your target weight', earned: data.currentWeight <= data.targetWeight },
+  ];
+}
+
+function renderBadges(){
+  const grid = document.getElementById('badgesGrid');
+  if(!grid) return;
+  const badges = computeBadges();
+  grid.innerHTML = badges.map(b => `
+    <div class="badge-card ${b.earned ? 'earned' : ''}">
+      <div class="badge-icon"><i class="fa-solid ${b.icon}"></i></div>
+      <h5>${b.name}</h5>
+      <span>${b.earned ? 'Earned' : b.desc}</span>
+    </div>
+  `).join('');
+}
+
+function renderMilestones(){
+  const data = getGoalData();
+  const list = document.getElementById('milestoneList');
+  if(!list) return;
+
+  const totalToLose = data.startWeight - data.targetWeight;
+  const milestonePcts = [25, 50, 75, 100];
+  const lostSoFar = data.startWeight - data.currentWeight;
+
+  const milestones = milestonePcts.map(pct => {
+    const weightAtMilestone = data.startWeight - (totalToLose * pct / 100);
+    const done = totalToLose > 0 && (lostSoFar / totalToLose) * 100 >= pct;
+    return { pct, weightAtMilestone, done };
+  });
+
+  list.innerHTML = milestones.map(m => `
+    <div class="milestone-item">
+      <div class="milestone-dot ${m.done ? 'done' : 'pending'}"><i class="fa-solid ${m.done ? 'fa-check' : 'fa-flag'}"></i></div>
+      <div class="milestone-text">
+        <strong>${m.pct}% of the way to goal</strong>
+        <span>Reach ${m.weightAtMilestone.toFixed(1)} kg ${m.done ? '— completed' : '— not yet reached'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function refreshGoalTrackerUI(){
+  renderGoalProgress();
+  renderWeightChart();
+  renderBadges();
+  renderMilestones();
+}
+
+function initGoalTracker(){
+  if(!document.getElementById('page-goal-tracker')) return;
+  refreshGoalTrackerUI();
+
+  document.getElementById('goalLogWeightBtn').addEventListener('click', () => {
+    const input = document.getElementById('goalCurrentWeightInput');
+    const newWeight = parseFloat(input.value);
+    if(!newWeight || newWeight < 25 || newWeight > 300){
+      showToast('Please enter a realistic weight in kg.', 'error');
+      return;
+    }
+    const data = getGoalData();
+    data.currentWeight = newWeight;
+    data.history.push({ date: new Date().toISOString().slice(0,10), weight: newWeight });
+    if(data.history.length > 12) data.history = data.history.slice(-12);
+    Store.set('goalTrackerData', data);
+    input.value = '';
+    refreshGoalTrackerUI();
+    showToast('Weight logged.');
+  });
+
+  document.getElementById('goalSetTargetBtn').addEventListener('click', () => {
+    const input = document.getElementById('goalTargetWeightInput');
+    const newTarget = parseFloat(input.value);
+    if(!newTarget || newTarget < 25 || newTarget > 300){
+      showToast('Please enter a realistic target weight in kg.', 'error');
+      return;
+    }
+    const data = getGoalData();
+    data.targetWeight = newTarget;
+    Store.set('goalTrackerData', data);
+    refreshGoalTrackerUI();
+    showToast('Target weight updated.');
+  });
+}
+
+// ===== CHATBOT =====
+const chatKnowledge = [
+  { keys:['weight loss','lose weight','slim'], reply:"For healthy weight loss, aim for a moderate calorie deficit — about 300–500 kcal below your maintenance level." },
+  { keys:['diabetes','diabetic','blood sugar'], reply:"For diabetes-friendly eating, choose high-fibre carbs in moderate portions — mukimo, githeri, and brown rice are better than white rice alone." },
+  { keys:['water','hydration','how much water'], reply:"Most adults should aim for about 2 to 2.5 litres of water a day — roughly 8 glasses." },
+];
+
+function findBotReply(text){
+  const lower = text.toLowerCase();
+  for(const entry of chatKnowledge){
+    if(entry.keys.some(k => lower.includes(k))) return entry.reply;
+  }
+  return "I'm still learning that one. Try asking me about weight loss, diabetes, or hydration.";
+}
+
+function formatTime(date){ return date.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }); }
+
+function addChatMessage(text, sender){
+  const body = document.getElementById('chatbotBody');
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg ' + sender;
+  msg.innerHTML = `<div class="bubble">${text}</div><span class="timestamp">${formatTime(new Date())}</span>`;
+  body.appendChild(msg);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTypingIndicator(){
+  const body = document.getElementById('chatbotBody');
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.id = 'typingIndicator';
+  typing.innerHTML = `<div class="bubble typing-dots"><span></span><span></span><span></span></div>`;
+  body.appendChild(typing);
+  body.scrollTop = body.scrollHeight;
+}
+
+function removeTypingIndicator(){ const el = document.getElementById('typingIndicator'); if(el) el.remove(); }
+
+function sendChatMessage(text){
+  if(!text.trim()) return;
+  addChatMessage(text, 'user');
+  document.getElementById('chatbotInput').value = '';
+  showTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addChatMessage(findBotReply(text), 'bot');
+  }, 700 + Math.random() * 500);
+}
+
+function initChatbot(){
+  const fab = document.getElementById('chatbotFab');
+  const panel = document.getElementById('chatbotPanel');
+  const closeBtn = document.getElementById('chatbotClose');
+  const input = document.getElementById('chatbotInput');
+  const sendBtn = document.getElementById('chatbotSend');
+  let hasGreeted = false;
+  fab.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !hasGreeted){
+      hasGreeted = true;
+      addChatMessage("Habari! I'm your Smart Lishe assistant. Ask me about meals, weight goals, health conditions, or hydration.", 'bot');
+    }
+  });
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+  sendBtn.addEventListener('click', () => sendChatMessage(input.value));
+  input.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendChatMessage(input.value); });
+  document.querySelectorAll('.chip-suggestion').forEach(chip => {
+    chip.addEventListener('click', () => sendChatMessage(chip.dataset.q));
+  });
+}
+
+// ===== NOTIFICATIONS =====
+function initNotifications(){
+  document.getElementById('notifBtn').addEventListener('click', () => showToast("You're all caught up — no new notifications."));
+}
+
+// ===== GLOBAL SEARCH =====
+function initGlobalSearch(){
+  document.getElementById('globalSearch').addEventListener('keypress', (e) => {
+    if(e.key === 'Enter' && e.target.value.trim()) showToast(`Searching for "${e.target.value.trim()}"...`);
+  });
+}
+
+// ===== BOOT =====
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initSidebar();
+  initScrollTop();
+  initGoalTracker();
+  initChatbot();
+  initNotifications();
+  initGlobalSearch();
+});
+</script>
+</body>
+</html>

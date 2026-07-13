@@ -1,0 +1,16 @@
+{
+  "name": "smart-meal-plan-generator",
+  "version": "1.0.0",
+  "description": "Smart Meal Plan Generator static server",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'No build step needed'",
+    "lint": "echo 'No lint step needed'"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

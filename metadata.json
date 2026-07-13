@@ -1,0 +1,8 @@
+{
+  "name": "SmartLishe",
+  "description": "An intelligent web-based meal planning platform designed for Kenyan food, including AI meal generator, NutriScan, health condition guidance, and professional monitoring portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

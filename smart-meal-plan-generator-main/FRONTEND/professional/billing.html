@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing — Smart Lishe Professional</title>
+  <link rel="stylesheet" href="professional.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+        <div class="name">Smart Lishe<span>Professional</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+        <a href="clients.html" class="nav-link"><i class="fa-solid fa-users"></i> Clients</a>
+        <a href="engagement.html" class="nav-link"><i class="fa-solid fa-rocket"></i> Engagement</a>
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="billing.html" class="nav-link active"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../auth/logout.html" class="nav-link" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="profile-chip">
+            <div class="avatar">PK</div>
+            <span class="label">Dr. Peter</span>
+            <span class="pro-badge" style="font-size:0.55rem;padding:2px 8px;">PRO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-inner">
+        <div class="premium-banner">
+          <div>
+            <h3><i class="fa-regular fa-crown" style="margin-right:10px;"></i> Professional Plus</h3>
+            <p>You are currently on the Professional Free plan. Upgrade to unlock unlimited clients and advanced features.</p>
+          </div>
+          <a href="#plans" class="btn">Upgrade Now <i class="fa-regular fa-arrow-right"></i></a>
+        </div>
+
+        <h2 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:16px;" id="plans">Choose Your Plan</h2>
+        <div class="billing-grid">
+          <div class="billing-plan-card">
+            <div class="plan-name">Professional Free</div>
+            <div class="plan-price">KES 0 <span>/ month</span></div>
+            <div class="plan-desc">Basic features for starting professionals</div>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> 5 clients</li>
+              <li><i class="fa-solid fa-check"></i> 2 meal plans</li>
+              <li><i class="fa-solid fa-check"></i> Basic tracking</li>
+              <li><i class="fa-solid fa-xmark" style="color:var(--char);"></i> No messaging</li>
+              <li><i class="fa-solid fa-xmark" style="color:var(--char);"></i> No reports</li>
+              <li><i class="fa-solid fa-xmark" style="color:var(--char);"></i> No appointments</li>
+              <li><i class="fa-solid fa-xmark" style="color:var(--char);"></i> No analytics</li>
+            </ul>
+            <button class="btn btn-secondary" style="background:var(--sukuma);color:#fff;">Current Plan</button>
+          </div>
+
+          <div class="billing-plan-card popular">
+            <div class="plan-name">Professional Plus</div>
+            <div class="plan-price">KES 2,500 <span>/ month</span></div>
+            <div class="plan-desc">Full-featured practice management</div>
+            <ul class="plan-features">
+              <li><i class="fa-solid fa-check"></i> Unlimited clients</li>
+              <li><i class="fa-solid fa-check"></i> Unlimited meal plans</li>
+              <li><i class="fa-solid fa-check"></i> Direct messaging</li>
+              <li><i class="fa-solid fa-check"></i> Appointments</li>
+              <li><i class="fa-solid fa-check"></i> Reports & templates</li>
+              <li><i class="fa-solid fa-check"></i> Advanced analytics</li>
+              <li><i class="fa-solid fa-check"></i> Compliance tracking</li>
+              <li><i class="fa-solid fa-check"></i> AI suggestions</li>
+              <li><i class="fa-solid fa-check"></i> Priority support</li>
+            </ul>
+            <button class="btn btn-primary" style="background:var(--accent-2);color:var(--soil);"><i class="fa-regular fa-crown"></i> Upgrade Now</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.hamburger-btn')?.addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

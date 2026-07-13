@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients — Smart Lishe Professional</title>
+  <link rel="stylesheet" href="professional.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .client-tabs {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--basket-line);
+      margin-bottom: 24px;
+      padding-bottom: 0;
+    }
+    .client-tab {
+      padding: 12px 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.25s ease;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .client-tab:hover { color: var(--text-primary); }
+    .client-tab.active {
+      color: var(--sukuma);
+      border-bottom-color: var(--sukuma);
+    }
+    .client-tab i { margin-right: 8px; }
+    .tab-content { display: none; animation: fadeIn 0.35s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Wizard Styles */
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; }
+    .wizard-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--basket-line);
+    }
+    .wizard-progress {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .wizard-progress .step-dot {
+      flex: 1;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--basket-line);
+      transition: background 0.3s ease;
+    }
+    .wizard-progress .step-dot.active { background: var(--sukuma); }
+    .wizard-progress .step-dot.done { background: var(--sukuma-light); }
+
+    /* Program Card */
+    .program-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 12px;
+      transition: transform 0.2s ease;
+    }
+    .program-card:hover { transform: translateX(4px); }
+    .program-card .program-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .program-card .program-header h4 { font-family: var(--font-display); font-size: 1rem; }
+    .program-card .program-meta { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Appointment Card */
+    .appointment-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      transition: transform 0.2s ease;
+    }
+    .appointment-card:hover { transform: translateX(4px); }
+    .appointment-card .appt-info { flex: 1; }
+    .appointment-card .appt-info strong { display: block; font-size: 0.9rem; }
+    .appointment-card .appt-info span { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Report Card */
+    .report-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      transition: transform 0.2s ease;
+    }
+    .report-card:hover { transform: translateX(4px); }
+    .report-card .report-info { flex: 1; }
+    .report-card .report-info .report-title { font-weight: 700; font-size: 0.88rem; }
+    .report-card .report-info .report-date { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Form styles inside tabs */
+    .form-section-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 20px 0 12px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-section-title i { color: var(--accent-3); }
+
+    .field-group { margin-bottom: 16px; }
+    .field-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--basket-line);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      font-family: var(--font-body);
+    }
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      outline: none;
+      border-color: var(--sukuma);
+      background: var(--bg-elevated);
+    }
+    .field-group textarea { resize: vertical; min-height: 80px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+
+    .chip-multiselect {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .chip-multiselect button {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--basket-line);
+      background: var(--bg-card);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .chip-multiselect button:hover { border-color: var(--sukuma); color: var(--sukuma); }
+    .chip-multiselect button.selected {
+      background: var(--sukuma);
+      color: #fff;
+      border-color: var(--sukuma);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .btn-primary { background: var(--sukuma); color: #fff; box-shadow: 0 10px 24px rgba(45,80,22,0.28); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(45,80,22,0.36); }
+    .btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--basket-line); }
+    .btn-secondary:hover { background: var(--basket-line); }
+    .btn-accent { background: var(--char); color: #fff; box-shadow: 0 10px 24px rgba(193,68,14,0.28); }
+    .btn-accent:hover { transform: translateY(-2px); }
+    .btn-sm { padding: 8px 16px; font-size: 0.8rem; width: auto; }
+    .btn-success { background: #27AE60; color: #fff; box-shadow: 0 10px 24px rgba(39,174,96,0.28); }
+    .btn-success:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(39,174,96,0.36); }
+
+    /* Sidebar Styles */
+    .app-shell{display:flex;min-height:100vh;}
+    .sidebar{
+      width:264px;
+      flex-shrink:0;
+      background:var(--bg-elevated);
+      border-right:1px solid var(--basket-line);
+      position:fixed;
+      top:0;left:0;bottom:0;
+      display:flex;
+      flex-direction:column;
+      z-index:200;
+      transition:transform 0.35s cubic-bezier(.4,0,.2,1), background 0.4s ease;
+    }
+    .sidebar-brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:26px 24px 22px;
+      border-bottom:1px solid var(--basket-line);
+    }
+    .sidebar-brand .mark{
+      width:40px;height:40px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--sukuma),var(--maize));
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:18px;
+      flex-shrink:0;
+      box-shadow:var(--shadow-soft);
+    }
+    .sidebar-brand .name{
+      font-family:var(--font-display);
+      font-weight:700;
+      font-size:1.18rem;
+      letter-spacing:-0.01em;
+      line-height:1.1;
+    }
+    .sidebar-brand .name span{
+      display:block;
+      font-family:var(--font-body);
+      font-weight:600;
+      font-size:0.66rem;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--accent-3);
+      margin-top:2px;
+    }
+    .sidebar-nav{
+      flex:1;
+      overflow-y:auto;
+      padding:16px 14px;
+    }
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:11px 13px;
+      border-radius:11px;
+      color:var(--text-secondary);
+      font-weight:600;
+      font-size:0.92rem;
+      margin-bottom:2px;
+      transition:background 0.2s ease, color 0.2s ease;
+    }
+    .nav-link i{width:19px;text-align:center;font-size:0.98rem;color:var(--text-muted);transition:color 0.2s ease;}
+    .nav-link:hover{background:var(--bg-card);color:var(--text-primary);}
+    .nav-link:hover i{color:var(--accent);}
+    .nav-link.active{background:var(--sukuma);color:#fff;box-shadow:var(--shadow-soft);}
+    .nav-link.active i{color:#fff;}
+    .sidebar-footer{
+      padding:16px;
+      border-top:1px solid var(--basket-line);
+    }
+    .pro-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 14px;
+      border-radius:20px;
+      background:linear-gradient(135deg,var(--char),var(--maize-deep));
+      color:#fff;
+      font-size:0.68rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.04em;
+    }
+    .main-content{
+      margin-left:264px;
+      flex:1;
+      min-width:0;
+      min-height:100vh;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:20px 36px;
+      border-bottom:1px solid var(--basket-line);
+      background:var(--bg-elevated);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .topbar .search-box{
+      flex:1;
+      max-width:420px;
+      position:relative;
+    }
+    .topbar .search-box input{
+      width:100%;
+      padding:10px 16px 10px 40px;
+      border-radius:30px;
+      border:1px solid var(--basket-line);
+      background:var(--bg-card);
+      color:var(--text-primary);
+      font-size:0.88rem;
+    }
+    .topbar .search-box i{
+      position:absolute;left:15px;top:50%;transform:translateY(-50%);
+      color:var(--text-muted);
+    }
+    .topbar-actions{display:flex;align-items:center;gap:14px;}
+    .icon-btn{
+      width:40px;height:40px;
+      border-radius:50%;
+      background:var(--bg-card);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--text-secondary);
+      position:relative;
+      transition:background 0.2s ease, transform 0.2s ease;
+    }
+    .icon-btn:hover{background:var(--basket-line);transform:translateY(-1px);}
+    .icon-btn .dot{
+      position:absolute;top:6px;right:7px;
+      width:8px;height:8px;border-radius:50%;
+      background:var(--char);
+      border:2px solid var(--bg-elevated);
+    }
+    .profile-chip{
+      display:flex;align-items:center;gap:10px;
+      padding:6px 14px 6px 6px;
+      border-radius:30px;
+      background:var(--bg-card);
+    }
+    .profile-chip .avatar{
+      width:32px;height:32px;border-radius:50%;
+      background:linear-gradient(135deg,var(--char),var(--maize));
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-weight:700;font-size:0.8rem;
+    }
+    .profile-chip .label{font-size:0.83rem;font-weight:600;}
+    .page-inner{padding:32px 36px 80px;max-width:1400px;}
+    .prof-hero{
+      border-radius:var(--radius-lg);
+      background:linear-gradient(135deg,var(--sukuma),var(--sukuma-light));
+      color:#fff;
+      padding:40px 44px;
+      margin-bottom:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+    .prof-hero h1{
+      font-family:var(--font-display);
+      font-size:1.8rem;
+      margin-bottom:4px;
+    }
+    .prof-hero p{opacity:0.85;font-size:0.95rem;}
+    .prof-hero .hero-badge{
+      background:rgba(255,255,255,0.15);
+      padding:8px 18px;
+      border-radius:30px;
+      font-family:var(--font-mono);
+      font-size:0.78rem;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .client-stats-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+      margin-bottom:24px;
+    }
+    @media(max-width:900px){.client-stats-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:550px){.client-stats-grid{grid-template-columns:repeat(2,1fr);}}
+    .client-stat-item{
+      background:var(--bg-elevated);
+      border:1px solid var(--basket-line);
+      border-radius:var(--radius-sm);
+      padding:14px 16px;
+      text-align:center;
+    }
+    .client-stat-item .num{font-family:var(--font-mono);font-size:1.2rem;font-weight:700;display:block;}
+    .client-stat-item .label{font-size:0.72rem;color:var(--text-muted);font-weight:600;}
+    .client-toolbar{
+      display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;
+    }
+    .client-toolbar .search-box{flex:1;min-width:200px;position:relative;}
+    .client-toolbar .search-box input{
+      width:100%;padding:10px 14px 10px 38px;
+      border-radius:30px;border:1px solid var(--basket-line);
+      background:var(--bg-card);color:var(--text-primary);font-size:0.88rem;
+    }
+    .client-toolbar .search-box i{
+      position:absolute;left:14px;top:50%;transform:translateY(-50%);
+      color:var(--text-muted);
+    }
+    .client-toolbar .filter-select{
+      padding:10px 16px;border-radius:30px;
+      border:1px solid var(--basket-line);background:var(--bg-card);
+      color:var(--text-primary);font-size:0.86rem;font-weight:600;
+    }
+    .client-table-wrap{
+      overflow-x:auto;
+      border-radius:var(--radius-md);
+      border:1px solid var(--basket-line);
+    }
+    .client-table{
+      width:100%;
+      border-collapse:collapse;
+      background:var(--bg-elevated);
+      font-size:0.85rem;
+    }
+    .client-table th{
+      background:var(--bg-card);
+      padding:12px 16px;
+      font-size:0.72rem;
+      text-transform:uppercase;
+      letter-spacing:0.04em;
+      color:var(--text-secondary);
+      font-weight:700;
+      text-align:left;
+      border-bottom:1px solid var(--basket-line);
+    }
+    .client-table td{
+      padding:12px 16px;
+      border-bottom:1px solid var(--basket-line);
+      vertical-align:middle;
+    }
+    .client-table tr:last-child td{border-bottom:none;}
+    .client-table tr:hover{background:var(--bg-card);}
+    .client-avatar{
+      width:36px;height:36px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-weight:700;
+      font-size:0.7rem;
+      flex-shrink:0;
+    }
+    .client-status{
+      display:inline-flex;
+      padding:3px 12px;
+      border-radius:20px;
+      font-size:0.7rem;
+      font-weight:700;
+    }
+    .client-status.active{
+      background:rgba(45,80,22,0.12);
+      color:var(--sukuma);
+    }
+    .client-status.pending{
+      background:rgba(232,163,61,0.15);
+      color:var(--maize-deep);
+    }
+    .client-status.inactive{
+      background:rgba(193,68,14,0.12);
+      color:var(--char);
+    }
+    .client-status.completed{
+      background:rgba(45,80,22,0.08);
+      color:var(--sukuma-light);
+    }
+    .client-online{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:0.7rem;
+      font-weight:600;
+      color:var(--text-muted);
+    }
+    .client-online .dot{
+      width:8px;height:8px;
+      border-radius:50%;
+      display:inline-block;
+    }
+    .client-online .dot.online{background:#2ECC71;}
+    .client-online .dot.offline{background:#95A5A6;}
+
+    @media(max-width:1024px){
+      .sidebar{transform:translateX(-100%);}
+      .sidebar.open{transform:translateX(0);box-shadow:var(--shadow-lift);}
+      .main-content{margin-left:0;}
+      .topbar{display:none;}
+      .page-inner{padding:88px 18px 70px;}
+    }
+    .hamburger-btn{display:none;}
+    @media(max-width:1024px){.hamburger-btn{display:flex;}}
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+        <div class="name">Smart Lishe<span>Professional</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+        <a href="clients.html" class="nav-link active"><i class="fa-solid fa-users"></i> Clients</a>
+        <a href="engagement.html" class="nav-link"><i class="fa-solid fa-rocket"></i> Engagement</a>
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../auth/logout.html" class="nav-link" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search clients...">
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="profile-chip">
+            <div class="avatar">PK</div>
+            <span class="label">Dr. Peter</span>
+            <span class="pro-badge" style="font-size:0.55rem;padding:2px 8px;">PRO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-inner">
+        <div class="prof-hero" style="margin-bottom:20px;">
+          <div>
+            <h1>Client Management</h1>
+            <p>Manage all your clients, programs, and appointments in one place.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" style="background:var(--accent-2);color:var(--soil);" onclick="switchTab('add')"><i class="fa-regular fa-user-plus"></i> Add Client</button>
+            <button class="btn btn-secondary" onclick="switchTab('programs')"><i class="fa-regular fa-plus"></i> Create Program</button>
+            <button class="btn btn-secondary" onclick="switchTab('appointments')"><i class="fa-regular fa-calendar-plus"></i> Schedule</button>
+            <button class="btn btn-secondary" onclick="switchTab('reports')"><i class="fa-regular fa-file-pdf"></i> Generate Report</button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="client-tabs" id="clientTabs">
+          <button class="client-tab active" data-tab="all"><i class="fa-regular fa-users"></i> All Clients</button>
+          <button class="client-tab" data-tab="add"><i class="fa-regular fa-user-plus"></i> Add Client</button>
+          <button class="client-tab" data-tab="programs"><i class="fa-regular fa-utensils"></i> Programs</button>
+          <button class="client-tab" data-tab="appointments"><i class="fa-regular fa-calendar"></i> Appointments</button>
+          <button class="client-tab" data-tab="reports"><i class="fa-regular fa-file"></i> Reports</button>
+        </div>
+
+        <!-- ===== TAB 1: ALL CLIENTS ===== -->
+        <div class="tab-content active" id="tab-all">
+          <!-- Client Stats -->
+          <div class="client-stats-grid">
+            <div class="client-stat-item"><span class="num">154</span><span class="label">Total Clients</span></div>
+            <div class="client-stat-item"><span class="num">118</span><span class="label">Active</span></div>
+            <div class="client-stat-item"><span class="num">42</span><span class="label">Completed Programs</span></div>
+            <div class="client-stat-item"><span class="num">8</span><span class="label">New This Week</span></div>
+            <div class="client-stat-item"><span class="num">14</span><span class="label">Follow-ups Due</span></div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="client-toolbar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search by name, condition...">
+            </div>
+            <select class="filter-select">
+              <option value="all">All Clients</option>
+              <option value="active">Active</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+            <select class="filter-select">
+              <option value="all">All Conditions</option>
+              <option value="diabetes">Diabetes</option>
+              <option value="hypertension">Hypertension</option>
+              <option value="obesity">Obesity</option>
+            </select>
+          </div>
+
+          <!-- Client Table -->
+          <div class="client-table-wrap">
+            <table class="client-table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Condition</th>
+                  <th>Goal</th>
+                  <th>Compliance</th>
+                  <th>Status</th>
+                  <th>Online</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="client-avatar" style="background:var(--sukuma);">MK</div>
+                      <div><strong>Mary Kamau</strong><br><span style="font-size:0.72rem;color:var(--text-muted);">SL-00125</span></div>
+                    </div>
+                  </td>
+                  <td>Diabetes</td>
+                  <td>Weight Loss</td>
+                  <td><span style="font-weight:700;">87%</span></td>
+                  <td><span class="client-status active">Active</span></td>
+                  <td><span class="client-online"><span class="dot online"></span> Online</span></td>
+                  <td>
+                    <a href="client-details.html?id=SL-00125" style="color:var(--accent-3);font-weight:700;font-size:0.72rem;margin-right:4px;">View</a>
+                    <a href="#" style="color:var(--text-muted);font-weight:700;font-size:0.72rem;margin-right:4px;">Edit</a>
+                    <a href="#" style="color:var(--sukuma);font-weight:700;font-size:0.72rem;margin-right:4px;">Plan</a>
+                    <a href="#" style="color:var(--text-secondary);font-weight:700;font-size:0.72rem;">Msg</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="client-avatar" style="background:var(--char);">PK</div>
+                      <div><strong>Peter Kariuki</strong><br><span style="font-size:0.72rem;color:var(--text-muted);">SL-00126</span></div>
+                    </div>
+                  </td>
+                  <td>Hypertension</td>
+                  <td>Maintain</td>
+                  <td><span style="font-weight:700;">91%</span></td>
+                  <td><span class="client-status active">Active</span></td>
+                  <td><span class="client-online"><span class="dot offline"></span> Offline</span></td>
+                  <td>
+                    <a href="client-details.html?id=SL-00126" style="color:var(--accent-3);font-weight:700;font-size:0.72rem;margin-right:4px;">View</a>
+                    <a href="#" style="color:var(--text-muted);font-weight:700;font-size:0.72rem;margin-right:4px;">Edit</a>
+                    <a href="#" style="color:var(--sukuma);font-weight:700;font-size:0.72rem;margin-right:4px;">Plan</a>
+                    <a href="#" style="color:var(--text-secondary);font-weight:700;font-size:0.72rem;">Msg</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="client-avatar" style="background:var(--maize-deep);">JO</div>
+                      <div><strong>James Ochieng</strong><br><span style="font-size:0.72rem;color:var(--text-muted);">SL-00127</span></div>
+                    </div>
+                  </td>
+                  <td>Obesity</td>
+                  <td>Weight Loss</td>
+                  <td><span style="font-weight:700;">76%</span></td>
+                  <td><span class="client-status pending">Pending</span></td>
+                  <td><span class="client-online"><span class="dot online"></span> Online</span></td>
+                  <td>
+                    <a href="client-details.html?id=SL-00127" style="color:var(--accent-3);font-weight:700;font-size:0.72rem;margin-right:4px;">View</a>
+                    <a href="#" style="color:var(--text-muted);font-weight:700;font-size:0.72rem;margin-right:4px;">Edit</a>
+                    <a href="#" style="color:var(--sukuma);font-weight:700;font-size:0.72rem;margin-right:4px;">Plan</a>
+                    <a href="#" style="color:var(--text-secondary);font-weight:700;font-size:0.72rem;">Msg</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="client-avatar" style="background:#1A5276;">FA</div>
+                      <div><strong>Faith Akinyi</strong><br><span style="font-size:0.72rem;color:var(--text-muted);">SL-00128</span></div>
+                    </div>
+                  </td>
+                  <td>Pregnancy</td>
+                  <td>Healthy Eating</td>
+                  <td><span style="font-weight:700;">94%</span></td>
+                  <td><span class="client-status completed">Completed</span></td>
+                  <td><span class="client-online"><span class="dot offline"></span> Offline</span></td>
+                  <td>
+                    <a href="client-details.html?id=SL-00128" style="color:var(--accent-3);font-weight:700;font-size:0.72rem;margin-right:4px;">View</a>
+                    <a href="#" style="color:var(--text-muted);font-weight:700;font-size:0.72rem;margin-right:4px;">Edit</a>
+                    <a href="#" style="color:var(--sukuma);font-weight:700;font-size:0.72rem;margin-right:4px;">Plan</a>
+                    <a href="#" style="color:var(--text-secondary);font-weight:700;font-size:0.72rem;">Msg</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== TAB 2: ADD CLIENT (Wizard) ===== -->
+        <div class="tab-content" id="tab-add">
+          <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:4px;">Add New Client</h3>
+          <p style="color:var(--text-muted);margin-bottom:20px;">Complete the wizard to onboard a new client.</p>
+
+          <div class="wizard-progress" id="wizardProgress">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+
+          <form id="wizardForm">
+            <div class="wizard-step active" data-step="0">
+              <h4 style="font-family:var(--font-display);margin-bottom:12px;">Personal Information</h4>
+              <div class="field-row">
+                <div class="field-group"><label>First Name</label><input type="text" placeholder="e.g. Jane" required></div>
+                <div class="field-group"><label>Last Name</label><input type="text" placeholder="e.g. Wanjiru" required></div>
+              </div>
+              <div class="field-row">
+                <div class="field-group"><label>Email</label><input type="email" placeholder="jane@example.com"></div>
+                <div class="field-group"><label>Phone</label><input type="tel" placeholder="+254 700 123 456"></div>
+              </div>
+              <div class="field-row">
+                <div class="field-group"><label>Gender</label><select><option>Female</option><option>Male</option><option>Other</option></select></div>
+                <div class="field-group"><label>Date of Birth</label><input type="date"></div>
+              </div>
+            </div>
+
+            <div class="wizard-step" data-step="1">
+              <h4 style="font-family:var(--font-display);margin-bottom:12px;">Health Assessment</h4>
+              <div class="field-row">
+                <div class="field-group"><label>Weight (kg)</label><input type="number" placeholder="68"></div>
+                <div class="field-group"><label>Height (cm)</label><input type="number" placeholder="162"></div>
+              </div>
+              <div class="field-group">
+                <label>Medical Conditions</label>
+                <div class="chip-multiselect">
+                  <button type="button" class="selected" data-val="none">None</button>
+                  <button type="button" data-val="diabetes">Diabetes</button>
+                  <button type="button" data-val="hypertension">Hypertension</button>
+                  <button type="button" data-val="obesity">Obesity</button>
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Allergies</label>
+                <div class="chip-multiselect">
+                  <button type="button" class="selected" data-val="none">None</button>
+                  <button type="button" data-val="nuts">Nuts</button>
+                  <button type="button" data-val="dairy">Dairy</button>
+                  <button type="button" data-val="gluten">Gluten</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="wizard-step" data-step="2">
+              <h4 style="font-family:var(--font-display);margin-bottom:12px;">Set Goals</h4>
+              <div class="field-group">
+                <label>Primary Goal</label>
+                <div class="chip-multiselect">
+                  <button type="button" class="selected" data-val="weight-loss">Weight Loss</button>
+                  <button type="button" data-val="weight-gain">Weight Gain</button>
+                  <button type="button" data-val="maintain">Maintain</button>
+                  <button type="button" data-val="muscle-gain">Muscle Gain</button>
+                </div>
+              </div>
+              <div class="field-group"><label>Target Weight (kg)</label><input type="number" placeholder="62"></div>
+              <div class="field-group"><label>Deadline</label><input type="date"></div>
+            </div>
+
+            <div class="wizard-step" data-step="3">
+              <h4 style="font-family:var(--font-display);margin-bottom:12px;">Assign Program</h4>
+              <div class="field-group">
+                <label>Select Program</label>
+                <select>
+                  <option>Weight Loss Plan</option>
+                  <option>Diabetes Management Plan</option>
+                  <option>Sports Nutrition Plan</option>
+                  <option>General Wellness Plan</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label>Program Duration</label>
+                <select>
+                  <option>4 Weeks</option>
+                  <option>8 Weeks</option>
+                  <option>12 Weeks</option>
+                  <option>16 Weeks</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wizard-step" data-step="4">
+              <h4 style="font-family:var(--font-display);margin-bottom:12px;">Review & Save</h4>
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;">
+                <p><strong>Name:</strong> Jane Wanjiru</p>
+                <p><strong>Goal:</strong> Weight Loss</p>
+                <p><strong>Program:</strong> Weight Loss Plan</p>
+                <p><strong>Duration:</strong> 12 Weeks</p>
+              </div>
+              <button type="submit" class="btn btn-success"><i class="fa-regular fa-check"></i> Save Client</button>
+            </div>
+
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-secondary btn-sm" id="wizardPrev" style="visibility:hidden;"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+              <span id="wizardCounter">Step 1 of 5</span>
+              <button type="button" class="btn btn-primary btn-sm" id="wizardNext">Next <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ===== TAB 3: PROGRAMS ===== -->
+        <div class="tab-content" id="tab-programs">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <h3 style="font-family:var(--font-display);font-size:1.1rem;">Meal Plans & Programs</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="createProgram()"><i class="fa-regular fa-plus"></i> New Program</button>
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-robot"></i> AI Suggest</button>
+            </div>
+          </div>
+
+          <!-- Create Program Form -->
+          <div id="createProgramForm" style="display:none;background:var(--bg-card);border-radius:var(--radius-md);padding:20px;margin-bottom:20px;border:1px solid var(--basket-line);">
+            <h4 style="font-family:var(--font-display);font-size:1rem;margin-bottom:12px;">Create New Program</h4>
+            <div class="field-row">
+              <div class="field-group"><label>Program Name</label><input type="text" placeholder="e.g. Custom Weight Loss Plan"></div>
+              <div class="field-group"><label>Duration</label><select><option>4 Weeks</option><option>8 Weeks</option><option>12 Weeks</option><option>16 Weeks</option></select></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Calories (kcal/day)</label><input type="number" placeholder="1800"></div>
+              <div class="field-group"><label>Category</label><select><option>Weight Loss</option><option>Diabetes</option><option>Sports</option><option>General</option></select></div>
+            </div>
+            <div class="field-group"><label>Description</label><textarea placeholder="Describe the program..." rows="3"></textarea></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-success btn-sm" onclick="saveProgram()"><i class="fa-regular fa-check"></i> Save Program</button>
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('createProgramForm').style.display='none'"><i class="fa-regular fa-xmark"></i> Cancel</button>
+            </div>
+          </div>
+
+          <div class="program-card">
+            <div class="program-header">
+              <h4>Weight Loss Plan</h4>
+              <span class="client-status active">Active</span>
+            </div>
+            <div class="program-meta">12 Weeks · 1,800 kcal/day · 15 clients assigned</div>
+          </div>
+
+          <div class="program-card">
+            <div class="program-header">
+              <h4>Diabetes Management Plan</h4>
+              <span class="client-status active">Active</span>
+            </div>
+            <div class="program-meta">16 Weeks · Low Sugar · 12 clients assigned</div>
+          </div>
+
+          <div class="program-card">
+            <div class="program-header">
+              <h4>Sports Nutrition Plan</h4>
+              <span class="client-status pending">Draft</span>
+            </div>
+            <div class="program-meta">8 Weeks · High Protein · 5 clients assigned</div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <h4 style="font-family:var(--font-display);font-size:1rem;margin-bottom:10px;">AI Recommendations</h4>
+            <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:14px 18px;border-left:4px solid var(--accent-2);">
+              <p style="font-weight:600;">Suggested: Intermittent Fasting Plan</p>
+              <p style="font-size:0.82rem;color:var(--text-secondary);">Based on client compliance data, this plan could improve results by 23%.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB 4: APPOINTMENTS ===== -->
+        <div class="tab-content" id="tab-appointments">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <h3 style="font-family:var(--font-display);font-size:1.1rem;">Consultation Schedule</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="scheduleAppointment()"><i class="fa-regular fa-plus"></i> Schedule</button>
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-calendar"></i> Calendar View</button>
+            </div>
+          </div>
+
+          <!-- Schedule Appointment Form -->
+          <div id="scheduleForm" style="display:none;background:var(--bg-card);border-radius:var(--radius-md);padding:20px;margin-bottom:20px;border:1px solid var(--basket-line);">
+            <h4 style="font-family:var(--font-display);font-size:1rem;margin-bottom:12px;">Schedule Appointment</h4>
+            <div class="field-row">
+              <div class="field-group"><label>Client</label><select><option>Mary Kamau</option><option>Peter Kariuki</option><option>James Ochieng</option></select></div>
+              <div class="field-group"><label>Date</label><input type="date"></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Time</label><input type="time"></div>
+              <div class="field-group"><label>Duration</label><select><option>30 min</option><option>45 min</option><option>60 min</option><option>90 min</option></select></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Type</label><select><option>Virtual</option><option>Physical</option></select></div>
+              <div class="field-group"><label>Status</label><select><option>Scheduled</option><option>Confirmed</option></select></div>
+            </div>
+            <div class="field-group"><label>Notes</label><textarea placeholder="Add notes..." rows="2"></textarea></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-success btn-sm" onclick="saveAppointment()"><i class="fa-regular fa-check"></i> Schedule</button>
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('scheduleForm').style.display='none'"><i class="fa-regular fa-xmark"></i> Cancel</button>
+            </div>
+          </div>
+
+          <div class="appointment-card">
+            <div class="appt-info">
+              <strong>Mary Kamau</strong>
+              <span>July 18, 2026 · 10:00 AM · Virtual</span>
+            </div>
+            <span class="client-status active">Scheduled</span>
+          </div>
+
+          <div class="appointment-card">
+            <div class="appt-info">
+              <strong>Peter Kariuki</strong>
+              <span>July 12, 2026 · 2:30 PM · Physical</span>
+            </div>
+            <span class="client-status completed">Completed</span>
+          </div>
+
+          <div class="appointment-card">
+            <div class="appt-info">
+              <strong>James Ochieng</strong>
+              <span>July 25, 2026 · 11:00 AM · Virtual</span>
+            </div>
+            <span class="client-status pending">Pending</span>
+          </div>
+        </div>
+
+        <!-- ===== TAB 5: REPORTS ===== -->
+        <div class="tab-content" id="tab-reports">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <h3 style="font-family:var(--font-display);font-size:1.1rem;">Generated Reports</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="generateReport()"><i class="fa-regular fa-plus"></i> New Report</button>
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-print"></i> Print All</button>
+            </div>
+          </div>
+
+          <!-- Generate Report Form -->
+          <div id="reportForm" style="display:none;background:var(--bg-card);border-radius:var(--radius-md);padding:20px;margin-bottom:20px;border:1px solid var(--basket-line);">
+            <h4 style="font-family:var(--font-display);font-size:1rem;margin-bottom:12px;">Generate Report</h4>
+            <div class="field-row">
+              <div class="field-group"><label>Report Type</label><select><option>Nutrition Report</option><option>Compliance Report</option><option>Progress Report</option><option>Monthly Summary</option></select></div>
+              <div class="field-group"><label>Client</label><select><option>All Clients</option><option>Mary Kamau</option><option>Peter Kariuki</option><option>James Ochieng</option></select></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group"><label>Date Range</label><select><option>Last 30 Days</option><option>Last 60 Days</option><option>Last 90 Days</option><option>Custom Range</option></select></div>
+              <div class="field-group"><label>Format</label><select><option>PDF</option><option>Excel</option><option>CSV</option></select></div>
+            </div>
+            <div class="field-group"><label>Additional Notes</label><textarea placeholder="Add notes..." rows="2"></textarea></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-success btn-sm" onclick="generateReportFile()"><i class="fa-regular fa-file-pdf"></i> Generate</button>
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('reportForm').style.display='none'"><i class="fa-regular fa-xmark"></i> Cancel</button>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-info">
+              <div class="report-title">Nutrition Report — June 2026</div>
+              <div class="report-date">Generated: July 1, 2026</div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-eye"></i></button>
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-download"></i></button>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-info">
+              <div class="report-title">Compliance Report — Q2 2026</div>
+              <div class="report-date">Generated: June 30, 2026</div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-eye"></i></button>
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-download"></i></button>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-info">
+              <div class="report-title">Progress Report — Monthly Summary</div>
+              <div class="report-date">Generated: June 15, 2026</div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-eye"></i></button>
+              <button class="btn btn-secondary btn-sm"><i class="fa-regular fa-download"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ---- Switch Tab Function ----
+    function switchTab(tabName) {
+      // Update tabs
+      document.querySelectorAll('.client-tab').forEach(t => t.classList.remove('active'));
+      const tab = document.querySelector(`.client-tab[data-tab="${tabName}"]`);
+      if(tab) tab.classList.add('active');
+      
+      // Update content
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      const target = document.getElementById('tab-' + tabName);
+      if(target) target.classList.add('active');
+    }
+
+    // ---- Tabs ----
+    document.querySelectorAll('.client-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.client-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        const target = document.getElementById('tab-' + this.dataset.tab);
+        if(target) target.classList.add('active');
+      });
+    });
+
+    // ---- Create Program ----
+    function createProgram() {
+      const form = document.getElementById('createProgramForm');
+      if(form.style.display === 'none' || !form.style.display) {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        form.style.display = 'none';
+      }
+    }
+
+    function saveProgram() {
+      alert('Program created successfully!');
+      document.getElementById('createProgramForm').style.display = 'none';
+    }
+
+    // ---- Schedule Appointment ----
+    function scheduleAppointment() {
+      const form = document.getElementById('scheduleForm');
+      if(form.style.display === 'none' || !form.style.display) {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        form.style.display = 'none';
+      }
+    }
+
+    function saveAppointment() {
+      alert('Appointment scheduled successfully!');
+      document.getElementById('scheduleForm').style.display = 'none';
+    }
+
+    // ---- Generate Report ----
+    function generateReport() {
+      const form = document.getElementById('reportForm');
+      if(form.style.display === 'none' || !form.style.display) {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        form.style.display = 'none';
+      }
+    }
+
+    function generateReportFile() {
+      alert('Report generated successfully!');
+      document.getElementById('reportForm').style.display = 'none';
+    }
+
+    // ---- Wizard ----
+    let currentStep = 0;
+    const totalSteps = 5;
+    const steps = document.querySelectorAll('.wizard-step');
+    const dots = document.querySelectorAll('.wizard-progress .step-dot');
+    const prevBtn = document.getElementById('wizardPrev');
+    const nextBtn = document.getElementById('wizardNext');
+    const counter = document.getElementById('wizardCounter');
+
+    function updateWizard() {
+      steps.forEach((s, i) => s.classList.toggle('active', i === currentStep));
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === currentStep);
+        d.classList.toggle('done', i < currentStep);
+      });
+      prevBtn.style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+      nextBtn.textContent = currentStep === totalSteps - 1 ? 'Finish' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+      nextBtn.innerHTML = currentStep === totalSteps - 1 ? '<i class="fa-regular fa-check"></i> Finish' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+      counter.textContent = `Step ${currentStep + 1} of ${totalSteps}`;
+    }
+
+    prevBtn.addEventListener('click', () => { if(currentStep > 0) { currentStep--; updateWizard(); } });
+    nextBtn.addEventListener('click', () => {
+      if(currentStep === totalSteps - 1) {
+        document.getElementById('wizardForm').dispatchEvent(new Event('submit'));
+      } else if(currentStep < totalSteps - 1) {
+        currentStep++;
+        updateWizard();
+      }
+    });
+
+    document.getElementById('wizardForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Client saved successfully!');
+      switchTab('all');
+      // Reset wizard
+      currentStep = 0;
+      updateWizard();
+    });
+
+    // ---- Chip Multiselect ----
+    document.querySelectorAll('.chip-multiselect').forEach(container => {
+      container.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if(this.dataset.val === 'none') {
+            container.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+          } else {
+            const none = container.querySelector('[data-val="none"]');
+            if(none) none.classList.remove('selected');
+            this.classList.toggle('selected');
+          }
+        });
+      });
+    });
+
+    // ---- Mobile Sidebar ----
+    document.querySelector('.hamburger-btn')?.addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

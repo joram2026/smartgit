@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Smart Lishe Professional</title>
+  <link rel="stylesheet" href="professional.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+        <div class="name">Smart Lishe<span>Professional</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+        <a href="clients.html" class="nav-link"><i class="fa-solid fa-users"></i> Clients</a>
+        <a href="engagement.html" class="nav-link"><i class="fa-solid fa-rocket"></i> Engagement</a>
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="settings.html" class="nav-link active"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../auth/logout.html" class="nav-link" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="profile-chip">
+            <div class="avatar">PK</div>
+            <span class="label">Dr. Peter</span>
+            <span class="pro-badge" style="font-size:0.55rem;padding:2px 8px;">PRO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-inner">
+        <div class="prof-hero" style="margin-bottom:24px;">
+          <div>
+            <h1>Settings</h1>
+            <p>Manage your professional account preferences.</p>
+          </div>
+        </div>
+
+        <div style="max-width:800px;">
+          <!-- Appearance -->
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin-bottom:12px;">Appearance</h3>
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--sukuma);"><i class="fa-regular fa-moon"></i></div>
+              <div class="sr-text">
+                <strong>Dark Mode</strong>
+                <span>Switch between light and dark themes</span>
+              </div>
+            </div>
+            <div class="settings-toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--accent-2);"><i class="fa-regular fa-font"></i></div>
+              <div class="sr-text">
+                <strong>Compact View</strong>
+                <span>Reduce spacing for a denser layout</span>
+              </div>
+            </div>
+            <div class="settings-toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <!-- Notifications -->
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin:24px 0 12px;">Notifications</h3>
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--char);"><i class="fa-regular fa-bell"></i></div>
+              <div class="sr-text">
+                <strong>Email Notifications</strong>
+                <span>Receive updates via email</span>
+              </div>
+            </div>
+            <div class="settings-toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:#1A5276;"><i class="fa-regular fa-message"></i></div>
+              <div class="sr-text">
+                <strong>Client Messages</strong>
+                <span>Get notified about client messages</span>
+              </div>
+            </div>
+            <div class="settings-toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--maize-deep);"><i class="fa-regular fa-calendar"></i></div>
+              <div class="sr-text">
+                <strong>Appointment Reminders</strong>
+                <span>Receive reminders for scheduled appointments</span>
+              </div>
+            </div>
+            <div class="settings-toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <!-- Security -->
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin:24px 0 12px;">Security</h3>
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:#8E44AD;"><i class="fa-regular fa-shield-halved"></i></div>
+              <div class="sr-text">
+                <strong>Two-Factor Authentication</strong>
+                <span>Add an extra layer of security</span>
+              </div>
+            </div>
+            <div class="settings-toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--char);"><i class="fa-regular fa-key"></i></div>
+              <div class="sr-text">
+                <strong>Change Password</strong>
+                <span>Update your account password</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" style="width:auto;">Update</button>
+          </div>
+
+          <!-- Calendar & Availability -->
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin:24px 0 12px;">Calendar & Availability</h3>
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:#2ECC71;"><i class="fa-regular fa-calendar-days"></i></div>
+              <div class="sr-text">
+                <strong>Working Days</strong>
+                <span>Set your available working days</span>
+              </div>
+            </div>
+            <select class="filter-select" style="padding:8px 12px;font-size:0.82rem;">
+              <option>Mon - Fri</option>
+              <option>Mon - Sat</option>
+              <option>Custom</option>
+            </select>
+          </div>
+
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--sukuma);"><i class="fa-regular fa-clock"></i></div>
+              <div class="sr-text">
+                <strong>Working Hours</strong>
+                <span>Set your available hours</span>
+              </div>
+            </div>
+            <select class="filter-select" style="padding:8px 12px;font-size:0.82rem;">
+              <option>8:00 AM - 6:00 PM</option>
+              <option>9:00 AM - 5:00 PM</option>
+              <option>Custom</option>
+            </select>
+          </div>
+
+          <!-- Privacy -->
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin:24px 0 12px;">Privacy</h3>
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:#1A5276;"><i class="fa-regular fa-eye"></i></div>
+              <div class="sr-text">
+                <strong>Profile Visibility</strong>
+                <span>Control who can see your professional profile</span>
+              </div>
+            </div>
+            <select class="filter-select" style="padding:8px 12px;font-size:0.82rem;">
+              <option>Public</option>
+              <option>Only Clients</option>
+              <option>Private</option>
+            </select>
+          </div>
+
+          <!-- Preferences -->
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;margin:24px 0 12px;">Preferences</h3>
+          <div class="settings-row">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--maize-deep);"><i class="fa-regular fa-language"></i></div>
+              <div class="sr-text">
+                <strong>Language</strong>
+                <span>Select your preferred language</span>
+              </div>
+            </div>
+            <select class="filter-select" style="padding:8px 12px;font-size:0.82rem;">
+              <option>English</option>
+              <option>Swahili</option>
+              <option>French</option>
+            </select>
+          </div>
+
+          <div class="settings-row" style="border-color:rgba(193,68,14,0.3);background:rgba(193,68,14,0.05);">
+            <div class="sr-info">
+              <div class="sr-icon" style="background:var(--char);"><i class="fa-regular fa-trash"></i></div>
+              <div class="sr-text">
+                <strong>Delete Account</strong>
+                <span>Permanently delete your professional account</span>
+              </div>
+            </div>
+            <button class="btn btn-sm" style="background:var(--char);color:#fff;width:auto;padding:8px 16px;">Delete</button>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:24px;">
+            <button class="btn btn-primary" style="flex:1;justify-content:center;"><i class="fa-regular fa-check"></i> Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.hamburger-btn')?.addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

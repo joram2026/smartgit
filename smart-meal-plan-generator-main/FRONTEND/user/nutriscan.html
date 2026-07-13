@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriScan — Smart Lishe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Kenya</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      
+      <div class="nav-section-divider"><span>Plan &amp; Discover</span><i class="fa-solid fa-layer-group"></i></div>
+      <div class="service-group open" data-group="plan">
+        <button type="button" class="service-group-header" data-group-toggle="plan">
+          <div class="sg-icon-wrap" style="background:var(--sukuma);"><i class="fa-solid fa-bowl-food"></i></div>
+          <span class="sg-title">Plan &amp; Discover</span>
+          <span class="sg-count">5</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="meal-generator.html" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Meal Generator</a>
+          <a href="nutriscan.html" class="nav-link active"><i class="fa-solid fa-camera-retro"></i> NutriScan</a>
+          <a href="health-conditions.html" class="nav-link"><i class="fa-solid fa-heart-pulse"></i> Health Conditions</a>
+          <a href="meal-planner.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Meal Planner</a>
+          <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        </div>
+      </div>
+      
+      <div class="nav-section-divider"><span>Track &amp; Achieve</span><i class="fa-solid fa-chart-simple"></i></div>
+      <div class="service-group" data-group="track">
+        <button type="button" class="service-group-header" data-group-toggle="track">
+          <div class="sg-icon-wrap" style="background:var(--char);"><i class="fa-solid fa-chart-simple"></i></div>
+          <span class="sg-title">Track &amp; Achieve</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="goal-tracker.html" class="nav-link"><i class="fa-solid fa-bullseye"></i> Goal Tracker</a>
+          <a href="water-tracker.html" class="nav-link"><i class="fa-solid fa-droplet"></i> Water Tracker</a>
+          <a href="analytics.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Nutrition Analytics</a>
+          <a href="shopping-list.html" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Shopping List</a>
+        </div>
+      </div>
+      
+      <div class="nav-section-divider"><span>Profile</span><i class="fa-solid fa-user-gear"></i></div>
+      <div class="service-group" data-group="profile">
+        <button type="button" class="service-group-header" data-group-toggle="profile">
+          <div class="sg-icon-wrap" style="background:#3D6FA8;"><i class="fa-solid fa-user"></i></div>
+          <span class="sg-title">Profile</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="profile.html" class="nav-link"><i class="fa-solid fa-id-card"></i> User Profile</a>
+          <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+          <a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+          <a href="contact.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+        </div>
+      </div>
+
+      <!-- ===== MEMBERSHIP ===== -->
+      <div class="nav-section-divider"><span>Membership</span><i class="fa-solid fa-crown"></i></div>
+      <div class="service-group" data-group="membership">
+        <button type="button" class="service-group-header" data-group-toggle="membership">
+          <div class="sg-icon-wrap" style="background:var(--accent-2);"><i class="fa-solid fa-crown"></i></div>
+          <span class="sg-title">Membership</span>
+          <span class="sg-count">9</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="membership/membership.html" class="nav-link"><i class="fa-solid fa-id-card"></i> Current Membership</a>
+          <a href="membership/pricing.html" class="nav-link"><i class="fa-solid fa-tags"></i> Pricing Plans</a>
+          <a href="membership/benefits.html" class="nav-link"><i class="fa-solid fa-gift"></i> Benefits</a>
+          <a href="membership/billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+          <a href="membership/invoices.html" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Invoices</a>
+          <a href="membership/upgrade.html" class="nav-link"><i class="fa-solid fa-arrow-trend-up"></i> Upgrade Plan</a>
+          <a href="membership/history.html" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Subscription History</a>
+          <a href="membership/professional-access.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> Professional Access</a>
+          <a href="membership/clinic-access.html" class="nav-link"><i class="fa-solid fa-hospital"></i> Clinic Access</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); showToast('Logging out...');" style="color:var(--char);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search recipes, meals, conditions...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <a href="profile.html" class="profile-chip" style="cursor:pointer;">
+          <div class="avatar" id="topbarAvatar">W</div>
+          <span class="label" id="topbarName">Wanjiru</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="page active">
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="section-eyebrow">NutriScan</div>
+          <h2>Snap your plate, know what's on it</h2>
+          <p>Upload a photo of your meal and NutriScan will estimate what's on it — calories, macros, and a health score, based on common Kenyan dishes.</p>
+        </div>
+
+        <div class="scan-layout">
+          <div>
+            <div class="upload-zone" id="uploadZone">
+              <input type="file" id="scanFileInput" accept="image/*">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <h4>Drop an image or click to upload</h4>
+              <p>JPG or PNG, up to ~5MB. Your photo stays on your device.</p>
+            </div>
+
+            <div class="scan-preview-wrap" id="scanPreviewWrap">
+              <img id="scanPreviewImg" alt="Preview of your uploaded meal photo">
+              <div class="scan-preview-actions">
+                <button class="btn btn-primary btn-sm" id="scanAnalyzeBtn" style="flex:1;justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i> Analyze this plate</button>
+                <button class="btn btn-secondary btn-sm" id="scanResetBtn"><i class="fa-solid fa-rotate-left"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="scan-result-panel" id="scanResultPanel">
+            <div class="gen-empty-state" style="border:none;padding:50px 20px;">
+              <i class="fa-solid fa-camera-retro"></i>
+              <h4>No photo analyzed yet</h4>
+              <p>Upload a plate photo on the left to see your nutrition breakdown here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<button class="chatbot-fab" id="chatbotFab"><i class="fa-solid fa-robot"></i><span class="ping"></span></button>
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-head">
+    <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="info"><strong>Smart Lishe Assistant</strong><span>Online</span></div>
+    <button class="chatbot-close" id="chatbotClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chatbot-body" id="chatbotBody"></div>
+  <div class="chatbot-suggestions" id="chatbotSuggestions">
+    <button class="chip-suggestion" data-q="weight loss">Weight loss tips</button>
+    <button class="chip-suggestion" data-q="diabetes meal">Diabetes-friendly meal</button>
+    <button class="chip-suggestion" data-q="water intake">How much water?</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbotInput" placeholder="Ask about meals, health, recipes...">
+    <button class="chatbot-send" id="chatbotSend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// NUTRISCAN — SAFE JAVASCRIPT (No transition errors)
+// ============================================================
+
+(function() {
+  'use strict';
+
+  // ---------- STORE ----------
+  var Store = {
+    get: function(key, fallback) {
+      try {
+        var raw = localStorage.getItem('smartlishe_' + key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch(e) { return fallback; }
+    },
+    set: function(key, value) {
+      try {
+        localStorage.setItem('smartlishe_' + key, JSON.stringify(value));
+        return true;
+      } catch(e) { return false; }
+    }
+  };
+  window.Store = Store;
+
+  // ---------- TOAST ----------
+  function showToast(message, type) {
+    type = type || 'success';
+    var stack = document.getElementById('toastStack');
+    if (!stack) return;
+    var toast = document.createElement('div');
+    toast.className = 'toast' + (type === 'error' ? ' error' : '');
+    var icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+    toast.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + message + '</span>';
+    stack.appendChild(toast);
+    setTimeout(function() {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(40px)';
+      setTimeout(function() { toast.remove(); }, 300);
+    }, 3500);
+  }
+  window.showToast = showToast;
+
+  // ---------- THEME ----------
+  function initTheme() {
+    var saved = Store.get('theme', 'light');
+    document.body.setAttribute('data-theme', saved);
+    var themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+      themeIcon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function() {
+        var current = document.body.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', next);
+        if (themeIcon) {
+          themeIcon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+        Store.set('theme', next);
+      });
+    }
+  }
+
+  // ---------- SIDEBAR ----------
+  function initSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    var hamburger = document.getElementById('hamburgerBtn');
+
+    function openSidebar() {
+      if (sidebar) sidebar.classList.add('open');
+      if (overlay) overlay.classList.add('show');
+    }
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('show');
+    }
+
+    if (hamburger) hamburger.addEventListener('click', openSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+
+    var headers = document.querySelectorAll('.service-group-header');
+    headers.forEach(function(header) {
+      header.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var group = header.closest('.service-group');
+        if (!group) return;
+        var wasOpen = group.classList.contains('open');
+        var allGroups = document.querySelectorAll('.service-group');
+        allGroups.forEach(function(g) { g.classList.remove('open'); });
+        if (!wasOpen) group.classList.add('open');
+      });
+    });
+
+    var links = document.querySelectorAll('.nav-link');
+    links.forEach(function(link) {
+      link.addEventListener('click', closeSidebar);
+    });
+  }
+
+  // ---------- SCROLL TOP ----------
+  function initScrollTop() {
+    var btn = document.getElementById('scrollTopBtn');
+    if (!btn) return;
+    window.addEventListener('scroll', function() {
+      btn.classList.toggle('show', window.scrollY > 400);
+    });
+    btn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ---------- NUTRISCAN ----------
+  function initNutriScan() {
+    var zone = document.getElementById('uploadZone');
+    // SAFE: Only run if the upload zone exists on this page
+    if (!zone) return;
+
+    var fileInput = document.getElementById('scanFileInput');
+    var previewWrap = document.getElementById('scanPreviewWrap');
+    var previewImg = document.getElementById('scanPreviewImg');
+    var analyzeBtn = document.getElementById('scanAnalyzeBtn');
+    var resetBtn = document.getElementById('scanResetBtn');
+    var resultPanel = document.getElementById('scanResultPanel');
+
+    var scanResultsBank = [
+      { name: 'Ugali, Sukuma Wiki & Nyama', calories: 640, protein: 34, carbs: 74, fat: 22, score: 72,
+        tip: 'A solid, balanced plate. To improve the score, swap a little of the ugali portion for extra sukuma wiki and trim visible fat from the meat.' },
+      { name: 'Githeri with Avocado', calories: 510, protein: 17, carbs: 80, fat: 13, score: 84,
+        tip: 'Great fibre and healthy fat balance from the avocado. This is one of the more heart-friendly plates in our database.' },
+      { name: 'Pilau with Kachumbari', calories: 600, protein: 23, carbs: 78, fat: 18, score: 66,
+        tip: 'Tasty, but rich in refined carbs and oil. Pairing it with extra kachumbari or a side salad would lift the score.' },
+      { name: 'Grilled Tilapia with Vegetables', calories: 400, protein: 39, carbs: 16, fat: 15, score: 91,
+        tip: 'Excellent choice — lean protein, low refined carbs, and visible vegetables. One of the healthiest plates we can detect.' },
+      { name: 'Chips and Sausage', calories: 780, protein: 18, carbs: 88, fat: 36, score: 38,
+        tip: 'High in refined carbs and saturated fat with very little fibre. Try swapping chips for boiled sweet potato or arrowroot next time.' }
+    ];
+
+    function loadFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        showToast('Please choose an image file.', 'error');
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        if (previewImg) previewImg.src = e.target.result;
+        if (previewWrap) previewWrap.classList.add('show');
+        if (resultPanel) {
+          resultPanel.innerHTML = '<div class="gen-empty-state" style="border:none;padding:50px 20px;"><i class="fa-solid fa-circle-check"></i><h4>Photo ready</h4><p>Tap "Analyze this plate" to run NutriScan on it.</p></div>';
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    zone.addEventListener('click', function() {
+      if (fileInput) fileInput.click();
+    });
+
+    if (fileInput) {
+      fileInput.addEventListener('change', function() {
+        if (fileInput.files[0]) loadFile(fileInput.files[0]);
+      });
+    }
+
+    ['dragover', 'dragenter'].forEach(function(evt) {
+      zone.addEventListener(evt, function(e) {
+        e.preventDefault();
+        zone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(function(evt) {
+      zone.addEventListener(evt, function(e) {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+      });
+    });
+
+    zone.addEventListener('drop', function(e) {
+      if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        if (previewWrap) previewWrap.classList.remove('show');
+        if (fileInput) fileInput.value = '';
+        if (resultPanel) {
+          resultPanel.innerHTML = '<div class="gen-empty-state" style="border:none;padding:50px 20px;"><i class="fa-solid fa-camera-retro"></i><h4>No photo analyzed yet</h4><p>Upload a plate photo on the left to see your nutrition breakdown here.</p></div>';
+        }
+      });
+    }
+
+    if (analyzeBtn) {
+      analyzeBtn.addEventListener('click', function() {
+        var steps = ['Reading image...', 'Detecting food items...', 'Estimating portions...', 'Calculating nutrition...'];
+        var stepIndex = 0;
+
+        if (resultPanel) {
+          resultPanel.innerHTML = '<div class="scan-analyzing"><i class="fa-solid fa-magnifying-glass" style="font-size:2rem;color:var(--sukuma);"></i><div class="scan-bar-track"><div class="scan-bar-fill" id="scanBarFill"></div></div><div class="scan-step" id="scanStepLabel">' + steps[0] + '</div></div>';
+        }
+
+        var barFill = document.getElementById('scanBarFill');
+        var stepLabel = document.getElementById('scanStepLabel');
+
+        var interval = setInterval(function() {
+          stepIndex++;
+          var pct = Math.min(100, Math.round((stepIndex / steps.length) * 100));
+          if (barFill) barFill.style.width = pct + '%';
+          if (stepIndex < steps.length) {
+            if (stepLabel) stepLabel.textContent = steps[stepIndex];
+          } else {
+            clearInterval(interval);
+            setTimeout(function() { renderScanResult(); }, 250);
+          }
+        }, 480);
+      });
+    }
+
+    function renderScanResult() {
+      var result = scanResultsBank[Math.floor(Math.random() * scanResultsBank.length)];
+      var scoreColor = result.score >= 75 ? 'var(--sukuma)' : result.score >= 50 ? 'var(--maize-deep)' : 'var(--char)';
+
+      if (resultPanel) {
+        resultPanel.innerHTML = '<div class="scan-result-head"><div><h3>' + result.name + '</h3><span class="confidence-tag">Estimated match · ' + (75 + Math.floor(Math.random() * 20)) + '% confidence</span></div><div class="health-score-ring"><div class="ring-val" style="color:' + scoreColor + ';">' + result.score + '<span style="font-size:0.8rem;color:var(--text-muted);">/100</span></div></div></div><div class="scan-macro-grid"><div class="scan-macro-cell"><div class="val">' + result.calories + '</div><div class="lbl">Calories</div></div><div class="scan-macro-cell"><div class="val">' + result.protein + 'g</div><div class="lbl">Protein</div></div><div class="scan-macro-cell"><div class="val">' + result.carbs + 'g</div><div class="lbl">Carbs</div></div><div class="scan-macro-cell"><div class="val">' + result.fat + 'g</div><div class="lbl">Fat</div></div></div><div class="scan-tip-box"><strong>NutriScan tip:</strong> ' + result.tip + '</div>';
+      }
+      showToast('Analysis complete.');
+    }
+  }
+
+  // ---------- CHATBOT ----------
+  function initChatbot() {
+    var fab = document.getElementById('chatbotFab');
+    var panel = document.getElementById('chatbotPanel');
+    var closeBtn = document.getElementById('chatbotClose');
+    var input = document.getElementById('chatbotInput');
+    var sendBtn = document.getElementById('chatbotSend');
+    if (!fab || !panel) return;
+
+    var hasGreeted = false;
+    fab.addEventListener('click', function() {
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open') && !hasGreeted) {
+        hasGreeted = true;
+        addChatMessage("Habari! I'm your Smart Lishe assistant. Ask me about meals, weight goals, health conditions, or hydration — I know the Kenyan kitchen.", 'bot');
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', function() { panel.classList.remove('open'); });
+    if (sendBtn) sendBtn.addEventListener('click', function() { sendChatMessage(input ? input.value : ''); });
+    if (input) {
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendChatMessage(input.value);
+      });
+    }
+
+    var chips = document.querySelectorAll('.chip-suggestion');
+    chips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        sendChatMessage(chip.dataset.q);
+      });
+    });
+  }
+
+  var chatKnowledge = [
+    { keys: ['weight loss', 'lose weight', 'slim', 'cut weight'], reply: "For healthy weight loss, aim for a moderate calorie deficit — about 300–500 kcal below your maintenance level. Favour ugali in smaller portions, more sukuma wiki and other vegetables, lean proteins like omena, tilapia or chicken." },
+    { keys: ['diabetes', 'diabetic', 'blood sugar', 'sugar level'], reply: "For diabetes-friendly eating, choose high-fibre carbs in moderate portions — mukimo, githeri, and brown rice are better than white rice or refined ugali alone. Pair carbs with protein and vegetables to slow sugar absorption." },
+    { keys: ['water', 'hydration', 'how much water', 'drink water'], reply: "Most adults should aim for about 2 to 2.5 litres of water a day — roughly 8 glasses, more if you're active, pregnant, or it's hot." },
+    { keys: ['hypertension', 'blood pressure', 'high bp'], reply: "For hypertension, reduce salt — go easy on the maggi cubes and added salt when cooking. Favour potassium-rich foods like bananas, avocado, sweet potatoes, and managu." },
+    { keys: ['recipe', 'meal idea', 'what should i eat'], reply: "Try ugali with sukuma wiki and omena, or githeri with avocado. Head to the Recipes page for over 50 Kenyan dishes with full nutrition breakdowns." }
+  ];
+
+  function findBotReply(text) {
+    var lower = text.toLowerCase();
+    for (var i = 0; i < chatKnowledge.length; i++) {
+      var entry = chatKnowledge[i];
+      for (var j = 0; j < entry.keys.length; j++) {
+        if (lower.indexOf(entry.keys[j]) !== -1) return entry.reply;
+      }
+    }
+    return "I'm still learning that one. Try asking me about weight loss, diabetes-friendly meals, hypertension, hydration, or Kenyan recipes.";
+  }
+
+  function formatTime(date) {
+    return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function addChatMessage(text, sender) {
+    var body = document.getElementById('chatbotBody');
+    if (!body) return;
+    var msg = document.createElement('div');
+    msg.className = 'chat-msg ' + sender;
+    msg.innerHTML = '<div class="bubble">' + text + '</div><span class="timestamp">' + formatTime(new Date()) + '</span>';
+    body.appendChild(msg);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    var body = document.getElementById('chatbotBody');
+    if (!body) return;
+    var typing = document.createElement('div');
+    typing.className = 'chat-msg bot';
+    typing.id = 'typingIndicator';
+    typing.innerHTML = '<div class="bubble typing-dots"><span></span><span></span><span></span></div>';
+    body.appendChild(typing);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function removeTypingIndicator() {
+    var el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  function sendChatMessage(text) {
+    if (!text || !text.trim()) return;
+    addChatMessage(text, 'user');
+    var input = document.getElementById('chatbotInput');
+    if (input) input.value = '';
+    showTypingIndicator();
+    setTimeout(function() {
+      removeTypingIndicator();
+      addChatMessage(findBotReply(text), 'bot');
+    }, 700 + Math.random() * 500);
+  }
+
+  // ---------- NOTIFICATIONS ----------
+  function initNotifications() {
+    var btn = document.getElementById('notifBtn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        showToast("You're all caught up — no new notifications.");
+      });
+    }
+  }
+
+  // ---------- GLOBAL SEARCH ----------
+  function initGlobalSearch() {
+    var input = document.getElementById('globalSearch');
+    if (input) {
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && e.target.value.trim()) {
+          showToast('Searching for "' + e.target.value.trim() + '"...');
+        }
+      });
+    }
+  }
+
+  // ---------- BOOT ----------
+  document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    initSidebar();
+    initScrollTop();
+    initNutriScan();
+    initChatbot();
+    initNotifications();
+    initGlobalSearch();
+  });
+
+})();
+</script>
+</body>
+</html>

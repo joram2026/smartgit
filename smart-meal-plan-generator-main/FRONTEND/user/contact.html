@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Lishe — Contact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ===== CONTACT PAGE STYLES ===== */
+  .contact-hero {
+    background: linear-gradient(135deg, var(--sukuma) 0%, #1a6e5a 100%);
+    border-radius: var(--radius-lg);
+    padding: 48px 56px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  .contact-hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    font-family: 'Fraunces', serif;
+    line-height: 1.2;
+  }
+  .contact-hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+  .contact-hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+  .contact-hero-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .contact-hero-img img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  .contact-info-card {
+    background: var(--bg-card);
+    padding: 28px 32px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--basket-line);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .contact-info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+  .contact-info-card .icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--sukuma);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin: 0 auto 16px;
+  }
+  .contact-info-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .contact-info-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .contact-form-wrap {
+    background: var(--bg-card);
+    padding: 36px 40px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--basket-line);
+  }
+  .contact-form-wrap h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-family: 'Fraunces', serif;
+  }
+  .contact-form-wrap .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .contact-form-wrap input,
+  .contact-form-wrap textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--basket-line);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    transition: border 0.3s ease;
+  }
+  .contact-form-wrap input:focus,
+  .contact-form-wrap textarea:focus {
+    outline: none;
+    border-color: var(--sukuma);
+    box-shadow: 0 0 0 3px rgba(35, 158, 130, 0.1);
+  }
+  .contact-form-wrap textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .map-placeholder {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    text-align: center;
+    border: 1px solid var(--basket-line);
+    margin-top: 40px;
+  }
+  .map-placeholder i {
+    font-size: 3rem;
+    color: var(--sukuma);
+    margin-bottom: 12px;
+  }
+  .map-placeholder p {
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 992px) {
+    .contact-hero {
+      grid-template-columns: 1fr;
+      padding: 32px 28px;
+      text-align: center;
+    }
+    .contact-hero h1 { font-size: 2rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-form-wrap .form-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .contact-hero { padding: 24px 16px; }
+    .contact-hero h1 { font-size: 1.6rem; }
+    .contact-form-wrap { padding: 24px 16px; }
+    .contact-info-card { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Kenya</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+      <a href="contact.html" class="nav-link active"><i class="fa-solid fa-envelope"></i> Contact</a>
+      
+      <div class="nav-section-divider"><span>Account</span><i class="fa-solid fa-user-gear"></i></div>
+      <!-- ✅ CORRECT: Login and Register go to auth/ folder -->
+      <a href="../auth/login.html" class="nav-link"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
+      <a href="../auth/register.html" class="nav-link"><i class="fa-solid fa-user-plus"></i> Register</a>
+
+      <div id="featureNav" style="display:none;">
+        <div class="nav-section-divider"><span>Features</span><i class="fa-solid fa-layer-group"></i></div>
+        <a href="meal-generator.html" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Meal Generator</a>
+        <a href="nutriscan.html" class="nav-link"><i class="fa-solid fa-camera-retro"></i> NutriScan</a>
+        <a href="health-conditions.html" class="nav-link"><i class="fa-solid fa-heart-pulse"></i> Health Conditions</a>
+        <a href="meal-planner.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Meal Planner</a>
+        <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="goal-tracker.html" class="nav-link"><i class="fa-solid fa-bullseye"></i> Goal Tracker</a>
+        <a href="water-tracker.html" class="nav-link"><i class="fa-solid fa-droplet"></i> Water Tracker</a>
+        <a href="analytics.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+        <a href="shopping-list.html" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Shopping List</a>
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </div>
+
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='home.html';" style="color:var(--char);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <!-- ✅ CORRECT: Guest goes to login page -->
+        <a href="../auth/login.html" class="profile-chip" style="cursor:pointer;text-decoration:none;">
+          <div class="avatar"><i class="fa-solid fa-user" style="font-size:0.8rem;"></i></div>
+          <span class="label">Guest</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="page active">
+      <div class="page-inner">
+        
+        <!-- ===== CONTACT HERO ===== -->
+        <div class="contact-hero">
+          <div>
+            <div class="hero-eyebrow" style="color:rgba(255,255,255,0.8);justify-content:flex-start;">
+              <i class="fa-solid fa-envelope"></i> Get in Touch
+            </div>
+            <h1>We'd Love to <em>Hear From You</em></h1>
+            <p>Have questions, feedback, or partnership ideas? Reach out to us — we're here to help make Kenyan nutrition better for everyone.</p>
+          </div>
+          <div class="contact-hero-img">
+            <img src="https://images.unsplash.com/photo-1488590528505-98d2b853aba4?q=80&w=900&auto=format&fit=crop" alt="Contact Smart Lishe" loading="lazy">
+          </div>
+        </div>
+
+        <!-- ===== CONTACT INFO GRID ===== -->
+        <div class="contact-grid">
+          <div class="contact-info-card">
+            <div class="icon-circle"><i class="fa-solid fa-location-dot"></i></div>
+            <h4>Visit Us</h4>
+            <p>Westlands, Nairobi, Kenya</p>
+          </div>
+          <div class="contact-info-card">
+            <div class="icon-circle"><i class="fa-solid fa-phone"></i></div>
+            <h4>Call Us</h4>
+            <p>+254 700 123 456</p>
+          </div>
+          <div class="contact-info-card">
+            <div class="icon-circle"><i class="fa-solid fa-envelope"></i></div>
+            <h4>Email Us</h4>
+            <p>hello@smartlishe.co.ke</p>
+          </div>
+          <div class="contact-info-card">
+            <div class="icon-circle"><i class="fa-solid fa-clock"></i></div>
+            <h4>Working Hours</h4>
+            <p>Mon-Fri, 8:00 AM - 6:00 PM</p>
+          </div>
+        </div>
+
+        <!-- ===== CONTACT FORM ===== -->
+        <div class="contact-form-wrap">
+          <h3><i class="fa-solid fa-paper-plane" style="color:var(--sukuma);margin-right:10px;"></i> Send Us a Message</h3>
+          <form id="contactForm">
+            <div class="form-row">
+              <input type="text" placeholder="Your Full Name" required>
+              <input type="email" placeholder="Your Email Address" required>
+            </div>
+            <input type="text" placeholder="Subject" style="margin-top:16px;">
+            <textarea rows="5" placeholder="Your Message" style="margin-top:16px;"></textarea>
+            <button type="submit" class="btn btn-primary" style="margin-top:20px;width:100%;">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
+
+        <!-- ===== MAP PLACEHOLDER ===== -->
+        <div class="map-placeholder">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <h4>Find Us in Nairobi</h4>
+          <p>Westlands, Nairobi — We're right in the heart of the city.</p>
+          <div style="background:var(--basket-line);height:2px;width:60px;margin:12px auto;"></div>
+          <p style="font-size:0.85rem;color:var(--text-secondary);">
+            <i class="fa-solid fa-location-dot" style="color:var(--sukuma);"></i> Westlands Road, Nairobi, Kenya
+          </p>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="site-footer" id="footer">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="name font-display">Smart Lishe Kenya</div>
+              <p>An AI-guided nutrition and meal planning platform built around real Kenyan food — from ugali to omena to mukimo.</p>
+              <div class="footer-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Quick Links</h4>
+              <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Account</h4>
+              <ul>
+                <!-- ✅ CORRECT: Account links go to auth/ folder -->
+                <li><a href="../auth/login.html">Login</a></li>
+                <li><a href="../auth/register.html">Register</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact</h4>
+              <div class="contact-line"><i class="fa-solid fa-location-dot"></i> Westlands, Nairobi, Kenya</div>
+              <div class="contact-line"><i class="fa-solid fa-phone"></i> +254 700 123 456</div>
+              <div class="contact-line"><i class="fa-solid fa-envelope"></i> hello@smartlishe.co.ke</div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <span>© 2026 Smart Lishe Kenya. All rights reserved.</span>
+            <span>Made with <i class="fa-solid fa-heart" style="color:var(--char);"></i> in Nairobi</span>
+          </div>
+        </footer>
+
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<button class="chatbot-fab" id="chatbotFab"><i class="fa-solid fa-robot"></i><span class="ping"></span></button>
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-head">
+    <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="info"><strong>Smart Lishe Assistant</strong><span>Online</span></div>
+    <button class="chatbot-close" id="chatbotClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chatbot-body" id="chatbotBody"></div>
+  <div class="chatbot-suggestions" id="chatbotSuggestions">
+    <button class="chip-suggestion" data-q="weight loss">Weight loss tips</button>
+    <button class="chip-suggestion" data-q="diabetes meal">Diabetes-friendly meal</button>
+    <button class="chip-suggestion" data-q="water intake">How much water?</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbotInput" placeholder="Ask about meals, health, recipes...">
+    <button class="chatbot-send" id="chatbotSend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// SMART LISHE — CONTACT
+// ============================================================
+
+const Store = {
+  get: function(key, fallback) {
+    try {
+      const raw = localStorage.getItem('smartlishe_' + key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch(e) { return fallback; }
+  },
+  set: function(key, value) {
+    try {
+      localStorage.setItem('smartlishe_' + key, JSON.stringify(value));
+      return true;
+    } catch(e) { return false; }
+  }
+};
+
+function showToast(message, type) {
+  type = type || 'success';
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  toast.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + message + '</span>';
+  stack.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 3500);
+}
+window.showToast = showToast;
+
+// ---- THEME ----
+function initTheme() {
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  const themeIcon = document.getElementById('themeIcon');
+  if (themeIcon) {
+    themeIcon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  }
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      const current = document.body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', next);
+      if (themeIcon) {
+        themeIcon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      }
+      Store.set('theme', next);
+    });
+  }
+}
+
+// ---- SIDEBAR ----
+function initSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+
+  function openSidebar() {
+    if (sidebar) sidebar.classList.add('open');
+    if (overlay) overlay.classList.add('show');
+  }
+  function closeSidebar() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('show');
+  }
+
+  if (hamburger) hamburger.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', closeSidebar);
+  });
+}
+
+// ---- SCROLL TOP ----
+function initScrollTop() {
+  const btn = document.getElementById('scrollTopBtn');
+  if (!btn) return;
+  window.addEventListener('scroll', function() {
+    btn.classList.toggle('show', window.scrollY > 400);
+  });
+  btn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ---- CONTACT FORM ----
+document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  showToast('Thank you! Your message has been sent. We\'ll get back to you soon.', 'success');
+  this.reset();
+});
+
+// ---- CHATBOT ----
+function initChatbot() {
+  const fab = document.getElementById('chatbotFab');
+  const panel = document.getElementById('chatbotPanel');
+  const closeBtn = document.getElementById('chatbotClose');
+  const input = document.getElementById('chatbotInput');
+  const sendBtn = document.getElementById('chatbotSend');
+  if (!fab || !panel) return;
+
+  let hasGreeted = false;
+  fab.addEventListener('click', function() {
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open') && !hasGreeted) {
+      hasGreeted = true;
+      addChatMessage("Habari! I'm your Smart Lishe assistant. Ask me about meals, weight goals, health conditions, or hydration — I know the Kenyan kitchen.", 'bot');
+    }
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', function() { panel.classList.remove('open'); });
+  if (sendBtn) sendBtn.addEventListener('click', function() { sendChatMessage(input ? input.value : ''); });
+  if (input) {
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') sendChatMessage(input.value);
+    });
+  }
+
+  document.querySelectorAll('.chip-suggestion').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      sendChatMessage(chip.dataset.q);
+    });
+  });
+}
+
+const chatKnowledge = [
+  { keys: ['weight loss', 'lose weight', 'slim'], reply: "For healthy weight loss, aim for a moderate calorie deficit — about 300–500 kcal below your maintenance level." },
+  { keys: ['diabetes', 'diabetic', 'blood sugar'], reply: "For diabetes-friendly eating, choose high-fibre carbs in moderate portions — mukimo, githeri, and brown rice are better than white rice alone." },
+  { keys: ['water', 'hydration', 'how much water'], reply: "Most adults should aim for about 2 to 2.5 litres of water a day — roughly 8 glasses." }
+];
+
+function findBotReply(text) {
+  const lower = text.toLowerCase();
+  for (var i = 0; i < chatKnowledge.length; i++) {
+    var entry = chatKnowledge[i];
+    for (var j = 0; j < entry.keys.length; j++) {
+      if (lower.indexOf(entry.keys[j]) !== -1) {
+        return entry.reply;
+      }
+    }
+  }
+  return "That's a great question! I'd recommend checking our meal planner or asking your nutritionist for personalised advice. I'm still learning, but I can help with weight loss, diabetes, hydration and general nutrition questions!";
+}
+
+function addChatMessage(text, sender) {
+  const body = document.getElementById('chatbotBody');
+  if (!body) return;
+  const div = document.createElement('div');
+  div.className = 'chat-message ' + sender;
+  div.innerHTML = '<div class="bubble">' + text + '</div>';
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function sendChatMessage(text) {
+  const input = document.getElementById('chatbotInput');
+  if (!text || text.trim() === '') return;
+  addChatMessage(text, 'user');
+  if (input) input.value = '';
+  setTimeout(function() {
+    const reply = findBotReply(text);
+    addChatMessage(reply, 'bot');
+  }, 600);
+}
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  initSidebar();
+  initScrollTop();
+  initChatbot();
+});
+</script>
+</body>
+</html>

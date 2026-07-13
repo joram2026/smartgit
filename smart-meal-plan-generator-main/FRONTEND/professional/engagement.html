@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engagement — Smart Lishe Professional</title>
+  <link rel="stylesheet" href="professional.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+        <div class="name">Smart Lishe<span>Professional</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+        <a href="clients.html" class="nav-link"><i class="fa-solid fa-users"></i> Clients</a>
+        <a href="engagement.html" class="nav-link active"><i class="fa-solid fa-rocket"></i> Engagement</a>
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../auth/logout.html" class="nav-link" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search resources...">
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="profile-chip">
+            <div class="avatar">PK</div>
+            <span class="label">Dr. Peter</span>
+            <span class="pro-badge" style="font-size:0.55rem;padding:2px 8px;">PRO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-inner">
+        <div class="prof-hero" style="margin-bottom:24px;">
+          <div>
+            <h1>Engagement Hub</h1>
+            <p>Resources, guides, templates, and insights to grow your practice.</p>
+          </div>
+          <a href="billing.html" class="btn btn-primary" style="background:var(--accent-2);color:var(--soil);"><i class="fa-regular fa-crown"></i> Upgrade to Pro Plus</a>
+        </div>
+
+        <h2 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:16px;">Professional Resources</h2>
+        <div class="engagement-grid">
+          <div class="engagement-card">
+            <div class="card-icon" style="background:var(--sukuma);"><i class="fa-regular fa-utensils"></i></div>
+            <h4>Meal Plan Templates</h4>
+            <p>Ready-to-use templates for weight loss, diabetes, hypertension, and more.</p>
+            <div class="download-btn"><i class="fa-regular fa-download"></i> Download</div>
+          </div>
+          <div class="engagement-card">
+            <div class="card-icon" style="background:var(--char);"><i class="fa-regular fa-clipboard-check"></i></div>
+            <h4>Compliance Guides</h4>
+            <p>Professional guides to help your clients stay on track with their nutrition plans.</p>
+            <div class="download-btn"><i class="fa-regular fa-download"></i> Download</div>
+          </div>
+          <div class="engagement-card">
+            <div class="card-icon" style="background:var(--maize-deep);"><i class="fa-regular fa-droplet"></i></div>
+            <h4>Diabetes Toolkit</h4>
+            <p>Complete resource pack for managing clients with diabetes through nutrition.</p>
+            <div class="download-btn"><i class="fa-regular fa-download"></i> Download</div>
+          </div>
+          <div class="engagement-card">
+            <div class="card-icon" style="background:#1A5276;"><i class="fa-regular fa-weight-scale"></i></div>
+            <h4>Weight Management Resources</h4>
+            <p>Evidence-based materials for effective weight loss and management programs.</p>
+            <div class="download-btn"><i class="fa-regular fa-download"></i> Download</div>
+          </div>
+          <div class="engagement-card">
+            <div class="card-icon" style="background:#8E44AD;"><i class="fa-regular fa-dumbbell"></i></div>
+            <h4>Exercise Library</h4>
+            <p>Curated exercises for clients, with proper form and progression guidance.</p>
+            <div class="download-btn"><i class="fa-regular fa-download"></i> Download</div>
+          </div>
+          <div class="engagement-card">
+            <div class="card-icon" style="background:#2ECC71;"><i class="fa-regular fa-newspaper"></i></div>
+            <h4>Articles & Insights</h4>
+            <p>Latest nutrition research, professional insights, and practical tips.</p>
+            <div class="download-btn"><i class="fa-regular fa-arrow-right"></i> Read More</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="prof-card">
+            <div class="card-header"><h3>Quick Templates</h3></div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <a href="#" style="padding:10px 14px;border-radius:var(--radius-sm);background:var(--bg-card);border:1px solid var(--basket-line);font-weight:600;font-size:0.85rem;transition:all 0.2s ease;">📋 Initial Client Assessment Form</a>
+              <a href="#" style="padding:10px 14px;border-radius:var(--radius-sm);background:var(--bg-card);border:1px solid var(--basket-line);font-weight:600;font-size:0.85rem;transition:all 0.2s ease;">📋 7-Day Meal Plan Template</a>
+              <a href="#" style="padding:10px 14px;border-radius:var(--radius-sm);background:var(--bg-card);border:1px solid var(--basket-line);font-weight:600;font-size:0.85rem;transition:all 0.2s ease;">📋 Progress Review Form</a>
+              <a href="#" style="padding:10px 14px;border-radius:var(--radius-sm);background:var(--bg-card);border:1px solid var(--basket-line);font-weight:600;font-size:0.85rem;transition:all 0.2s ease;">📋 Client Goal Setting Worksheet</a>
+            </div>
+          </div>
+          <div class="prof-card">
+            <div class="card-header"><h3>Latest Insights</h3></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><strong style="display:block;font-size:0.88rem;">The Role of Nutrition in Chronic Disease Management</strong><span style="font-size:0.78rem;color:var(--text-muted);">2 days ago</span></div>
+              <div><strong style="display:block;font-size:0.88rem;">5 Strategies to Improve Client Compliance</strong><span style="font-size:0.78rem;color:var(--text-muted);">5 days ago</span></div>
+              <div><strong style="display:block;font-size:0.88rem;">New Research: Plant-Based Diets in Kenya</strong><span style="font-size:0.78rem;color:var(--text-muted);">1 week ago</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.hamburger-btn')?.addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile — Smart Lishe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Kenya</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-section-divider"><span>Plan &amp; Discover</span><i class="fa-solid fa-layer-group"></i></div>
+      <div class="service-group" data-group="plan">
+        <button type="button" class="service-group-header" data-group-toggle="plan">
+          <div class="sg-icon-wrap" style="background:var(--sukuma);"><i class="fa-solid fa-bowl-food"></i></div>
+          <span class="sg-title">Plan &amp; Discover</span>
+          <span class="sg-count">5</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="meal-generator.html" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Meal Generator</a>
+          <a href="nutriscan.html" class="nav-link"><i class="fa-solid fa-camera-retro"></i> NutriScan</a>
+          <a href="health-conditions.html" class="nav-link"><i class="fa-solid fa-heart-pulse"></i> Health Conditions</a>
+          <a href="meal-planner.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Meal Planner</a>
+          <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        </div>
+      </div>
+      <div class="nav-section-divider"><span>Track &amp; Achieve</span><i class="fa-solid fa-chart-simple"></i></div>
+      <div class="service-group" data-group="track">
+        <button type="button" class="service-group-header" data-group-toggle="track">
+          <div class="sg-icon-wrap" style="background:var(--char);"><i class="fa-solid fa-chart-simple"></i></div>
+          <span class="sg-title">Track &amp; Achieve</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="goal-tracker.html" class="nav-link"><i class="fa-solid fa-bullseye"></i> Goal Tracker</a>
+          <a href="water-tracker.html" class="nav-link"><i class="fa-solid fa-droplet"></i> Water Tracker</a>
+          <a href="analytics.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Nutrition Analytics</a>
+          <a href="shopping-list.html" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Shopping List</a>
+        </div>
+      </div>
+      <div class="nav-section-divider"><span>Profile</span><i class="fa-solid fa-user-gear"></i></div>
+      <div class="service-group open" data-group="profile">
+        <button type="button" class="service-group-header" data-group-toggle="profile">
+          <div class="sg-icon-wrap" style="background:#3D6FA8;"><i class="fa-solid fa-user"></i></div>
+          <span class="sg-title">Profile</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="profile.html" class="nav-link active"><i class="fa-solid fa-id-card"></i> User Profile</a>
+          <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+          <a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+          <a href="contact.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+        </div>
+      </div>
+
+      <!-- ===== MEMBERSHIP ===== -->
+      <div class="nav-section-divider"><span>Membership</span><i class="fa-solid fa-crown"></i></div>
+      <div class="service-group" data-group="membership">
+        <button type="button" class="service-group-header" data-group-toggle="membership">
+          <div class="sg-icon-wrap" style="background:var(--accent-2);"><i class="fa-solid fa-crown"></i></div>
+          <span class="sg-title">Membership</span>
+          <span class="sg-count">9</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="membership/membership.html" class="nav-link"><i class="fa-solid fa-id-card"></i> Current Membership</a>
+          <a href="membership/pricing.html" class="nav-link"><i class="fa-solid fa-tags"></i> Pricing Plans</a>
+          <a href="membership/benefits.html" class="nav-link"><i class="fa-solid fa-gift"></i> Benefits</a>
+          <a href="membership/billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+          <a href="membership/invoices.html" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Invoices</a>
+          <a href="membership/upgrade.html" class="nav-link"><i class="fa-solid fa-arrow-trend-up"></i> Upgrade Plan</a>
+          <a href="membership/history.html" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Subscription History</a>
+          <a href="membership/professional-access.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> Professional Access</a>
+          <a href="membership/clinic-access.html" class="nav-link"><i class="fa-solid fa-hospital"></i> Clinic Access</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); showToast('Logging out...');" style="color:var(--char);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search recipes, meals, conditions...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <a href="profile.html" class="profile-chip" style="cursor:pointer;">
+          <div class="avatar" id="topbarAvatar">W</div>
+          <span class="label" id="topbarName">Wanjiru</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="page active">
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="section-eyebrow">Profile Setup</div>
+          <h2>Let's build your nutrition profile</h2>
+          <p>A few quick steps — your details, body metrics, health background, and goals. Everything saves only on this device, and you can come back and edit any step later.</p>
+        </div>
+
+        <div class="profile-hero-card">
+          <div class="profile-avatar-upload">
+            <div class="avatar-big" id="profileAvatarBig">W</div>
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+            <button class="avatar-edit-btn" id="profilePhotoEditBtn"><i class="fa-solid fa-camera"></i></button>
+          </div>
+          <div class="profile-hero-info">
+            <h2 id="profileHeroName">Wanjiru Kamau</h2>
+            <p>Member since June 2026 · Nairobi, Kenya</p>
+            <div class="profile-hero-tags" id="profileHeroTags">
+              <span><i class="fa-solid fa-bullseye"></i> Lose weight</span>
+              <span><i class="fa-solid fa-heart-pulse"></i> Diabetes-aware</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- Wizard progress ---- -->
+        <div class="wizard-progress-wrap">
+          <div class="wizard-progress-track"><div class="wizard-progress-fill" id="wizardProgressFill" style="width:12.5%;"></div></div>
+          <div class="wizard-steps-row" id="wizardStepsRow">
+            <div class="wizard-step-dot current" data-step="0"><div class="dot-circle">1</div><span class="dot-label">Personal</span></div>
+            <div class="wizard-step-dot" data-step="1"><div class="dot-circle">2</div><span class="dot-label">Body &amp; BMI</span></div>
+            <div class="wizard-step-dot" data-step="2"><div class="dot-circle">3</div><span class="dot-label">Activity</span></div>
+            <div class="wizard-step-dot" data-step="3"><div class="dot-circle">4</div><span class="dot-label">Conditions</span></div>
+            <div class="wizard-step-dot" data-step="4"><div class="dot-circle">5</div><span class="dot-label">Allergies</span></div>
+            <div class="wizard-step-dot" data-step="5"><div class="dot-circle">6</div><span class="dot-label">Medication</span></div>
+            <div class="wizard-step-dot" data-step="6"><div class="dot-circle">7</div><span class="dot-label">Diet</span></div>
+            <div class="wizard-step-dot" data-step="7"><div class="dot-circle">8</div><span class="dot-label">Goals</span></div>
+            <div class="wizard-step-dot" data-step="8"><div class="dot-circle"><i class="fa-solid fa-check" style="font-size:0.7rem;"></i></div><span class="dot-label">Review</span></div>
+          </div>
+        </div>
+
+        <!-- ---- Wizard step panels ---- -->
+        <form class="wizard-panel-wrap" id="profileWizardForm">
+
+          <!-- STEP 0: Personal details -->
+          <div class="wizard-step-panel active" data-step-panel="0">
+            <div class="step-eyebrow">Step 1 of 9</div>
+            <h3><i class="fa-solid fa-id-card" style="color:var(--accent-3);margin-right:8px;"></i>Tell us about you</h3>
+            <p class="step-desc">The basics — we'll use this to personalise your greeting and recommendations.</p>
+            <div class="field-row">
+              <div class="field-group"><label for="profName">Full name</label><input type="text" id="profName" value="Wanjiru Kamau" placeholder="e.g. Wanjiru Kamau"></div>
+              <div class="field-group"><label for="profAge">Age</label><input type="number" id="profAge" value="29" min="10" max="100"></div>
+            </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label>Gender</label>
+                <div class="chip-multiselect" id="profGenderChips" data-mode="single">
+                  <button type="button" data-val="female" class="selected">Female</button>
+                  <button type="button" data-val="male">Male</button>
+                </div>
+              </div>
+              <div class="field-group"><label for="profLocation">Location</label><input type="text" id="profLocation" value="Nairobi, Kenya" placeholder="e.g. Nairobi, Kenya"></div>
+            </div>
+          </div>
+
+          <!-- STEP 1: Body metrics & BMI -->
+          <div class="wizard-step-panel" data-step-panel="1">
+            <div class="step-eyebrow">Step 2 of 9</div>
+            <h3><i class="fa-solid fa-ruler-vertical" style="color:var(--accent-3);margin-right:8px;"></i>Body metrics</h3>
+            <p class="step-desc">We'll calculate your BMI instantly as you type — this helps tailor your calorie targets.</p>
+            <div class="field-row">
+              <div class="field-group"><label for="profWeight">Weight (kg)</label><input type="number" id="profWeight" value="71.2" step="0.1" min="25" max="300"></div>
+              <div class="field-group"><label for="profHeight">Height (cm)</label><input type="number" id="profHeight" value="162" min="100" max="230"></div>
+            </div>
+            <div class="bmi-result-card" id="bmiResultCard">
+              <div class="bmi-value-display">
+                <strong id="bmiValueText">27.1</strong>
+                <span>BMI</span>
+              </div>
+              <div class="bmi-gauge-wrap">
+                <div class="bmi-gauge-track">
+                  <div class="bmi-gauge-seg" style="width:28%;background:#3D6FA8;"></div>
+                  <div class="bmi-gauge-seg" style="width:22%;background:var(--sukuma);"></div>
+                  <div class="bmi-gauge-seg" style="width:25%;background:var(--maize-deep);"></div>
+                  <div class="bmi-gauge-seg" style="width:25%;background:var(--char);"></div>
+                </div>
+                <div class="bmi-gauge-marker"><div class="marker-arrow" id="bmiMarkerArrow" style="left:55%;"></div></div>
+                <div class="bmi-gauge-labels"><span>Underweight</span><span>Healthy</span><span>Overweight</span><span>Obese</span></div>
+                <div class="bmi-category-tag" id="bmiCategoryTag" style="background:rgba(232,163,61,0.15);color:var(--maize-deep);">
+                  <i class="fa-solid fa-circle-info"></i> <span id="bmiCategoryLabel">Overweight</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: Activity level -->
+          <div class="wizard-step-panel" data-step-panel="2">
+            <div class="step-eyebrow">Step 3 of 9</div>
+            <h3><i class="fa-solid fa-person-walking" style="color:var(--accent-3);margin-right:8px;"></i>How active are you day to day?</h3>
+            <p class="step-desc">Be honest rather than aspirational — this directly affects how many calories we recommend.</p>
+            <div class="field-group">
+              <div class="chip-multiselect" id="profActivityChips" data-mode="single">
+                <button type="button" data-val="sedentary">Sedentary — desk job, little exercise</button>
+                <button type="button" data-val="light">Light — occasional walks or light activity</button>
+                <button type="button" data-val="moderate" class="selected">Moderate — exercise 3-4 times a week</button>
+                <button type="button" data-val="active">Active — exercise most days</button>
+                <button type="button" data-val="very_active">Very active — physical job or daily intense training</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: Health conditions -->
+          <div class="wizard-step-panel" data-step-panel="3">
+            <div class="step-eyebrow">Step 4 of 9</div>
+            <h3><i class="fa-solid fa-heart-pulse" style="color:var(--accent-3);margin-right:8px;"></i>Any health conditions we should know about?</h3>
+            <p class="step-desc">This shapes the foods we favour and avoid in your recommendations. Select all that apply.</p>
+            <div class="chip-multiselect" id="profConditionChips" data-mode="multi">
+              <button type="button" data-val="none">None</button>
+              <button type="button" data-val="diabetes" class="selected">Diabetes</button>
+              <button type="button" data-val="hypertension">Hypertension</button>
+              <button type="button" data-val="obesity">Obesity</button>
+              <button type="button" data-val="heart">Heart disease</button>
+              <button type="button" data-val="kidney">Kidney disease</button>
+              <button type="button" data-val="pregnancy">Pregnancy</button>
+              <button type="button" data-val="anemia">Anemia</button>
+              <button type="button" data-val="underweight">Underweight</button>
+              <button type="button" data-val="cholesterol">High cholesterol</button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Allergies -->
+          <div class="wizard-step-panel" data-step-panel="4">
+            <div class="step-eyebrow">Step 5 of 9</div>
+            <h3><i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-3);margin-right:8px;"></i>Do you have any food allergies?</h3>
+            <p class="step-desc">We'll make sure none of these show up in your meal suggestions.</p>
+            <div class="chip-multiselect" id="profAllergyChips" data-mode="multi">
+              <button type="button" data-val="none" class="selected">None</button>
+              <button type="button" data-val="peanuts">Peanuts / Groundnuts</button>
+              <button type="button" data-val="dairy">Dairy</button>
+              <button type="button" data-val="gluten">Gluten</button>
+              <button type="button" data-val="shellfish">Shellfish</button>
+              <button type="button" data-val="eggs">Eggs</button>
+            </div>
+          </div>
+
+          <!-- STEP 5: Medications -->
+          <div class="wizard-step-panel" data-step-panel="5">
+            <div class="step-eyebrow">Step 6 of 9</div>
+            <h3><i class="fa-solid fa-pills" style="color:var(--accent-3);margin-right:8px;"></i>Are you currently on any medication?</h3>
+            <p class="step-desc">Some medications interact with diet — for example, blood thinners and vitamin K-rich greens. List what you're taking so we can flag anything relevant.</p>
+            <label class="medication-none-toggle">
+              <input type="checkbox" id="profMedsNoneCheckbox" checked>
+              <span>I'm not currently taking any medication</span>
+            </label>
+            <div id="medicationListContainer" style="display:none;">
+              <div id="medicationRows"></div>
+              <button type="button" class="btn btn-secondary btn-sm" id="addMedicationBtn"><i class="fa-solid fa-plus"></i> Add medication</button>
+            </div>
+          </div>
+
+          <!-- STEP 6: Dietary preferences -->
+          <div class="wizard-step-panel" data-step-panel="6">
+            <div class="step-eyebrow">Step 7 of 9</div>
+            <h3><i class="fa-solid fa-leaf" style="color:var(--accent-3);margin-right:8px;"></i>Any dietary preference we should follow?</h3>
+            <p class="step-desc">This filters which meals and recipes we'll suggest to you.</p>
+            <div class="chip-multiselect" id="profDietChips" data-mode="single">
+              <button type="button" data-val="any" class="selected">No restriction</button>
+              <button type="button" data-val="vegetarian">Vegetarian</button>
+              <button type="button" data-val="pescatarian">Pescatarian</button>
+              <button type="button" data-val="low_carb">Low carb</button>
+              <button type="button" data-val="high_protein">High protein</button>
+            </div>
+          </div>
+
+          <!-- STEP 7: Goals -->
+          <div class="wizard-step-panel" data-step-panel="7">
+            <div class="step-eyebrow">Step 8 of 9</div>
+            <h3><i class="fa-solid fa-bullseye" style="color:var(--accent-3);margin-right:8px;"></i>What's your main goal right now?</h3>
+            <p class="step-desc">We'll tune your calorie targets and meal suggestions around this.</p>
+            <div class="field-group">
+              <div class="chip-multiselect" id="profGoalChips" data-mode="single">
+                <button type="button" data-val="lose" class="selected">Lose weight</button>
+                <button type="button" data-val="maintain">Maintain</button>
+                <button type="button" data-val="gain">Gain weight</button>
+                <button type="button" data-val="muscle">Build muscle</button>
+              </div>
+            </div>
+            <div class="field-group" style="max-width:280px;">
+              <label for="profTargetWeight">Target weight (kg)</label>
+              <input type="number" id="profTargetWeight" value="66" step="0.1">
+            </div>
+          </div>
+
+          <!-- STEP 8: Review & confirm -->
+          <div class="wizard-step-panel" data-step-panel="8">
+            <div class="step-eyebrow">Step 9 of 9</div>
+            <h3><i class="fa-solid fa-clipboard-check" style="color:var(--accent-3);margin-right:8px;"></i>Review your profile</h3>
+            <p class="step-desc">Here's everything we've got. Tap any step number above to jump back and edit, or save to finish.</p>
+            <div class="review-summary-grid" id="reviewSummaryGrid"></div>
+          </div>
+
+          <!-- Wizard navigation -->
+          <div class="wizard-nav-row">
+            <button type="button" class="btn btn-secondary" id="wizardBackBtn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <span class="step-counter" id="wizardStepCounter">Step 1 of 9</span>
+            <button type="button" class="btn btn-primary" id="wizardNextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<button class="chatbot-fab" id="chatbotFab"><i class="fa-solid fa-robot"></i><span class="ping"></span></button>
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-head">
+    <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="info"><strong>Smart Lishe Assistant</strong><span>Online</span></div>
+    <button class="chatbot-close" id="chatbotClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chatbot-body" id="chatbotBody"></div>
+  <div class="chatbot-suggestions" id="chatbotSuggestions">
+    <button class="chip-suggestion" data-q="weight loss">Weight loss tips</button>
+    <button class="chip-suggestion" data-q="diabetes meal">Diabetes-friendly meal</button>
+    <button class="chip-suggestion" data-q="water intake">How much water?</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbotInput" placeholder="Ask about meals, health, recipes...">
+    <button class="chatbot-send" id="chatbotSend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ===== STORE =====
+const Store = {
+  get(key, fallback){
+    try{
+      const raw = localStorage.getItem('smartlishe_' + key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){ return fallback; }
+  },
+  set(key, value){
+    try{
+      localStorage.setItem('smartlishe_' + key, JSON.stringify(value));
+      return true;
+    }catch(e){ return false; }
+  }
+};
+
+// ===== TOAST =====
+function showToast(message, type = 'success'){
+  const stack = document.getElementById('toastStack');
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+  stack.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// ===== THEME =====
+function initTheme(){
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  document.getElementById('themeIcon').className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const current = document.body.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', next);
+    document.getElementById('themeIcon').className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    Store.set('theme', next);
+  });
+}
+
+// ===== SIDEBAR =====
+function initSidebar(){
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  hamburger.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  document.querySelectorAll('.service-group-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const group = header.closest('.service-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.service-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen) group.classList.add('open');
+    });
+  });
+  document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', closeSidebar));
+}
+
+// ===== SCROLL TOP =====
+function initScrollTop(){
+  const btn = document.getElementById('scrollTopBtn');
+  window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 400));
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+}
+
+// ===== PROFILE WIZARD =====
+function initChipGroup(groupEl){
+  const mode = groupEl.dataset.mode || 'single';
+  groupEl.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(mode === 'single'){
+        groupEl.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      } else {
+        if(btn.dataset.val === 'none'){
+          groupEl.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        } else {
+          const noneBtn = groupEl.querySelector('[data-val="none"]');
+          if(noneBtn) noneBtn.classList.remove('selected');
+          btn.classList.toggle('selected');
+          const anySelected = [...groupEl.querySelectorAll('button')].some(b => b.classList.contains('selected'));
+          if(!anySelected && noneBtn) noneBtn.classList.add('selected');
+        }
+      }
+    });
+  });
+}
+
+function getChipGroupValues(groupEl){
+  return [...groupEl.querySelectorAll('button.selected')].map(b => b.dataset.val);
+}
+
+function setChipGroupValues(groupEl, values){
+  groupEl.querySelectorAll('button').forEach(b => {
+    b.classList.toggle('selected', values.includes(b.dataset.val));
+  });
+}
+
+function getDefaultProfileData(){
+  return {
+    name: 'Wanjiru Kamau', age: 29, gender: ['female'], location: 'Nairobi, Kenya',
+    weight: 71.2, height: 162, activity: ['moderate'],
+    conditions: ['diabetes'], allergies: ['none'], medications: [],
+    diet: ['any'], goal: ['lose'], targetWeight: 66, photo: null
+  };
+}
+
+function calculateBMI(weightKg, heightCm){
+  if(!weightKg || !heightCm) return null;
+  const heightM = heightCm / 100;
+  return weightKg / (heightM * heightM);
+}
+
+function getBMICategory(bmi){
+  if(bmi < 18.5) return { label:'Underweight', color:'#3D6FA8' };
+  if(bmi < 25) return { label:'Healthy', color:'var(--sukuma)' };
+  if(bmi < 30) return { label:'Overweight', color:'var(--maize-deep)' };
+  return { label:'Obese', color:'var(--char)' };
+}
+
+function updateBMIDisplay(){
+  const weight = parseFloat(document.getElementById('profWeight').value);
+  const height = parseFloat(document.getElementById('profHeight').value);
+  const bmi = calculateBMI(weight, height);
+  if(!bmi || !isFinite(bmi)) return;
+
+  const category = getBMICategory(bmi);
+  document.getElementById('bmiValueText').textContent = bmi.toFixed(1);
+  document.getElementById('bmiCategoryLabel').textContent = category.label;
+  const tag = document.getElementById('bmiCategoryTag');
+  tag.style.color = category.color;
+  tag.style.background = 'color-mix(in srgb, ' + category.color + ' 15%, transparent)';
+
+  const clamped = Math.max(15, Math.min(40, bmi));
+  const pct = ((clamped - 15) / (40 - 15)) * 100;
+  document.getElementById('bmiMarkerArrow').style.left = pct + '%';
+}
+
+let medicationRowCount = 0;
+function addMedicationRow(prefillValue){
+  medicationRowCount++;
+  const id = 'med_' + medicationRowCount;
+  const container = document.getElementById('medicationRows');
+  const row = document.createElement('div');
+  row.className = 'medication-row';
+  row.dataset.rowId = id;
+  row.innerHTML = `
+    <input type="text" placeholder="e.g. Metformin 500mg, twice daily" value="${prefillValue || ''}">
+    <button type="button" class="remove-med-btn"><i class="fa-solid fa-trash"></i></button>
+  `;
+  container.appendChild(row);
+  row.querySelector('.remove-med-btn').addEventListener('click', () => row.remove());
+}
+
+function getMedicationValues(){
+  if(document.getElementById('profMedsNoneCheckbox').checked) return [];
+  return [...document.querySelectorAll('.medication-row input')]
+    .map(i => i.value.trim())
+    .filter(v => v.length > 0);
+}
+
+function initMedicationStep(){
+  const noneCheckbox = document.getElementById('profMedsNoneCheckbox');
+  const listContainer = document.getElementById('medicationListContainer');
+
+  noneCheckbox.addEventListener('change', () => {
+    listContainer.style.display = noneCheckbox.checked ? 'none' : 'block';
+    if(!noneCheckbox.checked && document.getElementById('medicationRows').children.length === 0){
+      addMedicationRow();
+    }
+  });
+
+  document.getElementById('addMedicationBtn').addEventListener('click', () => addMedicationRow());
+}
+
+const wizardTotalSteps = 9;
+let wizardCurrentStep = 0;
+
+function goToWizardStep(stepIndex){
+  stepIndex = Math.max(0, Math.min(wizardTotalSteps - 1, stepIndex));
+  wizardCurrentStep = stepIndex;
+
+  document.querySelectorAll('.wizard-step-panel').forEach(panel => {
+    panel.classList.toggle('active', parseInt(panel.dataset.stepPanel, 10) === stepIndex);
+  });
+
+  document.querySelectorAll('.wizard-step-dot').forEach(dot => {
+    const idx = parseInt(dot.dataset.step, 10);
+    dot.classList.toggle('current', idx === stepIndex);
+    dot.classList.toggle('done', idx < stepIndex);
+  });
+
+  const progressPct = ((stepIndex + 1) / wizardTotalSteps) * 100;
+  document.getElementById('wizardProgressFill').style.width = progressPct + '%';
+  document.getElementById('wizardStepCounter').textContent = `Step ${stepIndex + 1} of ${wizardTotalSteps}`;
+
+  const backBtn = document.getElementById('wizardBackBtn');
+  const nextBtn = document.getElementById('wizardNextBtn');
+  backBtn.style.visibility = stepIndex === 0 ? 'hidden' : 'visible';
+
+  if(stepIndex === wizardTotalSteps - 1){
+    nextBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save profile';
+    renderReviewSummary();
+  } else {
+    nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right"></i>';
+  }
+
+  if(stepIndex === 1) updateBMIDisplay();
+
+  document.getElementById('page-profile').scrollIntoView({ block:'start', behavior:'smooth' });
+}
+
+function validateCurrentStep(){
+  if(wizardCurrentStep === 0){
+    if(!document.getElementById('profName').value.trim()){
+      showToast('Please enter your name.', 'error');
+      return false;
+    }
+  }
+  if(wizardCurrentStep === 1){
+    const weight = parseFloat(document.getElementById('profWeight').value);
+    const height = parseFloat(document.getElementById('profHeight').value);
+    if(!weight || !height){
+      showToast('Please enter both weight and height.', 'error');
+      return false;
+    }
+  }
+  return true;
+}
+
+function renderReviewSummary(){
+  const genderLabels = { female:'Female', male:'Male' };
+  const activityLabels = { sedentary:'Sedentary', light:'Light', moderate:'Moderate', active:'Active', very_active:'Very active' };
+  const goalLabels = { lose:'Lose weight', maintain:'Maintain', gain:'Gain weight', muscle:'Build muscle' };
+  const dietLabels = { any:'No restriction', vegetarian:'Vegetarian', pescatarian:'Pescatarian', low_carb:'Low carb', high_protein:'High protein' };
+
+  const weight = parseFloat(document.getElementById('profWeight').value);
+  const height = parseFloat(document.getElementById('profHeight').value);
+  const bmi = calculateBMI(weight, height);
+  const conditions = getChipGroupValues(document.getElementById('profConditionChips'));
+  const allergies = getChipGroupValues(document.getElementById('profAllergyChips'));
+  const meds = getMedicationValues();
+
+  const rows = [
+    { label:'Name', value: document.getElementById('profName').value.trim() || '—', step:0 },
+    { label:'Age', value: document.getElementById('profAge').value || '—', step:0 },
+    { label:'Gender', value: genderLabels[getChipGroupValues(document.getElementById('profGenderChips'))[0]] || '—', step:0 },
+    { label:'Location', value: document.getElementById('profLocation').value.trim() || '—', step:0 },
+    { label:'Weight / Height', value: `${weight || '—'} kg / ${height || '—'} cm`, step:1 },
+    { label:'BMI', value: bmi ? `${bmi.toFixed(1)} (${getBMICategory(bmi).label})` : '—', step:1 },
+    { label:'Activity level', value: activityLabels[getChipGroupValues(document.getElementById('profActivityChips'))[0]] || '—', step:2 },
+    { label:'Health conditions', value: conditions.includes('none') || conditions.length === 0 ? 'None' : conditions.join(', '), step:3 },
+    { label:'Allergies', value: allergies.includes('none') || allergies.length === 0 ? 'None' : allergies.join(', '), step:4 },
+    { label:'Medications', value: meds.length === 0 ? 'None' : meds.join('; '), step:5 },
+    { label:'Dietary preference', value: dietLabels[getChipGroupValues(document.getElementById('profDietChips'))[0]] || '—', step:6 },
+    { label:'Goal', value: goalLabels[getChipGroupValues(document.getElementById('profGoalChips'))[0]] || '—', step:7 },
+    { label:'Target weight', value: `${document.getElementById('profTargetWeight').value || '—'} kg`, step:7 },
+  ];
+
+  document.getElementById('reviewSummaryGrid').innerHTML = rows.map(r => `
+    <div class="review-item">
+      <span class="ri-label">${r.label}</span>
+      <span><span class="ri-value">${r.value}</span><span class="review-edit-link" data-jump-step="${r.step}">Edit</span></span>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('[data-jump-step]').forEach(el => {
+    el.addEventListener('click', () => goToWizardStep(parseInt(el.dataset.jumpStep, 10)));
+  });
+}
+
+function saveWizardProfile(){
+  const name = document.getElementById('profName').value.trim();
+  const existing = Store.get('profileData', getDefaultProfileData());
+  const data = {
+    name,
+    age: parseInt(document.getElementById('profAge').value, 10) || existing.age,
+    gender: getChipGroupValues(document.getElementById('profGenderChips')),
+    location: document.getElementById('profLocation').value.trim() || existing.location,
+    weight: parseFloat(document.getElementById('profWeight').value) || existing.weight,
+    height: parseFloat(document.getElementById('profHeight').value) || existing.height,
+    activity: getChipGroupValues(document.getElementById('profActivityChips')),
+    conditions: getChipGroupValues(document.getElementById('profConditionChips')),
+    allergies: getChipGroupValues(document.getElementById('profAllergyChips')),
+    medications: getMedicationValues(),
+    diet: getChipGroupValues(document.getElementById('profDietChips')),
+    goal: getChipGroupValues(document.getElementById('profGoalChips')),
+    targetWeight: parseFloat(document.getElementById('profTargetWeight').value) || existing.targetWeight,
+    photo: existing.photo
+  };
+  Store.set('profileData', data);
+  Store.set('profile', { name: data.name });
+  document.getElementById('profileHeroName').textContent = data.name;
+  const dashGreeting = document.getElementById('dashGreeting');
+  if(dashGreeting) dashGreeting.textContent = `Habari, ${data.name} 👋`;
+  const topbarName = document.getElementById('topbarName');
+  if(topbarName) topbarName.textContent = data.name;
+  renderProfileHeroTags(data);
+  showToast('Profile saved successfully.');
+}
+
+function loadProfileIntoForm(){
+  const data = Store.get('profileData', getDefaultProfileData());
+  document.getElementById('profName').value = data.name;
+  document.getElementById('profAge').value = data.age;
+  document.getElementById('profLocation').value = data.location;
+  document.getElementById('profWeight').value = data.weight;
+  document.getElementById('profHeight').value = data.height;
+  document.getElementById('profTargetWeight').value = data.targetWeight;
+  setChipGroupValues(document.getElementById('profGenderChips'), data.gender || ['female']);
+  setChipGroupValues(document.getElementById('profActivityChips'), data.activity || ['moderate']);
+  setChipGroupValues(document.getElementById('profGoalChips'), data.goal);
+  setChipGroupValues(document.getElementById('profDietChips'), data.diet);
+  setChipGroupValues(document.getElementById('profAllergyChips'), data.allergies);
+  setChipGroupValues(document.getElementById('profConditionChips'), data.conditions);
+
+  document.getElementById('medicationRows').innerHTML = '';
+  medicationRowCount = 0;
+  const hasMeds = data.medications && data.medications.length > 0;
+  document.getElementById('profMedsNoneCheckbox').checked = !hasMeds;
+  document.getElementById('medicationListContainer').style.display = hasMeds ? 'block' : 'none';
+  if(hasMeds) data.medications.forEach(m => addMedicationRow(m));
+
+  document.getElementById('profileHeroName').textContent = data.name;
+  document.getElementById('profileAvatarBig').textContent = data.name.charAt(0).toUpperCase();
+  if(data.photo){
+    document.getElementById('profileAvatarBig').innerHTML = `<img src="${data.photo}" alt="${data.name}">`;
+  }
+  renderProfileHeroTags(data);
+}
+
+function renderProfileHeroTags(data){
+  const goalLabels = { lose:'Lose weight', maintain:'Maintain', gain:'Gain weight', muscle:'Build muscle' };
+  const wrap = document.getElementById('profileHeroTags');
+  const tags = [`<span><i class="fa-solid fa-bullseye"></i> ${goalLabels[data.goal[0]] || 'Maintain'}</span>`];
+  if(!data.conditions.includes('none') && data.conditions.length > 0){
+    tags.push(`<span><i class="fa-solid fa-heart-pulse"></i> ${data.conditions.length} condition${data.conditions.length > 1 ? 's' : ''} tracked</span>`);
+  }
+  if(data.medications && data.medications.length > 0){
+    tags.push(`<span><i class="fa-solid fa-pills"></i> ${data.medications.length} medication${data.medications.length > 1 ? 's' : ''}</span>`);
+  }
+  wrap.innerHTML = tags.join('');
+}
+
+function initProfile(){
+  if(!document.getElementById('page-profile')) return;
+
+  [document.getElementById('profGenderChips'), document.getElementById('profActivityChips'),
+   document.getElementById('profGoalChips'), document.getElementById('profDietChips'),
+   document.getElementById('profAllergyChips'), document.getElementById('profConditionChips')].forEach(initChipGroup);
+
+  initMedicationStep();
+  loadProfileIntoForm();
+  goToWizardStep(0);
+
+  document.getElementById('profWeight').addEventListener('input', updateBMIDisplay);
+  document.getElementById('profHeight').addEventListener('input', updateBMIDisplay);
+
+  document.getElementById('profilePhotoEditBtn').addEventListener('click', () => {
+    document.getElementById('profilePhotoInput').click();
+  });
+
+  document.getElementById('profilePhotoInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      document.getElementById('profileAvatarBig').innerHTML = `<img src="${ev.target.result}" alt="Profile photo">`;
+      const data = Store.get('profileData', getDefaultProfileData());
+      data.photo = ev.target.result;
+      Store.set('profileData', data);
+      showToast('Profile photo updated.');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.querySelectorAll('.wizard-step-dot').forEach(dot => {
+    dot.addEventListener('click', () => goToWizardStep(parseInt(dot.dataset.step, 10)));
+  });
+
+  document.getElementById('wizardBackBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    goToWizardStep(wizardCurrentStep - 1);
+  });
+
+  document.getElementById('wizardNextBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    if(!validateCurrentStep()) return;
+    if(wizardCurrentStep === wizardTotalSteps - 1){
+      saveWizardProfile();
+    } else {
+      goToWizardStep(wizardCurrentStep + 1);
+    }
+  });
+
+  document.getElementById('profileWizardForm').addEventListener('submit', (e) => e.preventDefault());
+}
+
+// ===== CHATBOT =====
+const chatKnowledge = [
+  { keys:['weight loss','lose weight','slim'], reply:"For healthy weight loss, aim for a moderate calorie deficit — about 300–500 kcal below your maintenance level." },
+  { keys:['diabetes','diabetic','blood sugar'], reply:"For diabetes-friendly eating, choose high-fibre carbs in moderate portions — mukimo, githeri, and brown rice are better than white rice alone." },
+  { keys:['water','hydration','how much water'], reply:"Most adults should aim for about 2 to 2.5 litres of water a day — roughly 8 glasses." },
+];
+
+function findBotReply(text){
+  const lower = text.toLowerCase();
+  for(const entry of chatKnowledge){
+    if(entry.keys.some(k => lower.includes(k))) return entry.reply;
+  }
+  return "I'm still learning that one. Try asking me about weight loss, diabetes, or hydration.";
+}
+
+function formatTime(date){ return date.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }); }
+
+function addChatMessage(text, sender){
+  const body = document.getElementById('chatbotBody');
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg ' + sender;
+  msg.innerHTML = `<div class="bubble">${text}</div><span class="timestamp">${formatTime(new Date())}</span>`;
+  body.appendChild(msg);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTypingIndicator(){
+  const body = document.getElementById('chatbotBody');
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.id = 'typingIndicator';
+  typing.innerHTML = `<div class="bubble typing-dots"><span></span><span></span><span></span></div>`;
+  body.appendChild(typing);
+  body.scrollTop = body.scrollHeight;
+}
+
+function removeTypingIndicator(){ const el = document.getElementById('typingIndicator'); if(el) el.remove(); }
+
+function sendChatMessage(text){
+  if(!text.trim()) return;
+  addChatMessage(text, 'user');
+  document.getElementById('chatbotInput').value = '';
+  showTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addChatMessage(findBotReply(text), 'bot');
+  }, 700 + Math.random() * 500);
+}
+
+function initChatbot(){
+  const fab = document.getElementById('chatbotFab');
+  const panel = document.getElementById('chatbotPanel');
+  const closeBtn = document.getElementById('chatbotClose');
+  const input = document.getElementById('chatbotInput');
+  const sendBtn = document.getElementById('chatbotSend');
+  let hasGreeted = false;
+  fab.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !hasGreeted){
+      hasGreeted = true;
+      addChatMessage("Habari! I'm your Smart Lishe assistant. Ask me about meals, weight goals, health conditions, or hydration.", 'bot');
+    }
+  });
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+  sendBtn.addEventListener('click', () => sendChatMessage(input.value));
+  input.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendChatMessage(input.value); });
+  document.querySelectorAll('.chip-suggestion').forEach(chip => {
+    chip.addEventListener('click', () => sendChatMessage(chip.dataset.q));
+  });
+}
+
+// ===== NOTIFICATIONS =====
+function initNotifications(){
+  document.getElementById('notifBtn').addEventListener('click', () => showToast("You're all caught up — no new notifications."));
+}
+
+// ===== GLOBAL SEARCH =====
+function initGlobalSearch(){
+  document.getElementById('globalSearch').addEventListener('keypress', (e) => {
+    if(e.key === 'Enter' && e.target.value.trim()) showToast(`Searching for "${e.target.value.trim()}"...`);
+  });
+}
+
+// ===== BOOT =====
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initSidebar();
+  initScrollTop();
+  initProfile();
+  initChatbot();
+  initNotifications();
+  initGlobalSearch();
+});
+</script>
+</body>
+</html>

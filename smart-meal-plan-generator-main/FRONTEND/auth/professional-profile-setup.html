@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Profile — Smart Lishe</title>
+  <link rel="stylesheet" href="auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .profile-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      padding: 20px;
+    }
+    .profile-card {
+      max-width: 620px;
+      width: 100%;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--basket-line);
+      padding: 48px 40px;
+      box-shadow: var(--shadow-lift);
+    }
+    @media(max-width: 480px) { .profile-card { padding: 28px 20px; } }
+    .profile-brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .profile-brand .brand-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--char), var(--maize-deep));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .profile-brand h1 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    .profile-brand p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+    }
+    .pro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(193, 68, 14, 0.08);
+      color: var(--char);
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid rgba(193, 68, 14, 0.2);
+    }
+    .approval-banner {
+      display: flex;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(232, 163, 61, 0.08);
+      border: 1px solid rgba(232, 163, 61, 0.2);
+      margin-bottom: 20px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .approval-banner i { color: var(--maize-deep); font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+    .approval-banner strong { display: block; color: var(--text-primary); margin-bottom: 3px; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 24px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title i { color: var(--accent-3); }
+    .field-group { margin-bottom: 16px; }
+    .field-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+    .field-group input, .field-group select, .field-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--basket-line);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+      outline: none;
+      border-color: var(--char);
+      background: var(--bg-elevated);
+    }
+    .field-group textarea { resize: vertical; min-height: 80px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+    .chip-multiselect {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .chip-multiselect button {
+      padding: 8px 15px;
+      border-radius: 20px;
+      border: 1px solid var(--basket-line);
+      background: var(--bg-card);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .chip-multiselect button:hover { border-color: var(--char); color: var(--char); }
+    .chip-multiselect button.selected {
+      background: var(--char);
+      color: #fff;
+      border-color: var(--char);
+    }
+    .avatar-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      border: 2px dashed var(--basket-line);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .avatar-upload:hover {
+      border-color: var(--char);
+      background: rgba(193, 68, 14, 0.04);
+    }
+    .avatar-upload input[type=file] { display: none; }
+    .avatar-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--char), var(--maize));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.8rem;
+      overflow: hidden;
+      position: relative;
+      border: 3px solid var(--bg-elevated);
+      box-shadow: var(--shadow-soft);
+    }
+    .avatar-preview img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .avatar-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+    .upload-zone {
+      border: 2px dashed var(--basket-line);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: var(--bg-card);
+    }
+    .upload-zone:hover {
+      border-color: var(--char);
+      background: var(--bg-elevated);
+    }
+    .upload-zone input[type=file] { display: none; }
+    .upload-zone i { font-size: 1.8rem; color: var(--char); margin-bottom: 8px; display: block; }
+    .upload-zone p { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
+    .file-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .file-pill i { color: var(--char); }
+    .verification-status {
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--basket-line);
+      margin-bottom: 16px;
+    }
+    .verification-status .vs-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .verification-status .vs-dot.pending { background: var(--maize-deep); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      width: 100%;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+    .btn-accent {
+      background: var(--char);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(193, 68, 14, 0.28);
+    }
+    .btn-accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(193, 68, 14, 0.36);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .toast {
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      border-left: 4px solid var(--sukuma);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lift);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.87rem;
+      font-weight: 600;
+      animation: toastIn 0.35s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .toast.error { border-left-color: var(--char); }
+    .toast i { font-size: 1.1rem; color: var(--sukuma); }
+    .toast.error i { color: var(--char); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .btn-loading .btn-text { visibility: hidden; }
+    .btn-loading .spinner-small {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 16px;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <div class="profile-wrapper">
+    <div class="profile-card">
+      <!-- Brand -->
+      <div class="profile-brand">
+        <div class="brand-icon"><i class="fa-solid fa-user-doctor"></i></div>
+        <h1>Professional Profile</h1>
+        <p>Set up your professional practice profile.</p>
+        <div style="margin-top:8px;"><span class="pro-badge"><i class="fa-solid fa-shield-halved"></i> Professional Account</span></div>
+      </div>
+
+      <!-- Back to Register -->
+      <a href="register.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Registration
+      </a>
+
+      <!-- Approval Notice -->
+      <div class="approval-banner">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+          <strong>Account pending admin approval</strong>
+          After you submit this form, our team will review your credentials and professional details within 1–3 business days. You will receive an email notification once your account is approved and active.
+        </div>
+      </div>
+
+      <form id="professionalProfileForm" novalidate>
+        <!-- Professional Information -->
+        <div class="section-title"><i class="fa-regular fa-circle-user"></i> Professional Information</div>
+
+        <!-- Profile Photo -->
+        <div class="field-group">
+          <label>Profile Photo</label>
+          <div class="avatar-upload" id="proAvatarUpload">
+            <input type="file" id="proPhoto" accept="image/*">
+            <div class="avatar-preview" id="proAvatarPreview">
+              <span id="proAvatarInitials">?</span>
+            </div>
+            <span class="avatar-label">Click to upload a photo</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="proFullName">Full Name <span style="color:var(--char);">*</span></label>
+          <input type="text" id="proFullName" placeholder="Dr. Jane Wanjiru" autocomplete="name" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="proTitle">Professional Title <span style="color:var(--char);">*</span></label>
+            <select id="proTitle" required>
+              <option value="">Select your title</option>
+              <option value="Nutritionist">Nutritionist</option>
+              <option value="Dietitian">Dietitian</option>
+              <option value="Clinical Nutritionist">Clinical Nutritionist</option>
+              <option value="Sports Nutritionist">Sports Nutritionist</option>
+              <option value="Fitness Trainer">Fitness Trainer</option>
+              <option value="Health Coach">Health Coach</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Wellness Consultant">Wellness Consultant</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="proSpecialization">Specialization <span style="color:var(--char);">*</span></label>
+            <select id="proSpecialization" required>
+              <option value="">Select your specialization</option>
+              <option value="Weight Management">Weight Management</option>
+              <option value="Sports Nutrition">Sports Nutrition</option>
+              <option value="Diabetes">Diabetes</option>
+              <option value="Pregnancy">Pregnancy</option>
+              <option value="Pediatric Nutrition">Pediatric Nutrition</option>
+              <option value="Clinical Nutrition">Clinical Nutrition</option>
+              <option value="Cardiovascular Health">Cardiovascular Health</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="proBio">Professional Biography <span style="color:var(--char);">*</span></label>
+          <textarea id="proBio" placeholder="Tell clients about yourself, your approach, and experience..." rows="4" required></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="proExperience">Years of Experience <span style="color:var(--char);">*</span></label>
+            <select id="proExperience" required>
+              <option value="">Select</option>
+              <option value="0-1">Less than 1 year</option>
+              <option value="1-3">1-3 years</option>
+              <option value="3-5">3-5 years</option>
+              <option value="5-10">5-10 years</option>
+              <option value="10+">10+ years</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="proLicense">License / Registration Number <span style="color:var(--char);">*</span></label>
+            <input type="text" id="proLicense" placeholder="e.g. KDA/RD/2019/00234" required>
+          </div>
+        </div>
+
+        <!-- Areas of Expertise -->
+        <div class="section-title"><i class="fa-regular fa-star"></i> Areas of Expertise</div>
+
+        <div class="field-group">
+          <div class="chip-multiselect" id="expertiseChips" data-mode="multi">
+            <button type="button" data-val="weight-management" class="selected">Weight Management</button>
+            <button type="button" data-val="sports-nutrition">Sports Nutrition</button>
+            <button type="button" data-val="diabetes">Diabetes</button>
+            <button type="button" data-val="pregnancy">Pregnancy</button>
+            <button type="button" data-val="pediatric">Pediatric Nutrition</button>
+            <button type="button" data-val="clinical">Clinical Nutrition</button>
+            <button type="button" data-val="cardiovascular">Cardiovascular Health</button>
+          </div>
+        </div>
+
+        <!-- Services Offered -->
+        <div class="section-title"><i class="fa-regular fa-handshake"></i> Services Offered</div>
+
+        <div class="field-group">
+          <div class="chip-multiselect" id="servicesChips" data-mode="multi">
+            <button type="button" data-val="meal-planning" class="selected">Meal Planning</button>
+            <button type="button" data-val="nutrition-counseling">Nutrition Counseling</button>
+            <button type="button" data-val="fitness-coaching">Fitness Coaching</button>
+            <button type="button" data-val="sports-nutrition">Sports Nutrition</button>
+            <button type="button" data-val="disease-management">Disease Management</button>
+            <button type="button" data-val="consultation">Consultation Services</button>
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="section-title"><i class="fa-regular fa-calendar"></i> Availability</div>
+
+        <div class="field-group">
+          <div class="chip-multiselect" id="availabilityChips" data-mode="multi">
+            <button type="button" data-val="weekdays" class="selected">Weekdays</button>
+            <button type="button" data-val="weekends">Weekends</button>
+            <button type="button" data-val="morning">Morning</button>
+            <button type="button" data-val="afternoon">Afternoon</button>
+            <button type="button" data-val="evening">Evening</button>
+          </div>
+        </div>
+
+        <!-- Consultation Information -->
+        <div class="section-title"><i class="fa-regular fa-money-bill"></i> Consultation Information</div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="proFee">Consultation Fee (KES)</label>
+            <input type="number" id="proFee" placeholder="e.g. 2500" step="100" min="0">
+          </div>
+          <div class="field-group">
+            <label for="proDuration">Session Duration</label>
+            <select id="proDuration">
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60" selected>60 minutes</option>
+              <option value="90">90 minutes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="chip-multiselect" id="sessionTypeChips" data-mode="multi">
+            <button type="button" data-val="virtual" class="selected">Virtual Sessions</button>
+            <button type="button" data-val="physical">Physical Sessions</button>
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="section-title"><i class="fa-regular fa-language"></i> Languages</div>
+
+        <div class="field-group">
+          <div class="chip-multiselect" id="languageChips" data-mode="multi">
+            <button type="button" data-val="english" class="selected">English</button>
+            <button type="button" data-val="swahili">Swahili</button>
+            <button type="button" data-val="french">French</button>
+            <button type="button" data-val="other">Other</button>
+          </div>
+        </div>
+
+        <!-- Document Upload -->
+        <div class="section-title"><i class="fa-regular fa-file"></i> Supporting Documents</div>
+
+        <div class="field-group">
+          <label>Professional License / Certificate <span style="color:var(--char);">*</span></label>
+          <div class="upload-zone" id="licenseUpload">
+            <input type="file" id="licenseDoc" accept=".pdf,.jpg,.jpeg,.png">
+            <i class="fa-regular fa-file-certificate"></i>
+            <p><strong>Click to upload</strong> — PDF, JPG or PNG · Max 5 MB</p>
+            <div class="file-pill" id="licensePill" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>National ID or Passport <span style="color:var(--char);">*</span></label>
+          <div class="upload-zone" id="idUpload">
+            <input type="file" id="idDoc" accept=".pdf,.jpg,.jpeg,.png">
+            <i class="fa-regular fa-id-card"></i>
+            <p><strong>Click to upload</strong> — PDF, JPG or PNG · Max 5 MB</p>
+            <div class="file-pill" id="idPill" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Verification Status -->
+        <div class="section-title"><i class="fa-regular fa-shield-halved"></i> Verification Status</div>
+
+        <div class="verification-status">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="vs-dot pending"></span>
+            <div>
+              <div style="font-weight:700;font-size:0.85rem;">Pending Verification</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);">Your profile will be reviewed by our admin team after submission</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button - Redirects to Verification Page -->
+        <button type="submit" class="btn btn-accent" id="submitBtn">
+          <span class="btn-text"><i class="fa-regular fa-paper-plane"></i> Submit for Verification</span>
+          <span class="spinner-small" style="display: none;"></span>
+        </button>
+
+        <p style="text-align:center;margin-top:12px;font-size:0.75rem;color:var(--text-muted);">
+          <i class="fa-regular fa-clock"></i> Verification typically takes 1-3 business days
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastStack"></div>
+
+  <script>
+    /* ============================================================
+       SMART LISHE — PROFESSIONAL PROFILE SETUP
+       Redirects to: verification-waiting.html
+       ============================================================ */
+
+    const Store = {
+      get(k, fb = null) { try { const r = localStorage.getItem('smartlishe_' + k); return r ? JSON.parse(r) : fb; } catch(e) { return fb; } },
+      set(k, v) { try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; } catch(e) { return false; } }
+    };
+
+    function showToast(msg, type = 'success') {
+      const stack = document.getElementById('toastStack');
+      const old = document.querySelector('.toast');
+      if(old) old.remove();
+      const t = document.createElement('div');
+      t.className = 'toast' + (type === 'error' ? ' error' : '');
+      t.style.cssText = 'position:fixed;bottom:26px;right:26px;z-index:999;max-width:340px;';
+      const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+      t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; setTimeout(() => t.remove(), 350); }, 3500);
+    }
+
+    // ---- Chip Groups ----
+    function initChips(container) {
+      const mode = container.dataset.mode || 'single';
+      container.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if(mode === 'single') {
+            container.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+          } else {
+            this.classList.toggle('selected');
+          }
+        });
+      });
+    }
+
+    function getChipVals(container) {
+      return [...container.querySelectorAll('button.selected')].map(b => b.dataset.val);
+    }
+
+    // ---- Avatar Upload ----
+    const proAvatarWrap = document.getElementById('proAvatarUpload');
+    const proPhotoInput = document.getElementById('proPhoto');
+    const proAvatarPreview = document.getElementById('proAvatarPreview');
+    const proAvatarInitials = document.getElementById('proAvatarInitials');
+
+    proAvatarWrap.addEventListener('click', () => proPhotoInput.click());
+    proPhotoInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        proAvatarInitials.style.display = 'none';
+        let img = proAvatarPreview.querySelector('img');
+        if(!img) { img = document.createElement('img'); img.alt = 'Profile photo'; proAvatarPreview.appendChild(img); }
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function updateProInitials() {
+      const name = document.getElementById('proFullName').value.trim();
+      const parts = name.split(' ');
+      const first = parts[0] || '';
+      const last = parts[parts.length - 1] || '';
+      proAvatarInitials.textContent = ((first[0] || '') + (last[0] || '')).toUpperCase() || '?';
+    }
+    document.getElementById('proFullName').addEventListener('input', updateProInitials);
+
+    // ---- File Upload Zones ----
+    function initUploadZone(zoneId, inputId, pillId) {
+      const zone = document.getElementById(zoneId);
+      const input = document.getElementById(inputId);
+      const pill = document.getElementById(pillId);
+      zone.addEventListener('click', () => input.click());
+      input.addEventListener('change', () => {
+        const file = input.files[0];
+        if(!file) return;
+        pill.style.display = 'inline-flex';
+        pill.innerHTML = `<i class="fa-regular fa-file-circle-check"></i> ${file.name} (${(file.size/1024).toFixed(0)} KB)`;
+        zone.style.borderColor = 'var(--char)';
+      });
+    }
+
+    // ---- Form Submit - Redirects to Verification Page ----
+    document.getElementById('professionalProfileForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('proFullName').value.trim();
+      const title = document.getElementById('proTitle').value;
+      const specialization = document.getElementById('proSpecialization').value;
+      const bio = document.getElementById('proBio').value.trim();
+      const experience = document.getElementById('proExperience').value;
+      const license = document.getElementById('proLicense').value.trim();
+
+      if(!fullName) { showToast('Please enter your full name.', 'error'); return; }
+      if(!title) { showToast('Please select your professional title.', 'error'); return; }
+      if(!specialization) { showToast('Please select your specialization.', 'error'); return; }
+      if(!bio) { showToast('Please write a professional biography.', 'error'); return; }
+      if(!experience) { showToast('Please select your years of experience.', 'error'); return; }
+      if(!license) { showToast('Please enter your license number.', 'error'); return; }
+
+      const licenseFile = document.getElementById('licenseDoc').files[0];
+      const idFile = document.getElementById('idDoc').files[0];
+      if(!licenseFile) { showToast('Please upload your professional license.', 'error'); return; }
+      if(!idFile) { showToast('Please upload your national ID or passport.', 'error'); return; }
+
+      const expertise = getChipVals(document.getElementById('expertiseChips'));
+      if(expertise.length === 0) { showToast('Please select at least one area of expertise.', 'error'); return; }
+
+      const profileData = {
+        fullName: fullName,
+        title: title,
+        specialization: specialization,
+        bio: bio,
+        experience: experience,
+        license: license,
+        expertise: expertise,
+        services: getChipVals(document.getElementById('servicesChips')),
+        availability: getChipVals(document.getElementById('availabilityChips')),
+        fee: parseFloat(document.getElementById('proFee').value) || null,
+        duration: document.getElementById('proDuration').value,
+        sessionTypes: getChipVals(document.getElementById('sessionTypeChips')),
+        languages: getChipVals(document.getElementById('languageChips')),
+        licenseDocName: licenseFile.name,
+        idDocName: idFile.name,
+        role: 'Professional',
+        status: 'pending_verification',
+        submittedAt: new Date().toISOString()
+      };
+
+      Store.set('professionalProfile', profileData);
+      Store.set('profileComplete', true);
+
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('btn-loading');
+      btn.querySelector('.spinner-small').style.display = 'block';
+      btn.disabled = true;
+
+      showToast('Profile submitted for verification!');
+
+      // --- REDIRECT TO VERIFICATION WAITING PAGE ---
+      setTimeout(() => {
+        window.location.href = 'verification-waiting.html';
+      }, 800);
+    });
+
+    // ---- Init ----
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.chip-multiselect').forEach(initChips);
+      updateProInitials();
+      initUploadZone('licenseUpload', 'licenseDoc', 'licensePill');
+      initUploadZone('idUpload', 'idDoc', 'idPill');
+
+      // Pre-fill from registration data
+      const firstName = localStorage.getItem('firstName') || '';
+      const lastName = localStorage.getItem('lastName') || '';
+      if(firstName || lastName) {
+        document.getElementById('proFullName').value = (firstName + ' ' + lastName).trim();
+        updateProInitials();
+      }
+
+      // Pre-fill from stored profile
+      const existing = Store.get('professionalProfile', {});
+      if(existing.fullName) {
+        document.getElementById('proFullName').value = existing.fullName;
+        if(existing.title) document.getElementById('proTitle').value = existing.title;
+        if(existing.specialization) document.getElementById('proSpecialization').value = existing.specialization;
+        if(existing.bio) document.getElementById('proBio').value = existing.bio;
+        if(existing.experience) document.getElementById('proExperience').value = existing.experience;
+        if(existing.license) document.getElementById('proLicense').value = existing.license;
+        if(existing.fee) document.getElementById('proFee').value = existing.fee;
+        if(existing.duration) document.getElementById('proDuration').value = existing.duration;
+        updateProInitials();
+      }
+    });
+  </script>
+</body>
+</html>

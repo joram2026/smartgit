@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Conditions — Smart Lishe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Kenya</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-section-divider"><span>Plan &amp; Discover</span><i class="fa-solid fa-layer-group"></i></div>
+      <div class="service-group open" data-group="plan">
+        <button type="button" class="service-group-header" data-group-toggle="plan">
+          <div class="sg-icon-wrap" style="background:var(--sukuma);"><i class="fa-solid fa-bowl-food"></i></div>
+          <span class="sg-title">Plan &amp; Discover</span>
+          <span class="sg-count">5</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="meal-generator.html" class="nav-link"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Meal Generator</a>
+          <a href="nutriscan.html" class="nav-link"><i class="fa-solid fa-camera-retro"></i> NutriScan</a>
+          <a href="health-conditions.html" class="nav-link active"><i class="fa-solid fa-heart-pulse"></i> Health Conditions</a>
+          <a href="meal-planner.html" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Meal Planner</a>
+          <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        </div>
+      </div>
+      <div class="nav-section-divider"><span>Track &amp; Achieve</span><i class="fa-solid fa-chart-simple"></i></div>
+      <div class="service-group" data-group="track">
+        <button type="button" class="service-group-header" data-group-toggle="track">
+          <div class="sg-icon-wrap" style="background:var(--char);"><i class="fa-solid fa-chart-simple"></i></div>
+          <span class="sg-title">Track &amp; Achieve</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="goal-tracker.html" class="nav-link"><i class="fa-solid fa-bullseye"></i> Goal Tracker</a>
+          <a href="water-tracker.html" class="nav-link"><i class="fa-solid fa-droplet"></i> Water Tracker</a>
+          <a href="analytics.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Nutrition Analytics</a>
+          <a href="shopping-list.html" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Shopping List</a>
+        </div>
+      </div>
+      <div class="nav-section-divider"><span>Profile</span><i class="fa-solid fa-user-gear"></i></div>
+      <div class="service-group" data-group="profile">
+        <button type="button" class="service-group-header" data-group-toggle="profile">
+          <div class="sg-icon-wrap" style="background:#3D6FA8;"><i class="fa-solid fa-user"></i></div>
+          <span class="sg-title">Profile</span>
+          <span class="sg-count">4</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="profile.html" class="nav-link"><i class="fa-solid fa-id-card"></i> User Profile</a>
+          <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+          <a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+          <a href="contact.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
+        </div>
+      </div>
+
+      <!-- ===== MEMBERSHIP ===== -->
+      <div class="nav-section-divider"><span>Membership</span><i class="fa-solid fa-crown"></i></div>
+      <div class="service-group" data-group="membership">
+        <button type="button" class="service-group-header" data-group-toggle="membership">
+          <div class="sg-icon-wrap" style="background:var(--accent-2);"><i class="fa-solid fa-crown"></i></div>
+          <span class="sg-title">Membership</span>
+          <span class="sg-count">9</span>
+          <span class="sg-dropdown-hint"><i class="fa-solid fa-chevron-down sg-chevron"></i></span>
+        </button>
+        <div class="service-group-body">
+          <a href="membership/membership.html" class="nav-link"><i class="fa-solid fa-id-card"></i> Current Membership</a>
+          <a href="membership/pricing.html" class="nav-link"><i class="fa-solid fa-tags"></i> Pricing Plans</a>
+          <a href="membership/benefits.html" class="nav-link"><i class="fa-solid fa-gift"></i> Benefits</a>
+          <a href="membership/billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+          <a href="membership/invoices.html" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Invoices</a>
+          <a href="membership/upgrade.html" class="nav-link"><i class="fa-solid fa-arrow-trend-up"></i> Upgrade Plan</a>
+          <a href="membership/history.html" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Subscription History</a>
+          <a href="membership/professional-access.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> Professional Access</a>
+          <a href="membership/clinic-access.html" class="nav-link"><i class="fa-solid fa-hospital"></i> Clinic Access</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); showToast('Logging out...');" style="color:var(--char);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search recipes, meals, conditions...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <a href="profile.html" class="profile-chip" style="cursor:pointer;">
+          <div class="avatar" id="topbarAvatar">W</div>
+          <span class="label" id="topbarName">Wanjiru</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="page active">
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="section-eyebrow">Health Conditions</div>
+          <h2>Nutrition guidance built around what's already in your kitchen</h2>
+          <p>Pick a condition below for foods to favour, foods to limit, sample meals, and practical tips — all using ingredients you can find at your local market.</p>
+        </div>
+
+        <div class="condition-tabs" id="conditionTabs"></div>
+        <div id="conditionDetailArea"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<button class="chatbot-fab" id="chatbotFab"><i class="fa-solid fa-robot"></i><span class="ping"></span></button>
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chatbot-head">
+    <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="info"><strong>Smart Lishe Assistant</strong><span>Online</span></div>
+    <button class="chatbot-close" id="chatbotClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chatbot-body" id="chatbotBody"></div>
+  <div class="chatbot-suggestions" id="chatbotSuggestions">
+    <button class="chip-suggestion" data-q="weight loss">Weight loss tips</button>
+    <button class="chip-suggestion" data-q="diabetes meal">Diabetes-friendly meal</button>
+    <button class="chip-suggestion" data-q="water intake">How much water?</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbotInput" placeholder="Ask about meals, health, recipes...">
+    <button class="chatbot-send" id="chatbotSend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ===== STORE =====
+const Store = {
+  get(key, fallback){
+    try{
+      const raw = localStorage.getItem('smartlishe_' + key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){ return fallback; }
+  },
+  set(key, value){
+    try{
+      localStorage.setItem('smartlishe_' + key, JSON.stringify(value));
+      return true;
+    }catch(e){ return false; }
+  }
+};
+
+// ===== TOAST =====
+function showToast(message, type = 'success'){
+  const stack = document.getElementById('toastStack');
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+  stack.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// ===== THEME =====
+function initTheme(){
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  document.getElementById('themeIcon').className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const current = document.body.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', next);
+    document.getElementById('themeIcon').className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    Store.set('theme', next);
+  });
+}
+
+// ===== SIDEBAR =====
+function initSidebar(){
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  hamburger.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  document.querySelectorAll('.service-group-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const group = header.closest('.service-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.service-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen) group.classList.add('open');
+    });
+  });
+  document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', closeSidebar));
+}
+
+// ===== SCROLL TOP =====
+function initScrollTop(){
+  const btn = document.getElementById('scrollTopBtn');
+  window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 400));
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+}
+
+// ===== HEALTH CONDITIONS =====
+const healthConditions = [
+  { id:'diabetes', name:'Diabetes', icon:'fa-droplet', color:'#3D6FA8',
+    summary:'Managing blood sugar through portion control and lower-glycaemic carbohydrate choices.',
+    good:['Sukuma wiki','Managu','Terere','Ndengu (green grams)','Brown rice','Mukimo','Arrowroots','Avocado','Tilapia','Groundnuts'],
+    avoid:['White bread','Sugary sodas','Mandazi','Refined white rice in large portions','Sweetened tea','Cakes and pastries'],
+    meals:['Ugali (small portion) with sukuma wiki and omena','Ndengu stew with one chapati','Mukimo with grilled tilapia','Githeri with avocado'],
+    tip:'Spread carbohydrates evenly across the day rather than eating a large portion in one sitting — this helps prevent blood sugar spikes.' },
+  { id:'hypertension', name:'Hypertension', icon:'fa-heart-pulse', color:'#C1440E',
+    summary:'Lowering sodium intake while increasing potassium-rich foods to support healthy blood pressure.',
+    good:['Bananas','Avocado','Sweet potatoes','Managu','Terere','Tilapia (grilled, not fried)','Garlic','Beetroot','Pumpkin','Oats'],
+    avoid:['Maggi cubes in excess','Salted crisps','Smoked or salted fish','Processed sausages','Pickles','Excess table salt'],
+    meals:['Grilled tilapia with steamed vegetables','Sweet potato and egg breakfast','Plain ugali with skuma (light salt) and boiled egg','Lentil salad bowl'],
+    tip:'Try cooking with herbs, garlic, ginger, and lemon instead of relying on salt or stock cubes for flavour.' },
+  { id:'obesity', name:'Obesity', icon:'fa-weight-scale', color:'#8B5CB8',
+    summary:'Creating a moderate calorie deficit through portion awareness and more vegetables, less deep-fried food.',
+    good:['Steamed cabbage','Sukuma wiki','Managu','Ndengu','Boiled arrowroots','Grilled fish','Boiled eggs','Cucumber','Tomatoes','Plain water'],
+    avoid:['Deep-fried chips','Mandazi','Soda and sugary juices','Excess cooking oil','Fried samosas','Bhajia'],
+    meals:['Steamed cabbage and beans with rice','Grilled tilapia with steamed vegetables','Lentil salad bowl','Plain ugali with skuma and boiled egg (smaller portion)'],
+    tip:'Focus on filling half your plate with vegetables before adding starch and protein — it naturally controls portions.' },
+  { id:'heart', name:'Heart Disease', icon:'fa-heart-circle-check', color:'#E0612A',
+    summary:'Prioritising unsaturated fats and fibre while limiting saturated fat and excess salt.',
+    good:['Avocado','Tilapia and omena (omega-3 sources)','Groundnuts (unsalted)','Oats','Beans and ndengu','Garlic','Olive oil in small amounts','Vegetables generally'],
+    avoid:['Fatty red meat in excess','Deep-fried foods','Butter and ghee in excess','Processed meats','Excess salt','Coconut cream in large amounts'],
+    meals:['Tilapia in coconut sauce (light) with rice','Grilled tilapia with steamed vegetables','Githeri with avocado','Lentil salad bowl'],
+    tip:'Aim for fish at least twice a week — tilapia and omena are both affordable, local sources of heart-protective omega-3 fats.' },
+  { id:'kidney', name:'Kidney Disease', icon:'fa-kidneys', color:'#2D8C82',
+    summary:'Moderating protein, sodium, and potassium intake — specifics vary, so always follow your doctor or dietitian\'s guidance.',
+    good:['White rice (in doctor-approved portions)','Cabbage','Cauliflower','Apples','Egg whites (in moderation)','Plain chapati'],
+    avoid:['Excess bananas and avocado (high potassium)','Salted snacks','Processed meats','Dark leafy greens in large amounts (high potassium)','Excess dairy'],
+    meals:['Plain rice with cabbage stir-fry','Boiled egg whites with white bread','Small portion chapati with vegetable stew'],
+    tip:'Kidney nutrition needs vary enormously by stage and individual lab results — always work directly with your doctor.' },
+  { id:'pregnancy', name:'Pregnancy', icon:'fa-baby', color:'#E8A33D',
+    summary:'Extra folate, iron, calcium, and steady energy intake to support a healthy pregnancy.',
+    good:['Managu and terere (iron and folate)','Ndengu','Omena (calcium)','Sweet potatoes','Avocado','Eggs','Milk and mursik','Arrowroots'],
+    avoid:['Raw or undercooked meat and fish','Unpasteurised milk','Excess caffeine','Alcohol','Raw eggs'],
+    meals:['Sweet potato and egg breakfast','Ndengu stew with chapati','Arrowroots with tea and groundnuts','Tilapia in coconut sauce with rice'],
+    tip:'Small, frequent meals often sit better than three large ones, especially in the first trimester.' },
+  { id:'anemia', name:'Anemia', icon:'fa-tint', color:'#A8324A',
+    summary:'Building up iron stores through iron-rich foods, paired with vitamin C to improve absorption.',
+    good:['Managu','Terere','Omena','Liver (occasionally)','Beans and ndengu','Pumpkin seeds','Oranges and tomatoes (vitamin C, aids iron absorption)'],
+    avoid:['Too much tea or coffee with meals (blocks iron absorption)','Relying only on white bread and rice for staples','Calcium supplements taken at the same time as iron-rich meals'],
+    meals:['Omena with ugali and managu','Ndengu stew with chapati','Plain ugali with skuma and boiled egg'],
+    tip:'Avoid drinking tea immediately before or after iron-rich meals — the tannins in tea can significantly reduce how much iron your body absorbs.' },
+  { id:'underweight', name:'Underweight', icon:'fa-arrow-trend-up', color:'#4A7A2A',
+    summary:'Increasing energy intake through nutrient-dense foods and more frequent meals, not just empty calories.',
+    good:['Groundnuts','Avocado','Mursik (fermented milk)','Mandazi (in moderation)','Rice and ugali in fuller portions','Beef and chicken','Eggs'],
+    avoid:['Filling up on plain water before meals','Skipping meals','Relying only on low-calorie vegetables without pairing protein and starch'],
+    meals:['Mukimo with beef stew','Nyama choma with kachumbari','Chapati with beef and vegetable stir-fry','Mandazi with spiced tea'],
+    tip:'Add an extra small meal between main meals rather than forcing larger portions at once.' },
+  { id:'cholesterol', name:'High Cholesterol', icon:'fa-vial', color:'#7A5C3E',
+    summary:'Reducing saturated and trans fat while increasing soluble fibre from beans, vegetables, and whole grains.',
+    good:['Beans and ndengu','Oats','Avocado','Tilapia and omena','Vegetables generally','Garlic','Groundnuts (unsalted, moderate)'],
+    avoid:['Deep-fried foods','Excess red meat','Full-fat dairy in large amounts','Mandazi and other fried pastries','Coconut cream in excess'],
+    meals:['Lentil salad bowl','Steamed cabbage and beans with rice','Grilled tilapia with steamed vegetables','Githeri with avocado'],
+    tip:'Beans, ndengu, and oats all contain soluble fibre that actively helps lower LDL cholesterol.' },
+];
+
+function renderConditionTabs(){
+  const tabsWrap = document.getElementById('conditionTabs');
+  if(!tabsWrap) return;
+  tabsWrap.innerHTML = healthConditions.map((c, i) => `
+    <button class="condition-tab ${i === 0 ? 'active' : ''}" data-id="${c.id}">
+      <i class="fa-solid ${c.icon}"></i> ${c.name}
+    </button>
+  `).join('');
+
+  tabsWrap.querySelectorAll('.condition-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabsWrap.querySelectorAll('.condition-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderConditionDetail(tab.dataset.id);
+    });
+  });
+}
+
+function renderConditionDetail(conditionId){
+  const condition = healthConditions.find(c => c.id === conditionId);
+  const area = document.getElementById('conditionDetailArea');
+  if(!condition || !area) return;
+
+  area.innerHTML = `
+    <div class="condition-head">
+      <div class="c-icon" style="background:${condition.color};"><i class="fa-solid ${condition.icon}"></i></div>
+      <div>
+        <h3>${condition.name}</h3>
+        <p>${condition.summary}</p>
+      </div>
+    </div>
+    <div class="condition-grid">
+      <div class="food-list-panel good">
+        <h4><i class="fa-solid fa-circle-check"></i> Foods to favour</h4>
+        <div class="food-tag-row">${condition.good.map(f => `<span class="food-tag">${f}</span>`).join('')}</div>
+      </div>
+      <div class="food-list-panel bad">
+        <h4><i class="fa-solid fa-circle-xmark"></i> Foods to limit</h4>
+        <div class="food-tag-row">${condition.avoid.map(f => `<span class="food-tag">${f}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div class="condition-meals-panel">
+      <h4><i class="fa-solid fa-bowl-food" style="color:var(--accent-3);margin-right:6px;"></i>Sample meal ideas</h4>
+      ${condition.meals.map(m => `<div class="sample-meal-chip"><i class="fa-solid fa-utensils"></i><span>${m}</span></div>`).join('')}
+    </div>
+    <div class="tip-banner">
+      <i class="fa-solid fa-lightbulb"></i>
+      <p><strong>Practical tip:</strong> ${condition.tip}</p>
+    </div>
+    <a href="meal-generator.html" class="condition-cta-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Build a full meal plan for ${condition.name.toLowerCase()} →</a>
+  `;
+}
+
+function initHealthConditions(){
+  if(!document.getElementById('conditionTabs')) return;
+  renderConditionTabs();
+  renderConditionDetail(healthConditions[0].id);
+}
+
+// ===== CHATBOT =====
+const chatKnowledge = [
+  { keys:['weight loss','lose weight','slim'], reply:"For healthy weight loss, aim for a moderate calorie deficit — about 300–500 kcal below your maintenance level." },
+  { keys:['diabetes','diabetic','blood sugar'], reply:"For diabetes-friendly eating, choose high-fibre carbs in moderate portions — mukimo, githeri, and brown rice are better than white rice alone." },
+  { keys:['water','hydration','how much water'], reply:"Most adults should aim for about 2 to 2.5 litres of water a day — roughly 8 glasses." },
+];
+
+function findBotReply(text){
+  const lower = text.toLowerCase();
+  for(const entry of chatKnowledge){
+    if(entry.keys.some(k => lower.includes(k))) return entry.reply;
+  }
+  return "I'm still learning that one. Try asking me about weight loss, diabetes, or hydration.";
+}
+
+function formatTime(date){ return date.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }); }
+
+function addChatMessage(text, sender){
+  const body = document.getElementById('chatbotBody');
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg ' + sender;
+  msg.innerHTML = `<div class="bubble">${text}</div><span class="timestamp">${formatTime(new Date())}</span>`;
+  body.appendChild(msg);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTypingIndicator(){
+  const body = document.getElementById('chatbotBody');
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.id = 'typingIndicator';
+  typing.innerHTML = `<div class="bubble typing-dots"><span></span><span></span><span></span></div>`;
+  body.appendChild(typing);
+  body.scrollTop = body.scrollHeight;
+}
+
+function removeTypingIndicator(){ const el = document.getElementById('typingIndicator'); if(el) el.remove(); }
+
+function sendChatMessage(text){
+  if(!text.trim()) return;
+  addChatMessage(text, 'user');
+  document.getElementById('chatbotInput').value = '';
+  showTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addChatMessage(findBotReply(text), 'bot');
+  }, 700 + Math.random() * 500);
+}
+
+function initChatbot(){
+  const fab = document.getElementById('chatbotFab');
+  const panel = document.getElementById('chatbotPanel');
+  const closeBtn = document.getElementById('chatbotClose');
+  const input = document.getElementById('chatbotInput');
+  const sendBtn = document.getElementById('chatbotSend');
+  let hasGreeted = false;
+  fab.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !hasGreeted){
+      hasGreeted = true;
+      addChatMessage("Habari! I'm your Smart Lishe assistant. Ask me about meals, weight goals, health conditions, or hydration.", 'bot');
+    }
+  });
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+  sendBtn.addEventListener('click', () => sendChatMessage(input.value));
+  input.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendChatMessage(input.value); });
+  document.querySelectorAll('.chip-suggestion').forEach(chip => {
+    chip.addEventListener('click', () => sendChatMessage(chip.dataset.q));
+  });
+}
+
+// ===== NOTIFICATIONS =====
+function initNotifications(){
+  document.getElementById('notifBtn').addEventListener('click', () => showToast("You're all caught up — no new notifications."));
+}
+
+// ===== GLOBAL SEARCH =====
+function initGlobalSearch(){
+  document.getElementById('globalSearch').addEventListener('keypress', (e) => {
+    if(e.key === 'Enter' && e.target.value.trim()) showToast(`Searching for "${e.target.value.trim()}"...`);
+  });
+}
+
+// ===== BOOT =====
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initSidebar();
+  initScrollTop();
+  initHealthConditions();
+  initChatbot();
+  initNotifications();
+  initGlobalSearch();
+});
+</script>
+</body>
+</html>

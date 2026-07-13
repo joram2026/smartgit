@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — Smart Lishe Professional</title>
+  <link rel="stylesheet" href="professional.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .profile-header{
+      display:flex;align-items:center;gap:24px;
+      padding:30px 32px;
+      background:var(--bg-elevated);
+      border:1px solid var(--basket-line);
+      border-radius:var(--radius-lg);
+      margin-bottom:24px;
+      flex-wrap:wrap;
+    }
+    .profile-header .ph-avatar{
+      width:100px;height:100px;border-radius:50%;
+      background:linear-gradient(135deg,var(--char),var(--maize));
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:2.2rem;font-weight:700;font-family:var(--font-display);
+      flex-shrink:0;
+    }
+    .profile-header .ph-info{flex:1;min-width:200px;}
+    .profile-header .ph-info h2{font-family:var(--font-display);font-size:1.4rem;}
+    .profile-header .ph-info p{color:var(--text-secondary);font-size:0.92rem;}
+    .profile-header .ph-stats{display:flex;gap:24px;flex-wrap:wrap;}
+    .profile-header .ph-stats div{text-align:center;}
+    .profile-header .ph-stats div .num{font-family:var(--font-mono);font-size:1.2rem;font-weight:700;display:block;}
+    .profile-header .ph-stats div .label{font-size:0.72rem;color:var(--text-muted);}
+    .profile-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;background:rgba(45,80,22,0.1);color:var(--sukuma);font-size:0.7rem;font-weight:700;}
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+        <div class="name">Smart Lishe<span>Professional</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+        <a href="clients.html" class="nav-link"><i class="fa-solid fa-users"></i> Clients</a>
+        <a href="engagement.html" class="nav-link"><i class="fa-solid fa-rocket"></i> Engagement</a>
+        <a href="profile.html" class="nav-link active"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../auth/logout.html" class="nav-link" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="profile-chip">
+            <div class="avatar">PK</div>
+            <span class="label">Dr. Peter</span>
+            <span class="pro-badge" style="font-size:0.55rem;padding:2px 8px;">PRO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-inner">
+        <div class="profile-header">
+          <div class="ph-avatar">PK</div>
+          <div class="ph-info">
+            <h2>Dr. Peter Kariuki <span class="profile-badge"><i class="fa-regular fa-circle-check"></i> Verified</span></h2>
+            <p>Registered Dietitian & Clinical Nutritionist · 8 years experience</p>
+            <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;">
+              <span class="profile-badge"><i class="fa-regular fa-location-dot"></i> Nairobi, Kenya</span>
+              <span class="profile-badge"><i class="fa-regular fa-language"></i> English, Swahili</span>
+              <span class="profile-badge"><i class="fa-regular fa-star"></i> 4.9 (42 reviews)</span>
+            </div>
+          </div>
+          <div class="ph-stats">
+            <div><span class="num">154</span><span class="label">Clients</span></div>
+            <div><span class="num">92%</span><span class="label">Retention</span></div>
+            <div><span class="num">8</span><span class="label">Years</span></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+          <div class="prof-card">
+            <div class="card-header"><h3><i class="fa-regular fa-circle-info" style="color:var(--accent-3);"></i> Professional Information</h3></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div><strong style="display:block;font-size:0.78rem;color:var(--text-muted);">Specialization</strong><span>Clinical Nutrition, Sports Nutrition</span></div>
+              <div><strong style="display:block;font-size:0.78rem;color:var(--text-muted);">License</strong><span>KDA/RD/2019/00234</span></div>
+              <div><strong style="display:block;font-size:0.78rem;color:var(--text-muted);">Qualification</strong><span>MSc. Clinical Nutrition</span></div>
+              <div><strong style="display:block;font-size:0.78rem;color:var(--text-muted);">Registration</strong><span>Kenya Dietitians Association</span></div>
+            </div>
+          </div>
+          <div class="prof-card">
+            <div class="card-header"><h3><i class="fa-regular fa-clock" style="color:var(--accent-2);"></i> Availability</h3></div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <span class="health-tag" style="background:var(--sukuma);color:#fff;">Mon-Fri</span>
+              <span class="health-tag" style="background:var(--sukuma-light);color:#fff;">Sat</span>
+              <span class="health-tag" style="background:var(--bg-card);">Morning</span>
+              <span class="health-tag" style="background:var(--bg-card);">Afternoon</span>
+              <span class="health-tag" style="background:var(--bg-card);">Evening</span>
+            </div>
+            <div style="margin-top:12px;"><strong style="font-size:0.78rem;color:var(--text-muted);">Consultation Fee:</strong> KES 3,500 / session</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="prof-card">
+            <div class="card-header"><h3><i class="fa-regular fa-award" style="color:var(--maize-deep);"></i> Achievements</h3></div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg-card);border-radius:var(--radius-sm);">
+                <span style="font-size:1.2rem;">🏆</span>
+                <div><strong style="font-size:0.85rem;display:block;">Top Nutritionist 2024</strong><span style="font-size:0.72rem;color:var(--text-muted);">Smart Lishe Excellence Award</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg-card);border-radius:var(--radius-sm);">
+                <span style="font-size:1.2rem;">⭐</span>
+                <div><strong style="font-size:0.85rem;display:block;">5-Star Rating</strong><span style="font-size:0.72rem;color:var(--text-muted);">42 client reviews · 4.9 average</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg-card);border-radius:var(--radius-sm);">
+                <span style="font-size:1.2rem;">📈</span>
+                <div><strong style="font-size:0.85rem;display:block;">92% Retention Rate</strong><span style="font-size:0.72rem;color:var(--text-muted);">Client satisfaction and loyalty</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="prof-card">
+            <div class="card-header"><h3><i class="fa-regular fa-shield-halved" style="color:var(--char);"></i> Verification</h3></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--basket-line);">
+                <span style="font-size:0.85rem;">Professional License</span>
+                <span style="color:var(--sukuma);font-weight:700;"><i class="fa-regular fa-circle-check"></i> Verified</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--basket-line);">
+                <span style="font-size:0.85rem;">ID / Passport</span>
+                <span style="color:var(--sukuma);font-weight:700;"><i class="fa-regular fa-circle-check"></i> Verified</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--basket-line);">
+                <span style="font-size:0.85rem;">Academic Certificate</span>
+                <span style="color:var(--sukuma);font-weight:700;"><i class="fa-regular fa-circle-check"></i> Verified</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;">
+                <span style="font-size:0.85rem;">Professional Liability Insurance</span>
+                <span style="color:var(--text-muted);font-weight:600;">Pending</span>
+              </div>
+              <button class="btn btn-secondary btn-sm" style="width:auto;margin-top:4px;"><i class="fa-regular fa-upload"></i> Upload Documents</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.hamburger-btn')?.addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

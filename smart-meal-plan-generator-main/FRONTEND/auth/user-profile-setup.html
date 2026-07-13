@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile Setup — Smart Lishe</title>
+  <link rel="stylesheet" href="auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .profile-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      padding: 20px;
+    }
+    .profile-card {
+      max-width: 580px;
+      width: 100%;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--basket-line);
+      padding: 48px 40px;
+      box-shadow: var(--shadow-lift);
+    }
+    @media(max-width: 480px) { .profile-card { padding: 28px 20px; } }
+    .profile-brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .profile-brand .brand-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sukuma), var(--maize));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .profile-brand h1 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    .profile-brand p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+    }
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(45, 80, 22, 0.08);
+      color: var(--sukuma);
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid rgba(45, 80, 22, 0.15);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 24px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title i { color: var(--accent-3); }
+    .field-group { margin-bottom: 16px; }
+    .field-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+    .field-group input, .field-group select, .field-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--basket-line);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+      outline: none;
+      border-color: var(--sukuma);
+      background: var(--bg-elevated);
+    }
+    .field-group textarea { resize: vertical; min-height: 80px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+    .chip-multiselect {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .chip-multiselect button {
+      padding: 8px 15px;
+      border-radius: 20px;
+      border: 1px solid var(--basket-line);
+      background: var(--bg-card);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .chip-multiselect button:hover { border-color: var(--sukuma); color: var(--sukuma); }
+    .chip-multiselect button.selected {
+      background: var(--sukuma);
+      color: #fff;
+      border-color: var(--sukuma);
+    }
+    .avatar-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      border: 2px dashed var(--basket-line);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .avatar-upload:hover {
+      border-color: var(--sukuma);
+      background: rgba(45, 80, 22, 0.04);
+    }
+    .avatar-upload input[type=file] { display: none; }
+    .avatar-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--char), var(--maize));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.8rem;
+      overflow: hidden;
+      position: relative;
+      border: 3px solid var(--bg-elevated);
+      box-shadow: var(--shadow-soft);
+    }
+    .avatar-preview img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .avatar-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+    .bmi-card {
+      margin-top: 12px;
+      padding: 16px 18px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--basket-line);
+      display: none;
+    }
+    .bmi-card.show { display: block; }
+    .bmi-card .bmi-top { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .bmi-card .bmi-val { font-family: var(--font-mono); font-weight: 700; font-size: 1.6rem; }
+    .bmi-card .bmi-cat {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    .bmi-track { height: 8px; background: var(--basket-line); border-radius: 10px; overflow: hidden; }
+    .bmi-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      width: 100%;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+    .btn-primary {
+      background: var(--sukuma);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(45, 80, 22, 0.28);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(45, 80, 22, 0.36);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .toast {
+      background: var(--bg-elevated);
+      border: 1px solid var(--basket-line);
+      border-left: 4px solid var(--sukuma);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lift);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.87rem;
+      font-weight: 600;
+      animation: toastIn 0.35s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .toast.error { border-left-color: var(--char); }
+    .toast i { font-size: 1.1rem; color: var(--sukuma); }
+    .toast.error i { color: var(--char); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .btn-loading .btn-text { visibility: hidden; }
+    .btn-loading .spinner-small {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 16px;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <div class="profile-wrapper">
+    <div class="profile-card">
+      <div class="profile-brand">
+        <div class="brand-icon"><i class="fa-solid fa-seedling"></i></div>
+        <h1>Complete Your Profile</h1>
+        <p>Set up your personal nutrition profile.</p>
+        <div style="margin-top:8px;"><span class="user-badge"><i class="fa-solid fa-user"></i> User Account</span></div>
+      </div>
+
+      <a href="register.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Registration
+      </a>
+
+      <form id="userProfileForm" novalidate>
+        <!-- Personal Information -->
+        <div class="section-title"><i class="fa-regular fa-circle-user"></i> Personal Information</div>
+
+        <!-- Profile Photo -->
+        <div class="field-group">
+          <label>Profile Photo</label>
+          <div class="avatar-upload" id="avatarUpload">
+            <input type="file" id="profilePhoto" accept="image/*">
+            <div class="avatar-preview" id="avatarPreview">
+              <span id="avatarInitials">?</span>
+            </div>
+            <span class="avatar-label">Click to upload a photo</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="upFullName">Full Name <span style="color:var(--char);">*</span></label>
+          <input type="text" id="upFullName" placeholder="Jane Wanjiru" autocomplete="name" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="upGender">Gender</label>
+            <select id="upGender">
+              <option value="">Select</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="upAge">Age</label>
+            <input type="number" id="upAge" placeholder="29" min="10" max="120">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="upCountry">Country</label>
+            <select id="upCountry">
+              <option value="Kenya" selected>Kenya</option>
+              <option value="Uganda">Uganda</option>
+              <option value="Tanzania">Tanzania</option>
+              <option value="Rwanda">Rwanda</option>
+              <option value="Ethiopia">Ethiopia</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="upCounty">County / City</label>
+            <input type="text" id="upCounty" placeholder="Nairobi">
+          </div>
+        </div>
+
+        <!-- Physical Metrics -->
+        <div class="section-title"><i class="fa-regular fa-weight-scale"></i> Physical Metrics</div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="upWeight">Weight (kg) <span style="color:var(--char);">*</span></label>
+            <input type="number" id="upWeight" placeholder="68" step="0.1" min="20" max="300" required>
+          </div>
+          <div class="field-group">
+            <label for="upHeight">Height (cm) <span style="color:var(--char);">*</span></label>
+            <input type="number" id="upHeight" placeholder="162" step="0.1" min="100" max="230" required>
+          </div>
+        </div>
+
+        <div class="bmi-card" id="bmiCard">
+          <div class="bmi-top">
+            <div>
+              <div class="bmi-val" id="bmiVal">—</div>
+              <div style="font-size:0.78rem;color:var(--text-secondary);">Your BMI</div>
+            </div>
+            <div>
+              <div class="bmi-cat" id="bmiCatTag" style="background:var(--basket-line);color:var(--text-muted);">—</div>
+            </div>
+          </div>
+          <div class="bmi-track">
+            <div class="bmi-fill" id="bmiFill" style="width:0%;background:var(--sukuma);"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:0.6rem;color:var(--text-muted);font-weight:600;">
+            <span>Underweight</span><span>Healthy</span><span>Overweight</span><span>Obese</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="upTargetWeight">Target Weight (kg)</label>
+          <input type="number" id="upTargetWeight" placeholder="62" step="0.1" min="20" max="300">
+        </div>
+
+        <!-- Health Information -->
+        <div class="section-title"><i class="fa-regular fa-heart-pulse"></i> Health Information</div>
+
+        <div class="field-group">
+          <label>Health Conditions</label>
+          <div class="chip-multiselect" id="healthChips" data-mode="multi">
+            <button type="button" data-val="none" class="selected">None</button>
+            <button type="button" data-val="diabetes">Diabetes</button>
+            <button type="button" data-val="hypertension">Hypertension</button>
+            <button type="button" data-val="obesity">Obesity</button>
+            <button type="button" data-val="heart">Heart Disease</button>
+            <button type="button" data-val="kidney">Kidney Disease</button>
+            <button type="button" data-val="pregnancy">Pregnancy</button>
+            <button type="button" data-val="anemia">Anemia</button>
+            <button type="button" data-val="cholesterol">High Cholesterol</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Allergies</label>
+          <div class="chip-multiselect" id="allergyChips" data-mode="multi">
+            <button type="button" data-val="none" class="selected">None</button>
+            <button type="button" data-val="peanuts">Peanuts</button>
+            <button type="button" data-val="dairy">Dairy</button>
+            <button type="button" data-val="gluten">Gluten</button>
+            <button type="button" data-val="shellfish">Shellfish</button>
+            <button type="button" data-val="eggs">Eggs</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="upMedication">Medication</label>
+          <input type="text" id="upMedication" placeholder="List any medications">
+        </div>
+
+        <div class="field-group">
+          <label>Dietary Restrictions</label>
+          <div class="chip-multiselect" id="dietChips" data-mode="multi">
+            <button type="button" data-val="none" class="selected">None</button>
+            <button type="button" data-val="vegetarian">Vegetarian</button>
+            <button type="button" data-val="vegan">Vegan</button>
+            <button type="button" data-val="halal">Halal</button>
+            <button type="button" data-val="high-protein">High Protein</button>
+            <button type="button" data-val="low-carb">Low Carb</button>
+            <button type="button" data-val="mediterranean">Mediterranean</button>
+            <button type="button" data-val="traditional">Traditional African</button>
+          </div>
+        </div>
+
+        <!-- Goals -->
+        <div class="section-title"><i class="fa-regular fa-bullseye"></i> Goals</div>
+
+        <div class="field-group">
+          <label>Primary Goal <span style="color:var(--char);">*</span></label>
+          <div class="chip-multiselect" id="goalChips" data-mode="single">
+            <button type="button" data-val="weight-loss" class="selected">Weight Loss</button>
+            <button type="button" data-val="weight-gain">Weight Gain</button>
+            <button type="button" data-val="maintain">Maintain Weight</button>
+            <button type="button" data-val="muscle-gain">Muscle Gain</button>
+            <button type="button" data-val="healthy-eating">Healthy Eating</button>
+          </div>
+        </div>
+
+        <!-- Lifestyle -->
+        <div class="section-title"><i class="fa-regular fa-leaf"></i> Lifestyle</div>
+
+        <div class="field-group">
+          <label for="upActivity">Activity Level <span style="color:var(--char);">*</span></label>
+          <select id="upActivity" required>
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Light (1-2 days/week)</option>
+            <option value="moderate" selected>Moderate (3-4 days/week)</option>
+            <option value="active">Active (5-6 days/week)</option>
+            <option value="very-active">Very Active (Daily)</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="upWater">Water Intake (L/day)</label>
+            <input type="number" id="upWater" placeholder="2.5" step="0.1" min="0.5" max="8">
+          </div>
+          <div class="field-group">
+            <label for="upSleep">Sleep (hours/night)</label>
+            <input type="number" id="upSleep" placeholder="7" min="3" max="14" step="0.5">
+          </div>
+        </div>
+
+        <!-- Get Started Button - Redirects to Dashboard -->
+        <button type="submit" class="btn btn-primary" id="finishBtn" style="margin-top:8px;">
+          <span class="btn-text"><i class="fa-regular fa-rocket"></i> Get Started</span>
+          <span class="spinner-small" style="display: none;"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastStack"></div>
+
+  <script>
+    const Store = {
+      get(k, fb = null) { try { const r = localStorage.getItem('smartlishe_' + k); return r ? JSON.parse(r) : fb; } catch(e) { return fb; } },
+      set(k, v) { try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; } catch(e) { return false; } }
+    };
+
+    function showToast(msg, type = 'success') {
+      const stack = document.getElementById('toastStack');
+      const old = document.querySelector('.toast');
+      if(old) old.remove();
+      const t = document.createElement('div');
+      t.className = 'toast' + (type === 'error' ? ' error' : '');
+      t.style.cssText = 'position:fixed;bottom:26px;right:26px;z-index:999;max-width:340px;';
+      const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+      t.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; setTimeout(() => t.remove(), 350); }, 3500);
+    }
+
+    function initChips(container) {
+      const mode = container.dataset.mode || 'single';
+      container.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if(mode === 'single') {
+            container.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+          } else {
+            if(this.dataset.val === 'none') {
+              container.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+              this.classList.add('selected');
+            } else {
+              const none = container.querySelector('[data-val="none"]');
+              if(none) none.classList.remove('selected');
+              this.classList.toggle('selected');
+            }
+          }
+        });
+      });
+    }
+
+    function getChipVals(container) {
+      return [...container.querySelectorAll('button.selected')].map(b => b.dataset.val);
+    }
+
+    const avatarWrap = document.getElementById('avatarUpload');
+    const avatarInput = document.getElementById('profilePhoto');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarInitials = document.getElementById('avatarInitials');
+
+    avatarWrap.addEventListener('click', () => avatarInput.click());
+    avatarInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        avatarInitials.style.display = 'none';
+        let img = avatarPreview.querySelector('img');
+        if(!img) { img = document.createElement('img'); img.alt = 'Profile photo'; avatarPreview.appendChild(img); }
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function updateInitials() {
+      const name = document.getElementById('upFullName').value.trim();
+      const parts = name.split(' ');
+      const first = parts[0] || '';
+      const last = parts[parts.length - 1] || '';
+      avatarInitials.textContent = ((first[0] || '') + (last[0] || '')).toUpperCase() || '?';
+    }
+    document.getElementById('upFullName').addEventListener('input', updateInitials);
+
+    function calcBMI() {
+      const w = parseFloat(document.getElementById('upWeight').value);
+      const h = parseFloat(document.getElementById('upHeight').value);
+      const card = document.getElementById('bmiCard');
+      if(!w || !h || h < 100 || w < 20) { card.classList.remove('show'); return; }
+      const bmi = w / ((h / 100) ** 2);
+      card.classList.add('show');
+      document.getElementById('bmiVal').textContent = bmi.toFixed(1);
+      let cat, color, pct;
+      if(bmi < 18.5) { cat = 'Underweight'; color = '#3D6FA8'; pct = (bmi / 18.5) * 25; }
+      else if(bmi < 25) { cat = 'Healthy weight'; color = 'var(--sukuma)'; pct = 25 + ((bmi - 18.5) / 6.5) * 25; }
+      else if(bmi < 30) { cat = 'Overweight'; color = 'var(--maize-deep)'; pct = 50 + ((bmi - 25) / 5) * 25; }
+      else { cat = 'Obese'; color = 'var(--char)'; pct = Math.min(99, 75 + ((bmi - 30) / 10) * 25); }
+      const tag = document.getElementById('bmiCatTag');
+      tag.textContent = cat;
+      tag.style.background = color + '22';
+      tag.style.color = color;
+      document.getElementById('bmiFill').style.width = pct + '%';
+      document.getElementById('bmiFill').style.background = color;
+    }
+    document.getElementById('upWeight').addEventListener('input', calcBMI);
+    document.getElementById('upHeight').addEventListener('input', calcBMI);
+
+    // ---- FORM SUBMIT - Redirects to User Dashboard ----
+    document.getElementById('userProfileForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('upFullName').value.trim();
+      const weight = document.getElementById('upWeight').value;
+      const height = document.getElementById('upHeight').value;
+      const activity = document.getElementById('upActivity').value;
+
+      if(!fullName) { showToast('Please enter your full name.', 'error'); return; }
+      if(!weight || weight < 20 || weight > 300) { showToast('Please enter a valid weight.', 'error'); return; }
+      if(!height || height < 100 || height > 250) { showToast('Please enter a valid height.', 'error'); return; }
+      if(!activity) { showToast('Please select your activity level.', 'error'); return; }
+
+      const profileData = {
+        fullName: fullName,
+        gender: document.getElementById('upGender').value,
+        age: parseInt(document.getElementById('upAge').value) || null,
+        country: document.getElementById('upCountry').value,
+        county: document.getElementById('upCounty').value.trim(),
+        weight: parseFloat(weight) || null,
+        height: parseFloat(height) || null,
+        targetWeight: parseFloat(document.getElementById('upTargetWeight').value) || null,
+        healthConditions: getChipVals(document.getElementById('healthChips')),
+        allergies: getChipVals(document.getElementById('allergyChips')),
+        medication: document.getElementById('upMedication').value.trim(),
+        dietaryRestrictions: getChipVals(document.getElementById('dietChips')),
+        goal: getChipVals(document.getElementById('goalChips'))[0] || 'weight-loss',
+        activityLevel: activity,
+        waterIntake: parseFloat(document.getElementById('upWater').value) || null,
+        sleepHours: parseFloat(document.getElementById('upSleep').value) || null,
+        role: 'User',
+        setupComplete: true,
+        completedAt: new Date().toISOString()
+      };
+
+      Store.set('userProfile', profileData);
+      Store.set('profileComplete', true);
+
+      const profile = {
+        name: fullName,
+        email: localStorage.getItem('email') || '',
+        role: 'User'
+      };
+      localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
+
+      sessionStorage.setItem('newUser', 'true');
+      sessionStorage.setItem('fromProfile', 'true');
+
+      // ✅ Set flag to show welcome message on dashboard
+      sessionStorage.setItem('showProfileWelcome', 'true');
+
+      const btn = document.getElementById('finishBtn');
+      btn.classList.add('btn-loading');
+      btn.querySelector('.spinner-small').style.display = 'block';
+      btn.disabled = true;
+
+      showToast('🎉 Profile saved! Taking you to your dashboard...');
+
+      // --- ✅ REDIRECT TO USER DASHBOARD (correct path) ---
+      setTimeout(() => {
+        window.location.href = '../user/dashboard.html';
+      }, 800);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.chip-multiselect').forEach(initChips);
+      updateInitials();
+
+      const firstName = localStorage.getItem('firstName') || '';
+      const lastName = localStorage.getItem('lastName') || '';
+      if(firstName || lastName) {
+        document.getElementById('upFullName').value = (firstName + ' ' + lastName).trim();
+        updateInitials();
+      }
+
+      const existing = Store.get('userProfile', {});
+      if(existing.fullName) {
+        document.getElementById('upFullName').value = existing.fullName;
+        if(existing.gender) document.getElementById('upGender').value = existing.gender;
+        if(existing.age) document.getElementById('upAge').value = existing.age;
+        if(existing.country) document.getElementById('upCountry').value = existing.country;
+        if(existing.county) document.getElementById('upCounty').value = existing.county;
+        if(existing.weight) document.getElementById('upWeight').value = existing.weight;
+        if(existing.height) document.getElementById('upHeight').value = existing.height;
+        if(existing.targetWeight) document.getElementById('upTargetWeight').value = existing.targetWeight;
+        if(existing.medication) document.getElementById('upMedication').value = existing.medication;
+        if(existing.activityLevel) document.getElementById('upActivity').value = existing.activityLevel;
+        if(existing.waterIntake) document.getElementById('upWater').value = existing.waterIntake;
+        if(existing.sleepHours) document.getElementById('upSleep').value = existing.sleepHours;
+        updateInitials();
+        calcBMI();
+      }
+    });
+  </script>
+</body>
+</html>
