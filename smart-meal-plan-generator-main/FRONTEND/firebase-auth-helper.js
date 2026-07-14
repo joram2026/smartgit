@@ -6,17 +6,22 @@ let authInstance = null;
 let googleProvider = null;
 let currentIdToken = null;
 
-async function getFirebaseConfig() {
-  try {
-    const res = await fetch('/firebase-config');
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+async function getFirebaseConfig(retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch('/firebase-config');
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+      }
+      return await res.json();
+    } catch (err) {
+      console.warn(`Attempt ${i + 1} to load firebase config failed:`, err);
+      if (i === retries - 1) {
+        throw new Error(`Firebase Config Error: ${err.message || err}`);
+      }
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
-    return await res.json();
-  } catch (err) {
-    console.error("Failed to load firebase config:", err);
-    throw new Error(`Firebase Config Error: ${err.message || err}`);
   }
 }
 
