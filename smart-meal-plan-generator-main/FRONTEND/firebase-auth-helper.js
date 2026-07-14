@@ -1,5 +1,5 @@
 // firebase-auth-helper.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 let authInstance = null;
@@ -16,7 +16,13 @@ export async function initFirebaseAuth() {
 
   try {
     const config = await getFirebaseConfig();
-    const app = initializeApp(config);
+    let app;
+    const existingApps = getApps();
+    if (existingApps.length > 0) {
+      app = existingApps[0];
+    } else {
+      app = initializeApp(config);
+    }
     authInstance = getAuth(app);
     googleProvider = new GoogleAuthProvider();
     
