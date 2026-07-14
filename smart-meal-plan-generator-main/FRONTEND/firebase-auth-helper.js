@@ -1,6 +1,6 @@
 // firebase-auth-helper.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 let authInstance = null;
 let googleProvider = null;
@@ -151,6 +151,87 @@ export async function loginWithGoogle() {
     return user;
   } catch (e) {
     console.error("Google Sign-In failed:", e);
+    throw e;
+  }
+}
+
+// Trigger Email/Password Registration
+export async function registerWithEmail(email, password, firstName, lastName, role = 'User') {
+  const { auth } = await initFirebaseAuth();
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    const user = result.user;
+    
+    // Update display name in Firebase
+    await updateProfile(user, {
+      displayName: `${firstName} ${lastName}`
+    });
+
+    // Save legacy compatibility keys for the frontend
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('smartlishe_logged_in', 'true');
+    localStorage.setItem('smartlishe_role', role);
+    localStorage.setItem('role', role);
+    
+    const profile = {
+      name: `${firstName} ${lastName}`,
+      firstName: firstName,
+      lastName: lastName,
+      email: user.email,
+      role: role,
+      setupComplete: true
+    };
+    localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
+    localStorage.setItem('firstName', firstName);
+
+    console.log("Firebase Auth: Email user registered:", user.email);
+    return user;
+  } catch (e) {
+    console.error("Email registration failed:", e);
+    throw e;
+  }
+}
+
+// Trigger Email/Password Login
+export async function loginWithEmail(email, password, role = 'User') {
+  const { auth } = await initFirebaseAuth();
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    const user = result.user;
+
+    const displayName = user.displayName || email.split('@')[0];
+    const nameParts = displayName.split(' ');
+    const firstName = nameParts[0] || displayName;
+    const lastName = nameParts.slice(1).join(' ') || '';
+
+    // Save legacy compatibility keys for the frontend
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('smartlishe_logged_in', 'true');
+    localStorage.setItem('smartlishe_role', role);
+    localStorage.setItem('role', role);
+    
+    let existingProfile = {};
+    try {
+      const raw = localStorage.getItem('smartlishe_profile');
+      if (raw) existingProfile = JSON.parse(raw);
+    } catch(err) {}
+
+    const profile = {
+      ...existingProfile,
+      name: displayName,
+      firstName: firstName,
+      lastName: lastName,
+      email: user.email,
+      role: role,
+      setupComplete: true
+    };
+    localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
+    localStorage.setItem('firstName', firstName);
+
+    console.log("Firebase Auth: Email user logged in:", user.email);
+    return user;
+  } catch (e) {
+    console.error("Email login failed:", e);
     throw e;
   }
 }

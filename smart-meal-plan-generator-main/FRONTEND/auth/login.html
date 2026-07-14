@@ -431,7 +431,8 @@
   }
 </script>
 
-<script>
+<script type="module">
+import { loginWithEmail } from '../firebase-auth-helper.js';
 /* ============================================================
    SMART LISHE — LOGIN
    ============================================================ */
@@ -502,7 +503,7 @@ function showToast(msg, type = 'success') {
 }
 
 // ===== Login Handler =====
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
   const email = document.getElementById('loginEmail').value.trim();
@@ -520,6 +521,38 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     showToast('Password must be at least 6 characters.', 'error');
     return;
   }
+
+  const btn = document.getElementById('loginBtn');
+  btn.classList.add('btn-loading');
+  btn.querySelector('.spinner-small').style.display = 'block';
+  btn.disabled = true;
+
+  try {
+    // Real Firebase Email/Password Sign In
+    await loginWithEmail(email, password, selectedRole);
+
+    showToast('Login successful! Redirecting...');
+    setTimeout(() => {
+      if(selectedRole === 'Professional') {
+        window.location.href = '../professional/home.html';
+      } else {
+        window.location.href = '../user/dashboard.html';
+      }
+    }, 1200);
+  } catch (err) {
+    console.error("Firebase email sign-in error:", err);
+    let errorMsg = 'Failed to sign in. Please verify your credentials.';
+    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+      errorMsg = 'Incorrect email or password.';
+    } else if (err.message) {
+      errorMsg = err.message;
+    }
+    showToast(errorMsg, 'error');
+    btn.classList.remove('btn-loading');
+    btn.querySelector('.spinner-small').style.display = 'none';
+    btn.disabled = false;
+  }
+  return;
 
   const firstName = localStorage.getItem('firstName') || email.split('@')[0];
 

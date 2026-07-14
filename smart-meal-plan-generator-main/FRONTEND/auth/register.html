@@ -400,7 +400,8 @@
 
   <div id="toastStack"></div>
 
-  <script>
+  <script type="module">
+    import { registerWithEmail } from '../firebase-auth-helper.js';
     let selectedRole = 'User';
     document.querySelectorAll('.role-card').forEach(card => {
       card.addEventListener('click', function() {
@@ -471,7 +472,7 @@
       setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; setTimeout(() => t.remove(), 350); }, 3500);
     }
 
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
       const firstName = document.getElementById('regFirstName').value.trim();
@@ -488,7 +489,42 @@
       if(password !== confirm) { showToast('Passwords do not match.', 'error'); return; }
       if(!terms) { showToast('Please accept the Terms of Service.', 'error'); return; }
 
-      // Store user data
+      // Firebase registration
+      const btn = document.getElementById('continueBtn');
+      btn.classList.add('btn-loading');
+      btn.querySelector('.spinner-small').style.display = 'block';
+      btn.disabled = true;
+
+      try {
+        await registerWithEmail(email, password, firstName, lastName, selectedRole);
+        localStorage.setItem('phone', phone || '');
+        sessionStorage.setItem('newUser', 'true');
+        showToast('Account created successfully!');
+        setTimeout(() => {
+          if(selectedRole === 'Professional') {
+            window.location.href = 'professional-profile-setup.html';
+          } else {
+            window.location.href = 'user-profile-setup.html';
+          }
+        }, 1200);
+      } catch (err) {
+        console.error("Firebase registration error:", err);
+        let errorMsg = 'Failed to create account. Please try again.';
+        if (err.code === 'auth/email-already-in-use') {
+          errorMsg = 'This email address is already in use.';
+        } else if (err.code === 'auth/weak-password') {
+          errorMsg = 'The password is too weak.';
+        } else if (err.message) {
+          errorMsg = err.message;
+        }
+        showToast(errorMsg, 'error');
+        btn.classList.remove('btn-loading');
+        btn.querySelector('.spinner-small').style.display = 'none';
+        btn.disabled = false;
+      }
+      return;
+
+      // Legacy Store user data
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('lastName', lastName);
       localStorage.setItem('email', email);
