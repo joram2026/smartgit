@@ -2,6 +2,8 @@
  * Smart Lishe — Firebase Synchronization & Auth Layer
  * Synchronously intercepts form submissions and handles offline state 
  * synchronization (localStorage keys starting with 'smartlishe_') with Firestore.
+ * 
+ * Uses modern Firebase Web v10 Modular SDK via CDN to natively support custom named Firestore database IDs.
  */
 
 (function() {
@@ -19,27 +21,34 @@
   window.__firebase_loaded_successfully = false;
   window.__is_syncing_from_firestore = false;
 
+  let dbInstance = null;
+  let authInstance = null;
+  let fstore = null; // Reference to imported firestore module
+
   // Global override for localStorage setItem and removeItem to keep Firestore up-to-date instantly
   const originalSetItem = localStorage.setItem;
   localStorage.setItem = function(key, value) {
     originalSetItem.apply(this, arguments);
     if (key.startsWith('smartlishe_') && !window.__is_syncing_from_firestore) {
       const syncKey = key.replace('smartlishe_', '');
-      const auth = window.firebaseAuthInstance;
-      const db = window.firestoreInstance;
-      if (auth && auth.currentUser && db) {
+      if (authInstance && authInstance.currentUser && dbInstance && fstore) {
         try {
           const parsedValue = JSON.parse(value);
+          const uid = authInstance.currentUser.uid;
+          
           // If the profile is updated, update the main user document as well for easy admin queries
           if (syncKey === 'profile') {
-            db.collection('users').doc(auth.currentUser.uid).set(parsedValue, { merge: true })
+            const userDocRef = fstore.doc(dbInstance, 'users', uid);
+            fstore.setDoc(userDocRef, parsedValue, { merge: true })
               .catch(err => console.warn("Error updating Firestore profile:", err));
           }
+          
           // Save to standard sync collection
-          db.collection('users').doc(auth.currentUser.uid).collection('data').doc(syncKey).set({
+          const dataDocRef = fstore.doc(dbInstance, 'users', uid, 'data', syncKey);
+          fstore.setDoc(dataDocRef, {
             key: syncKey,
             value: parsedValue,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            updatedAt: fstore.serverTimestamp()
           }).catch(err => console.warn("Error updating Firestore key:", err));
         } catch (e) {}
       }
@@ -51,10 +60,10 @@
     originalRemoveItem.apply(this, arguments);
     if (key.startsWith('smartlishe_') && !window.__is_syncing_from_firestore) {
       const syncKey = key.replace('smartlishe_', '');
-      const auth = window.firebaseAuthInstance;
-      const db = window.firestoreInstance;
-      if (auth && auth.currentUser && db) {
-        db.collection('users').doc(auth.currentUser.uid).collection('data').doc(syncKey).delete()
+      if (authInstance && authInstance.currentUser && dbInstance && fstore) {
+        const uid = authInstance.currentUser.uid;
+        const dataDocRef = fstore.doc(dbInstance, 'users', uid, 'data', syncKey);
+        fstore.deleteDoc(dataDocRef)
           .catch(err => console.warn("Error deleting Firestore key:", err));
       }
     }
@@ -80,83 +89,51 @@
     }
   }, true); // Capture phase is critical to preempt the local scripts!
 
-  // Helpers to load scripts
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      if (document.querySelector(`script[src="${src}"]`)) {
-        resolve();
-        return;
-      }
-      const s = document.createElement('script');
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-
-  // Helper to wrap promises with a timeout to prevent indefinite loading spinners
-  function withTimeout(promise, ms, defaultVal = null) {
-    return Promise.race([
-      promise,
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms))
-    ]).catch(err => {
-      console.warn("Firebase promise timed out after " + ms + "ms:", err);
-      return defaultVal;
-    });
-  }
-
-  // Load Firebase Compat SDKs hierarchically to prevent race conditions
-  loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js")
-    .then(() => {
-      return Promise.all([
-        loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"),
-        loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js")
-      ]);
-    })
-    .then(() => {
-      initFirebase();
-    })
-    .catch(err => {
-      console.error("Failed to load Firebase SDK sequentially:", err);
-    });
-
-  function initFirebase() {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+  // Dynamic import helper to fetch the Modular SDKs from the Google CDN
+  Promise.all([
+    import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"),
+    import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js")
+  ]).then(([appMod, authMod, firestoreMod]) => {
+    fstore = firestoreMod;
     
-    const auth = firebase.auth();
-    const db = firebase.app().firestore(databaseId);
+    const app = appMod.initializeApp(firebaseConfig);
+    authInstance = authMod.getAuth(app);
+    dbInstance = firestoreMod.initializeFirestore(app, {
+      experimentalForceLongPolling: true
+    }, databaseId);
 
-    window.firebaseAuthInstance = auth;
-    window.firestoreInstance = db;
+    window.firebaseAuthInstance = authInstance;
+    window.firestoreInstance = dbInstance;
     window.__firebase_loaded_successfully = true;
 
-    console.log("🔥 Firebase connected successfully to Firestore db:", databaseId);
+    console.log("🔥 Firebase connected successfully (Modular SDK) to Firestore db:", databaseId);
 
     // Setup sync and auth monitoring
-    setupSync(auth, db);
+    setupSync(authMod, firestoreMod);
 
     // Handle logout page
     if (window.location.pathname.includes('/auth/logout.html')) {
-      auth.signOut().then(() => {
+      authMod.signOut(authInstance).then(() => {
         localStorage.clear();
         console.log("Logged out successfully from Firebase Auth");
       });
     }
-  }
+  }).catch(err => {
+    console.error("Failed to load Firebase modular SDKs:", err);
+  });
 
-  function setupSync(auth, db) {
-    auth.onAuthStateChanged(async (user) => {
+  function setupSync(authMod, firestoreMod) {
+    authMod.onAuthStateChanged(authInstance, async (user) => {
       if (user) {
         console.log("👤 Logged in as:", user.email);
         window.__is_syncing_from_firestore = true;
 
         try {
           // 1. Load user profile doc
-          const profileDoc = await db.collection('users').doc(user.uid).get();
-          if (profileDoc.exists) {
+          const userDocRef = firestoreMod.doc(dbInstance, 'users', user.uid);
+          const profileDoc = await firestoreMod.getDoc(userDocRef);
+          if (profileDoc.exists()) {
             const profileData = profileDoc.data();
             localStorage.setItem('smartlishe_profile', JSON.stringify(profileData));
             localStorage.setItem('smartlishe_role', profileData.role || 'User');
@@ -168,7 +145,8 @@
           }
 
           // 2. Fetch all user's data subcollections (meals, water, shopping list, etc)
-          const dataSnap = await db.collection('users').doc(user.uid).collection('data').get();
+          const dataColRef = firestoreMod.collection(dbInstance, 'users', user.uid, 'data');
+          const dataSnap = await firestoreMod.getDocs(dataColRef);
           dataSnap.forEach(doc => {
             const data = doc.data();
             localStorage.setItem('smartlishe_' + doc.id, JSON.stringify(data.value));
@@ -206,11 +184,11 @@
 
     setBtnLoading('continueBtn', true);
 
-    const auth = window.firebaseAuthInstance;
-    const db = window.firestoreInstance;
-
     try {
-      const cred = await auth.createUserWithEmailAndPassword(email, password);
+      const { createUserWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+      const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+
+      const cred = await createUserWithEmailAndPassword(authInstance, email, password);
       const uid = cred.user.uid;
 
       const profile = {
@@ -225,7 +203,8 @@
         updatedAt: new Date().toISOString()
       };
 
-      await withTimeout(db.collection('users').doc(uid).set(profile), 2500);
+      const userDocRef = doc(dbInstance, 'users', uid);
+      await setDoc(userDocRef, profile);
 
       // Store locally
       localStorage.setItem('email', email);
@@ -266,18 +245,18 @@
 
     setBtnLoading('loginBtn', true);
 
-    const auth = window.firebaseAuthInstance;
-    const db = window.firestoreInstance;
-
     try {
+      const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+      const { doc, getDoc, setDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+
       let cred;
       try {
-        cred = await auth.signInWithEmailAndPassword(email, password);
+        cred = await signInWithEmailAndPassword(authInstance, email, password);
       } catch (loginErr) {
         // Automatic provisioning for demo accounts to ensure frictionless trials
         if (loginErr.code === 'auth/user-not-found' && (email === 'demo@smartlishe.co.ke' || email === 'james@nutritionist.co.ke')) {
           console.log("Provisioning demo account automatically on Firebase...");
-          cred = await auth.createUserWithEmailAndPassword(email, password);
+          cred = await createUserWithEmailAndPassword(authInstance, email, password);
           const isPro = email === 'james@nutritionist.co.ke';
           const profile = {
             name: isPro ? "Dr. James Ochieng" : "Demo User",
@@ -289,7 +268,8 @@
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
           };
-          await withTimeout(db.collection('users').doc(cred.user.uid).set(profile), 2500);
+          const userDocRef = doc(dbInstance, 'users', cred.user.uid);
+          await setDoc(userDocRef, profile);
         } else {
           throw loginErr;
         }
@@ -298,8 +278,9 @@
       const uid = cred.user.uid;
       
       // Fetch profile
-      let profileDoc = await withTimeout(db.collection('users').doc(uid).get(), 2500);
-      let profile = (profileDoc && profileDoc.exists) ? profileDoc.data() : null;
+      const userDocRef = doc(dbInstance, 'users', uid);
+      const profileDoc = await getDoc(userDocRef);
+      let profile = profileDoc.exists() ? profileDoc.data() : null;
 
       if (!profile) {
         profile = {
@@ -312,7 +293,7 @@
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
-        await withTimeout(db.collection('users').doc(uid).set(profile), 2500);
+        await setDoc(userDocRef, profile);
       }
 
       // Sync and set localStorage
@@ -325,12 +306,11 @@
       // Fetch all nested data subcollections before redirecting
       window.__is_syncing_from_firestore = true;
       try {
-        const dataSnap = await withTimeout(db.collection('users').doc(uid).collection('data').get(), 2500);
-        if (dataSnap) {
-          dataSnap.forEach(doc => {
-            localStorage.setItem('smartlishe_' + doc.id, JSON.stringify(doc.data().value));
-          });
-        }
+        const dataColRef = collection(dbInstance, 'users', uid, 'data');
+        const dataSnap = await getDocs(dataColRef);
+        dataSnap.forEach(doc => {
+          localStorage.setItem('smartlishe_' + doc.id, JSON.stringify(doc.data().value));
+        });
       } catch (e) {
         console.warn("Failed to fetch subcollections in login:", e);
       }
