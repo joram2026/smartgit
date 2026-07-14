@@ -217,7 +217,19 @@
        */
       async function redirectToReturnUrl(autoClose, storageAccessGranted = false) {
         const initialReturnUrlStr = new URLSearchParams(window.location.search).get('return_url');
-        const returnUrl = initialReturnUrlStr ? new URL(initialReturnUrlStr) : null;
+        if (!initialReturnUrlStr) {
+          window.location.href = '/';
+          return;
+        }
+
+        let returnUrl;
+        try {
+          returnUrl = new URL(initialReturnUrlStr, window.location.origin);
+        } catch (e) {
+          console.error('Invalid return_url format:', e);
+          window.location.href = '/';
+          return;
+        }
 
         // Prevent potentially malicious URLs from being used
         if (returnUrl.protocol.toLowerCase() === 'javascript:') {
@@ -273,8 +285,15 @@
         setAuthFlowTestCookie();
         if (authFlowTestCookieIsSet()) {
           // Check if we are on the auto-close flow, and if so show the interact button.
-          const returnUrl = new URLSearchParams(window.location.search).get('return_url');
-          const autoClose = new URL(returnUrl).searchParams.has('__auto_close');
+          const returnUrlStr = new URLSearchParams(window.location.search).get('return_url');
+          let autoClose = false;
+          if (returnUrlStr) {
+            try {
+              autoClose = new URL(returnUrlStr, window.location.origin).searchParams.has('__auto_close');
+            } catch (e) {
+              console.error('Invalid return_url format:', e);
+            }
+          }
           if (autoClose) {
             document.querySelector('#stepOne').classList.add('hidden');
             document.querySelector('#stepTwo').classList.remove('hidden');

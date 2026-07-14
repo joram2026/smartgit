@@ -50,7 +50,7 @@ export async function initFirebaseAuth() {
     return { auth: authInstance, provider: googleProvider };
   } catch (err) {
     console.error("Firebase Auth initialization failed:", err);
-    return null;
+    throw err;
   }
 }
 
