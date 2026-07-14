@@ -7,8 +7,17 @@ let googleProvider = null;
 let currentIdToken = null;
 
 async function getFirebaseConfig() {
-  const res = await fetch('/firebase-config');
-  return await res.json();
+  try {
+    const res = await fetch('/firebase-config');
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+    }
+    return await res.json();
+  } catch (err) {
+    console.error("Failed to load firebase config:", err);
+    throw new Error(`Firebase Config Error: ${err.message || err}`);
+  }
 }
 
 export async function initFirebaseAuth() {
@@ -64,6 +73,10 @@ async function registerUserOnServer(token) {
         'Authorization': `Bearer ${token}`
       }
     });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+    }
     return await res.json();
   } catch (e) {
     console.error("Failed to register user on Postgres:", e);
@@ -76,6 +89,10 @@ async function syncPostgresToLocal(token) {
     const res = await fetch('/api/sync', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+    }
     const result = await res.json();
     if (result.success && result.data) {
       console.log("Sync: Pulled Postgres data successfully:", Object.keys(result.data));
@@ -96,7 +113,7 @@ async function syncPostgresToLocal(token) {
 export async function syncLocalToPostgres(key, value) {
   if (!currentIdToken) return;
   try {
-    await fetch('/api/sync', {
+    const res = await fetch('/api/sync', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -104,6 +121,10 @@ export async function syncLocalToPostgres(key, value) {
       },
       body: JSON.stringify({ key, value })
     });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+    }
     console.log(`Sync: Saved key "${key}" to PostgreSQL.`);
   } catch (e) {
     console.error(`Failed to sync key "${key}" to Postgres:`, e);
