@@ -11,29 +11,16 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Validation for UserProfile
-    function isValidUserProfile(data) {
-      return data.name is string && data.name.size() <= 100
-        && data.email is string && data.email.size() <= 100
-        && (data.role == "User" || data.role == "Professional");
-    }
-
-    // Validation for SyncData
-    function isValidSyncData(data) {
-      return data.key is string && data.key.size() <= 100;
-    }
-
     // Match rules
     match /users/{userId} {
+      // Any authenticated user can read profiles (e.g. clients/professionals lookup)
       allow read: if isSignedIn();
-      allow create: if isOwner(userId) && isValidUserProfile(request.resource.data);
-      allow update: if isOwner(userId) && isValidUserProfile(request.resource.data)
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'role', 'updatedAt']);
-      allow delete: if isOwner(userId);
+      // Only the user themselves can manage their profile
+      allow create, update, delete: if isOwner(userId);
 
       match /data/{dataId} {
-        allow read: if isOwner(userId);
-        allow write: if isOwner(userId) && isValidSyncData(request.resource.data);
+        // Only the owner can access their personalized data subcollection
+        allow read, write: if isOwner(userId);
       }
     }
   }
