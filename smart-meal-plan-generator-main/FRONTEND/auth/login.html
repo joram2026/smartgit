@@ -383,6 +383,17 @@
         <span class="btn-text"><i class="fa-regular fa-right-to-bracket"></i> Sign In</span>
         <span class="spinner-small" style="display: none;"></span>
       </button>
+
+      <div style="display:flex;align-items:center;margin:18px 0;color:var(--text-secondary,#64748b);font-size:0.85rem;gap:12px;">
+        <span style="flex:1;height:1px;background:var(--basket-line,#e2e8f0);"></span>
+        <span>or connect with</span>
+        <span style="flex:1;height:1px;background:var(--basket-line,#e2e8f0);"></span>
+      </div>
+
+      <button type="button" class="btn" id="googleSignInBtn" style="width:100%;background:var(--bg-card,#ffffff);color:var(--text-primary,#1e293b);border:2px solid var(--basket-line,#e2e8f0);display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:700;padding:12px 16px;border-radius:12px;cursor:pointer;transition:all 0.2s ease;">
+        <i class="fa-brands fa-google" style="color:#4285F4;font-size:1.1rem;"></i>
+        Sign In with Google
+      </button>
     </form>
 
     <div class="auth-links">
@@ -393,6 +404,32 @@
 </div>
 
 <div id="toastStack"></div>
+
+<script type="module">
+  import { loginWithGoogle } from '../firebase-auth-helper.js';
+
+  const googleBtn = document.getElementById('googleSignInBtn');
+  if (googleBtn) {
+    googleBtn.addEventListener('click', async () => {
+      try {
+        googleBtn.disabled = true;
+        googleBtn.style.opacity = '0.7';
+        googleBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+        await loginWithGoogle();
+        showToast('Login successful with Google! Redirecting...');
+        setTimeout(() => {
+          window.location.href = '../user/dashboard.html';
+        }, 800);
+      } catch (e) {
+        console.error(e);
+        showToast('Google login failed. Please try again.', 'error');
+        googleBtn.disabled = false;
+        googleBtn.style.opacity = '1';
+        googleBtn.innerHTML = '<i class="fa-brands fa-google" style="color:#4285F4;font-size:1.1rem;"></i> Sign In with Google';
+      }
+    });
+  }
+</script>
 
 <script>
 /* ============================================================

@@ -2,15 +2,22 @@
   "name": "smart-meal-plan-generator",
   "version": "1.0.0",
   "description": "Smart Meal Plan Generator static server",
-  "main": "server.js",
-  "type": "commonjs",
+  "main": "server.ts",
+  "type": "module",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js",
+    "dev": "node server.ts",
+    "start": "node server.ts",
     "build": "echo 'No build step needed'",
     "lint": "echo 'No lint step needed'"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "@types/pg": "^8.20.0",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "express": "^4.19.2",
+    "firebase": "^12.16.0",
+    "firebase-admin": "^14.1.0",
+    "pg": "^8.22.0"
   }
 }
