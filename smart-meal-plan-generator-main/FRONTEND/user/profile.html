@@ -851,8 +851,197 @@ function initNotifications(){
 
 // ===== GLOBAL SEARCH =====
 function initGlobalSearch(){
-  document.getElementById('globalSearch').addEventListener('keypress', (e) => {
-    if(e.key === 'Enter' && e.target.value.trim()) showToast(`Searching for "${e.target.value.trim()}"...`);
+  const searchBox = document.querySelector('.search-box');
+  if(!searchBox) return;
+
+  let resultsContainer = searchBox.querySelector('.global-search-results');
+  if(!resultsContainer){
+    resultsContainer = document.createElement('div');
+    resultsContainer.className = 'global-search-results';
+    searchBox.appendChild(resultsContainer);
+  }
+
+  const searchInput = document.getElementById('globalSearch');
+  if(!searchInput) return;
+
+  const recipesData = [
+    { name: 'Ugali, Sukuma Wiki & Omena', category: 'Staples', desc: 'Sautéed kale and crisp-fried silver fish with maize ugali.', page: 'recipes.html', icon: 'fa-bowl-food', color: '#10b981' },
+    { name: 'Githeri with Avocado', category: 'Staples', desc: 'Slow-simmered maize and beans with creamy avocado.', page: 'recipes.html', icon: 'fa-leaf', color: '#059669' },
+    { name: 'Mukimo with Beef Stew', category: 'Protein', desc: 'Mashed potatoes, maize, beans and greens with beef stew.', page: 'recipes.html', icon: 'fa-utensils', color: '#2563eb' },
+    { name: 'Pilau with Kachumbari', category: 'Rice', desc: 'Spiced rice cooked in meat stock, with fresh tomato salad.', page: 'recipes.html', icon: 'fa-wheat-awn', color: '#d97706' },
+    { name: 'Nyama Choma with Kachumbari', category: 'Protein', desc: 'Charcoal-grilled goat or beef with fresh kachumbari.', page: 'recipes.html', icon: 'fa-fire', color: '#dc2626' },
+    { name: 'Tilapia in Coconut Sauce with Rice', category: 'Fish', desc: 'Tilapia simmered in coconut tomato sauce over rice.', page: 'recipes.html', icon: 'fa-fish', color: '#0891b2' },
+    { name: 'Ndengu Stew with Chapati', category: 'Legumes', desc: 'Spiced green gram stew with warm chapati.', page: 'recipes.html', icon: 'fa-plate-wheat', color: '#4f46e5' },
+    { name: 'Omena with Ugali and Managu', category: 'Fish', desc: 'Crisp-fried omena and bitter managu greens.', page: 'recipes.html', icon: 'fa-fish-fins', color: '#0ea5e9' },
+    { name: 'Arrowroots with Tea and Groundnuts', category: 'Breakfast', desc: 'Boiled arrowroots, tea, and roasted groundnuts.', page: 'recipes.html', icon: 'fa-mug-hot', color: '#ea580c' },
+    { name: 'Sweet Potato and Egg Breakfast', category: 'Breakfast', desc: 'Sweet potato paired with boiled/fried eggs.', page: 'recipes.html', icon: 'fa-egg', color: '#ca8a04' },
+    { name: 'Uji ya Mtama (Millet Porridge)', category: 'Breakfast', desc: 'Smooth, gently fermented millet porridge.', page: 'recipes.html', icon: 'fa-bowl-rice', color: '#b45309' }
+  ];
+
+  const conditionsData = [
+    { id: 'diabetes', name: 'Diabetes', desc: 'Lower-glycaemic choices & portion control guidelines.', page: 'health-conditions.html', icon: 'fa-droplet', color: '#3d6fa8' },
+    { id: 'hypertension', name: 'Hypertension', desc: 'Low-sodium, high-potassium nutrition support.', page: 'health-conditions.html', icon: 'fa-heart-pulse', color: '#c1440e' },
+    { id: 'obesity', name: 'Obesity', desc: 'Calorie deficit strategies & portion awareness.', page: 'health-conditions.html', icon: 'fa-weight-scale', color: '#8b5cb8' },
+    { id: 'heart', name: 'Heart Disease', desc: 'Fibre, unsaturated fats, and low-sodium limits.', page: 'health-conditions.html', icon: 'fa-heart-circle-check', color: '#e0612a' },
+    { id: 'kidney', name: 'Kidney Disease', desc: 'Doctor-guided kidney nutrition plans.', page: 'health-conditions.html', icon: 'fa-vial-virus', color: '#2d8c82' },
+    { id: 'pregnancy', name: 'Pregnancy', desc: 'Iron, Calcium, Folate, and steady energy.', page: 'health-conditions.html', icon: 'fa-baby', color: '#e8a33d' },
+    { id: 'anemia', name: 'Anemia', desc: 'Iron-rich foods paired with vitamin C absorption.', page: 'health-conditions.html', icon: 'fa-droplet-slash', color: '#a8324a' },
+    { id: 'underweight', name: 'Underweight', desc: 'Healthy weight gain with nutrient-dense foods.', page: 'health-conditions.html', icon: 'fa-arrow-trend-up', color: '#4a7a2a' },
+    { id: 'cholesterol', name: 'High Cholesterol', desc: 'Soluble fibre and healthy fat guidelines.', page: 'health-conditions.html', icon: 'fa-vial', color: '#7a5c3e' }
+  ];
+
+  const featuresData = [
+    { name: 'AI Meal Generator', desc: 'Generate custom recipes & meals with AI.', page: 'meal-generator.html', icon: 'fa-wand-magic-sparkles', color: '#8b5cb8' },
+    { name: 'NutriScan AI Cam', desc: 'Analyse Kenyan dishes from photos.', page: 'nutriscan.html', icon: 'fa-camera-retro', color: '#ec4899' },
+    { name: 'Meal Planner', desc: 'Organise your weekly meals and schedule.', page: 'meal-planner.html', icon: 'fa-calendar-days', color: '#3b82f6' },
+    { name: 'Goal Tracker', desc: 'Track your weight, water and diet progress.', page: 'goal-tracker.html', icon: 'fa-bullseye', color: '#10b981' },
+    { name: 'Water Tracker', desc: 'Log daily water intake and stay hydrated.', page: 'water-tracker.html', icon: 'fa-droplet', color: '#06b6d4' },
+    { name: 'Nutrition Analytics', desc: 'Visualise calorie, macro and nutrient stats.', page: 'analytics.html', icon: 'fa-chart-line', color: '#f59e0b' },
+    { name: 'Shopping List', desc: 'Auto-compiled list of ingredients to buy.', page: 'shopping-list.html', icon: 'fa-basket-shopping', color: '#6366f1' },
+    { name: 'Pricing & Membership', desc: 'View subscription plans and packages.', page: '../membership/pricing.html', icon: 'fa-tags', color: '#f43f5e' }
+  ];
+
+  function getBasePrefix() {
+    const pathName = window.location.pathname;
+    if (pathName.includes('/membership/')) {
+      return { user: '../user/', membership: '' };
+    } else {
+      return { user: '', membership: '../membership/' };
+    }
+  }
+
+  function handleSearchInput() {
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query) {
+      resultsContainer.innerHTML = '';
+      resultsContainer.classList.remove('show');
+      return;
+    }
+
+    const matchedRecipes = recipesData.filter(r => 
+      r.name.toLowerCase().includes(query) || 
+      r.desc.toLowerCase().includes(query) ||
+      r.category.toLowerCase().includes(query)
+    );
+
+    const matchedConditions = conditionsData.filter(c => 
+      c.name.toLowerCase().includes(query) || 
+      c.desc.toLowerCase().includes(query)
+    );
+
+    const matchedFeatures = featuresData.filter(f => 
+      f.name.toLowerCase().includes(query) || 
+      f.desc.toLowerCase().includes(query)
+    );
+
+    let html = '';
+    const prefix = getBasePrefix();
+
+    if (matchedRecipes.length > 0) {
+      html += `<div class="search-results-group">
+        <div class="search-results-group-title">🥗 Recipes</div>`;
+      matchedRecipes.forEach(r => {
+        const dest = `${prefix.user}recipes.html?search=${encodeURIComponent(r.name)}`;
+        html += `
+          <a href="${dest}" class="search-result-item" data-type="recipe" data-name="${r.name}">
+            <div class="search-result-icon" style="background:${r.color}"><i class="fa-solid ${r.icon}"></i></div>
+            <div class="search-result-details">
+              <div class="search-result-name">${r.name}</div>
+              <div class="search-result-desc">${r.desc}</div>
+            </div>
+          </a>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    if (matchedConditions.length > 0) {
+      html += `<div class="search-results-group">
+        <div class="search-results-group-title">🩺 Health Conditions</div>`;
+      matchedConditions.forEach(c => {
+        const dest = `${prefix.user}health-conditions.html?id=${c.id}`;
+        html += `
+          <a href="${dest}" class="search-result-item" data-type="condition" data-id="${c.id}">
+            <div class="search-result-icon" style="background:${c.color}"><i class="fa-solid ${c.icon}"></i></div>
+            <div class="search-result-details">
+              <div class="search-result-name">${c.name}</div>
+              <div class="search-result-desc">${c.desc}</div>
+            </div>
+          </a>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    if (matchedFeatures.length > 0) {
+      html += `<div class="search-results-group">
+        <div class="search-results-group-title">⚙️ Features &amp; Actions</div>`;
+      matchedFeatures.forEach(f => {
+        const isMem = f.page.startsWith('../membership/');
+        const url = isMem ? (prefix.membership + f.page.replace('../membership/', '')) : (prefix.user + f.page);
+        html += `
+          <a href="${url}" class="search-result-item" data-type="feature">
+            <div class="search-result-icon" style="background:${f.color}"><i class="fa-solid ${f.icon}"></i></div>
+            <div class="search-result-details">
+              <div class="search-result-name">${f.name}</div>
+              <div class="search-result-desc">${f.desc}</div>
+            </div>
+          </a>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    if (!html) {
+      html = `<div class="search-no-results">No results found for "${searchInput.value}"</div>`;
+    }
+
+    resultsContainer.innerHTML = html;
+    resultsContainer.classList.add('show');
+
+    resultsContainer.querySelectorAll('.search-result-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        const type = item.getAttribute('data-type');
+        if (type === 'recipe' && window.location.pathname.endsWith('recipes.html')) {
+          e.preventDefault();
+          resultsContainer.classList.remove('show');
+          searchInput.value = '';
+          const recipeName = item.getAttribute('data-name');
+          const matched = typeof mealDatabase !== 'undefined' ? mealDatabase.find(m => m.name === recipeName) : null;
+          if (matched && typeof showRecipeModal === 'function') {
+            showRecipeModal(matched);
+          }
+        } else if (type === 'condition' && window.location.pathname.endsWith('health-conditions.html')) {
+          e.preventDefault();
+          resultsContainer.classList.remove('show');
+          searchInput.value = '';
+          const condId = item.getAttribute('data-id');
+          const tabButton = document.querySelector(`.condition-tab[data-id="${condId}"]`);
+          if (tabButton) tabButton.click();
+        }
+      });
+    });
+  }
+
+  searchInput.addEventListener('input', handleSearchInput);
+  searchInput.addEventListener('focus', () => {
+    if (searchInput.value.trim()) resultsContainer.classList.add('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchBox.contains(e.target)) {
+      resultsContainer.classList.remove('show');
+    }
+  });
+
+  searchInput.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') {
+      e.preventDefault();
+      const firstItem = resultsContainer.querySelector('.search-result-item');
+      if (firstItem) {
+        firstItem.click();
+      }
+    }
   });
 }
 

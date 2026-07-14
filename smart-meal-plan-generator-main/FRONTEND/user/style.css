@@ -3271,3 +3271,89 @@ input,select,textarea{font-family:inherit;}
   .planner-table-wrap{border:1px solid #333;}
   .planner-cell-input{border:none !important;color:#000 !important;}
 }
+
+/* ============================================================
+   GLOBAL SEARCH DROPDOWN STYLES
+   ============================================================ */
+.global-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  max-height: 400px;
+  background: var(--bg-card);
+  border: 1px solid var(--basket-line);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  z-index: 1000;
+  overflow-y: auto;
+  display: none;
+}
+.global-search-results.show {
+  display: block;
+}
+.search-results-group {
+  padding: 8px 0;
+}
+.search-results-group:not(:last-child) {
+  border-bottom: 1px solid var(--basket-line);
+}
+.search-results-group-title {
+  padding: 6px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  background: var(--bg-elevated);
+}
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.search-result-item:hover {
+  background: var(--bg-elevated);
+}
+.search-result-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  color: #fff;
+}
+.search-result-details {
+  flex: 1;
+  min-width: 0;
+}
+.search-result-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+.search-result-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-no-results {
+  padding: 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
