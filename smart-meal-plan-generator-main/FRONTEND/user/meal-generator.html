@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="style.css">
-  <script type="module" src="/firebase-auth-helper.js"></script>
 </head>
 <body>
 
@@ -589,16 +588,38 @@ function initMealGenerator(){
       area.innerHTML = `
         <div class="gen-loading">
           <div class="spinner"></div>
-          <p>Calculating your energy needs and matching meals...</p>
+          <p>Analyzing profile &amp; generating your custom Kenyan meal plan with AI...</p>
         </div>`;
     }
 
-    setTimeout(() => {
+    fetch('/api/meal-generator', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profile)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.fallback) {
+        console.log("Falling back to local meal plan generator...");
+        const result = generateMealPlan(profile);
+        renderMealPlanResults(result, profile);
+        Store.set('lastMealPlan', { profile, result, generatedAt: new Date().toISOString() });
+        showToast('Your meal plan is ready.');
+      } else {
+        renderMealPlanResults(data, profile);
+        Store.set('lastMealPlan', { profile, result: data, generatedAt: new Date().toISOString() });
+        showToast('Your personalized AI meal plan is ready!');
+      }
+    })
+    .catch(err => {
+      console.error("API error:", err);
       const result = generateMealPlan(profile);
       renderMealPlanResults(result, profile);
       Store.set('lastMealPlan', { profile, result, generatedAt: new Date().toISOString() });
       showToast('Your meal plan is ready.');
-    }, 600);
+    });
   });
 }
 
@@ -642,16 +663,43 @@ function showTypingIndicator(){
 
 function removeTypingIndicator(){ const el = document.getElementById('typingIndicator'); if(el) el.remove(); }
 
+let chatHistory = [];
+
 function sendChatMessage(text){
   if(!text.trim()) return;
   addChatMessage(text, 'user');
   const input = document.getElementById('chatbotInput');
   if(input) input.value = '';
   showTypingIndicator();
-  setTimeout(() => {
+
+  chatHistory.push({ role: 'user', text: text });
+
+  fetch('/api/chatbot', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: text, history: chatHistory })
+  })
+  .then(res => res.json())
+  .then(data => {
     removeTypingIndicator();
-    addChatMessage(findBotReply(text), 'bot');
-  }, 700 + Math.random() * 500);
+    if (data.fallback) {
+      const reply = findBotReply(text);
+      addChatMessage(reply, 'bot');
+      chatHistory.push({ role: 'model', text: reply });
+    } else {
+      addChatMessage(data.text, 'bot');
+      chatHistory.push({ role: 'model', text: data.text });
+    }
+  })
+  .catch(err => {
+    console.error("Chatbot API error:", err);
+    removeTypingIndicator();
+    const reply = findBotReply(text);
+    addChatMessage(reply, 'bot');
+    chatHistory.push({ role: 'model', text: reply });
+  });
 }
 
 function initChatbot(){

@@ -292,7 +292,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-  <script type="module" src="/firebase-auth-helper.js"></script>
 </head>
 <body>
   <div class="register-wrapper">
@@ -400,8 +399,7 @@
 
   <div id="toastStack"></div>
 
-  <script type="module">
-    import { registerWithEmail } from '/firebase-auth-helper.js';
+  <script>
     let selectedRole = 'User';
     document.querySelectorAll('.role-card').forEach(card => {
       card.addEventListener('click', function() {
@@ -410,7 +408,7 @@
         selectedRole = this.dataset.role;
 
         document.getElementById('userRoleNote').classList.toggle('show', selectedRole === 'User');
-        document.getElementById('proRoleNote').classList.toggle('show', selectedRole === 'Professional');
+        document.getElementById('proRoleNote').classlist.toggle('show', selectedRole === 'Professional');
 
         const btn = document.getElementById('continueBtn');
         if(selectedRole === 'Professional') {
@@ -472,7 +470,7 @@
       setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; setTimeout(() => t.remove(), 350); }, 3500);
     }
 
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
       const firstName = document.getElementById('regFirstName').value.trim();
@@ -489,39 +487,46 @@
       if(password !== confirm) { showToast('Passwords do not match.', 'error'); return; }
       if(!terms) { showToast('Please accept the Terms of Service.', 'error'); return; }
 
-      // Firebase registration
+      // Store user data
+      localStorage.setItem('firstName', firstName);
+      localStorage.setItem('lastName', lastName);
+      localStorage.setItem('email', email);
+      localStorage.setItem('phone', phone || '');
+      localStorage.setItem('smartlishe_role', selectedRole);
+      localStorage.setItem('role', selectedRole);
+      localStorage.setItem('smartlishe_logged_in', 'true');
+
+      // Store profile for dashboard
+      const profile = {
+        name: firstName + ' ' + lastName,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        role: selectedRole,
+        setupComplete: true
+      };
+      localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
+
+      sessionStorage.setItem('newUser', 'true');
+
       const btn = document.getElementById('continueBtn');
       btn.classList.add('btn-loading');
       btn.querySelector('.spinner-small').style.display = 'block';
       btn.disabled = true;
 
-      try {
-        await registerWithEmail(email, password, firstName, lastName, selectedRole);
-        localStorage.setItem('phone', phone || '');
-        sessionStorage.setItem('newUser', 'true');
+      setTimeout(() => {
         showToast('Account created successfully!');
+
         setTimeout(() => {
           if(selectedRole === 'Professional') {
+            // ✅ Professional goes to professional profile setup
             window.location.href = 'professional-profile-setup.html';
           } else {
+            // ✅ User goes to user profile setup then dashboard
             window.location.href = 'user-profile-setup.html';
           }
-        }, 1200);
-      } catch (err) {
-        console.error("Firebase registration error:", err);
-        let errorMsg = 'Failed to create account. Please try again.';
-        if (err.code === 'auth/email-already-in-use') {
-          errorMsg = 'This email address is already in use.';
-        } else if (err.code === 'auth/weak-password') {
-          errorMsg = 'The password is too weak.';
-        } else if (err.message) {
-          errorMsg = err.message;
-        }
-        showToast(errorMsg, 'error');
-        btn.classList.remove('btn-loading');
-        btn.querySelector('.spinner-small').style.display = 'none';
-        btn.disabled = false;
-      }
+        }, 600);
+      }, 1200);
     });
   </script>
 </body>

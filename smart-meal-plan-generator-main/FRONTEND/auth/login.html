@@ -383,17 +383,6 @@
         <span class="btn-text"><i class="fa-regular fa-right-to-bracket"></i> Sign In</span>
         <span class="spinner-small" style="display: none;"></span>
       </button>
-
-      <div style="display:flex;align-items:center;margin:18px 0;color:var(--text-secondary,#64748b);font-size:0.85rem;gap:12px;">
-        <span style="flex:1;height:1px;background:var(--basket-line,#e2e8f0);"></span>
-        <span>or connect with</span>
-        <span style="flex:1;height:1px;background:var(--basket-line,#e2e8f0);"></span>
-      </div>
-
-      <button type="button" class="btn" id="googleSignInBtn" style="width:100%;background:var(--bg-card,#ffffff);color:var(--text-primary,#1e293b);border:2px solid var(--basket-line,#e2e8f0);display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:700;padding:12px 16px;border-radius:12px;cursor:pointer;transition:all 0.2s ease;">
-        <i class="fa-brands fa-google" style="color:#4285F4;font-size:1.1rem;"></i>
-        Sign In with Google
-      </button>
     </form>
 
     <div class="auth-links">
@@ -405,34 +394,7 @@
 
 <div id="toastStack"></div>
 
-<script type="module">
-  import { loginWithGoogle } from '/firebase-auth-helper.js';
-
-  const googleBtn = document.getElementById('googleSignInBtn');
-  if (googleBtn) {
-    googleBtn.addEventListener('click', async () => {
-      try {
-        googleBtn.disabled = true;
-        googleBtn.style.opacity = '0.7';
-        googleBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
-        await loginWithGoogle();
-        showToast('Login successful with Google! Redirecting...');
-        setTimeout(() => {
-          window.location.href = '../user/dashboard.html';
-        }, 800);
-      } catch (e) {
-        console.error(e);
-        showToast('Google login failed. Please try again.', 'error');
-        googleBtn.disabled = false;
-        googleBtn.style.opacity = '1';
-        googleBtn.innerHTML = '<i class="fa-brands fa-google" style="color:#4285F4;font-size:1.1rem;"></i> Sign In with Google';
-      }
-    });
-  }
-</script>
-
-<script type="module">
-import { loginWithEmail } from '/firebase-auth-helper.js';
+<script>
 /* ============================================================
    SMART LISHE — LOGIN
    ============================================================ */
@@ -503,7 +465,7 @@ function showToast(msg, type = 'success') {
 }
 
 // ===== Login Handler =====
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
+document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
   const email = document.getElementById('loginEmail').value.trim();
@@ -522,15 +484,35 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     return;
   }
 
+  const firstName = localStorage.getItem('firstName') || email.split('@')[0];
+
+  localStorage.setItem('email', email);
+  localStorage.setItem('smartlishe_logged_in', 'true');
+  localStorage.setItem('smartlishe_role', selectedRole);
+  localStorage.setItem('role', selectedRole);
+
+  let existingProfile = {};
+  try {
+    const raw = localStorage.getItem('smartlishe_profile');
+    if(raw) existingProfile = JSON.parse(raw);
+  } catch(e) {}
+
+  const profile = {
+    ...existingProfile,
+    name: firstName,
+    firstName: firstName,
+    email: email,
+    role: selectedRole,
+    setupComplete: true
+  };
+  localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
+
   const btn = document.getElementById('loginBtn');
   btn.classList.add('btn-loading');
   btn.querySelector('.spinner-small').style.display = 'block';
   btn.disabled = true;
 
-  try {
-    // Real Firebase Email/Password Sign In
-    await loginWithEmail(email, password, selectedRole);
-
+  setTimeout(() => {
     showToast('Login successful! Redirecting...');
     setTimeout(() => {
       if(selectedRole === 'Professional') {
@@ -538,20 +520,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       } else {
         window.location.href = '../user/dashboard.html';
       }
-    }, 1200);
-  } catch (err) {
-    console.error("Firebase email sign-in error:", err);
-    let errorMsg = 'Failed to sign in. Please verify your credentials.';
-    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-      errorMsg = 'Incorrect email or password.';
-    } else if (err.message) {
-      errorMsg = err.message;
-    }
-    showToast(errorMsg, 'error');
-    btn.classList.remove('btn-loading');
-    btn.querySelector('.spinner-small').style.display = 'none';
-    btn.disabled = false;
-  }
+    }, 600);
+  }, 1200);
 });
 
 console.log('🔑 Demo credentials:');

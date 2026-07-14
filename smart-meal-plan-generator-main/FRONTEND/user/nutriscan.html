@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="style.css">
-  <script type="module" src="/firebase-auth-helper.js"></script>
 </head>
 <body>
 
@@ -403,6 +402,32 @@
         var barFill = document.getElementById('scanBarFill');
         var stepLabel = document.getElementById('scanStepLabel');
 
+        var apiResult = null;
+        var fetchDone = false;
+
+        if (previewImg && previewImg.src && previewImg.src.startsWith('data:image/')) {
+          fetch('/api/nutriscan', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ image: previewImg.src })
+          })
+          .then(res => res.json())
+          .then(data => {
+            fetchDone = true;
+            if (data && !data.fallback) {
+              apiResult = data;
+            }
+          })
+          .catch(err => {
+            console.error("Scan error:", err);
+            fetchDone = true;
+          });
+        } else {
+          fetchDone = true;
+        }
+
         var interval = setInterval(function() {
           stepIndex++;
           var pct = Math.min(100, Math.round((stepIndex / steps.length) * 100));
@@ -411,18 +436,23 @@
             if (stepLabel) stepLabel.textContent = steps[stepIndex];
           } else {
             clearInterval(interval);
-            setTimeout(function() { renderScanResult(); }, 250);
+            var waitInterval = setInterval(function() {
+              if (fetchDone) {
+                clearInterval(waitInterval);
+                setTimeout(function() { renderScanResult(apiResult); }, 250);
+              }
+            }, 100);
           }
         }, 480);
       });
     }
 
-    function renderScanResult() {
-      var result = scanResultsBank[Math.floor(Math.random() * scanResultsBank.length)];
+    function renderScanResult(apiResult) {
+      var result = apiResult || scanResultsBank[Math.floor(Math.random() * scanResultsBank.length)];
       var scoreColor = result.score >= 75 ? 'var(--sukuma)' : result.score >= 50 ? 'var(--maize-deep)' : 'var(--char)';
 
       if (resultPanel) {
-        resultPanel.innerHTML = '<div class="scan-result-head"><div><h3>' + result.name + '</h3><span class="confidence-tag">Estimated match · ' + (75 + Math.floor(Math.random() * 20)) + '% confidence</span></div><div class="health-score-ring"><div class="ring-val" style="color:' + scoreColor + ';">' + result.score + '<span style="font-size:0.8rem;color:var(--text-muted);">/100</span></div></div></div><div class="scan-macro-grid"><div class="scan-macro-cell"><div class="val">' + result.calories + '</div><div class="lbl">Calories</div></div><div class="scan-macro-cell"><div class="val">' + result.protein + 'g</div><div class="lbl">Protein</div></div><div class="scan-macro-cell"><div class="val">' + result.carbs + 'g</div><div class="lbl">Carbs</div></div><div class="scan-macro-cell"><div class="val">' + result.fat + 'g</div><div class="lbl">Fat</div></div></div><div class="scan-tip-box"><strong>NutriScan tip:</strong> ' + result.tip + '</div>';
+        resultPanel.innerHTML = '<div class="scan-result-head"><div><h3>' + result.name + '</h3><span class="confidence-tag">Estimated match · ' + (apiResult ? '95' : (75 + Math.floor(Math.random() * 20))) + '% confidence</span></div><div class="health-score-ring"><div class="ring-val" style="color:' + scoreColor + ';">' + result.score + '<span style="font-size:0.8rem;color:var(--text-muted);">/100</span></div></div></div><div class="scan-macro-grid"><div class="scan-macro-cell"><div class="val">' + result.calories + '</div><div class="lbl">Calories</div></div><div class="scan-macro-cell"><div class="val">' + result.protein + 'g</div><div class="lbl">Protein</div></div><div class="scan-macro-cell"><div class="val">' + result.carbs + 'g</div><div class="lbl">Carbs</div></div><div class="scan-macro-cell"><div class="val">' + result.fat + 'g</div><div class="lbl">Fat</div></div></div><div class="scan-tip-box"><strong>NutriScan tip:</strong> ' + result.tip + '</div>';
       }
       showToast('Analysis complete.');
     }
@@ -511,16 +541,43 @@
     if (el) el.remove();
   }
 
+  var chatHistory = [];
+
   function sendChatMessage(text) {
     if (!text || !text.trim()) return;
     addChatMessage(text, 'user');
     var input = document.getElementById('chatbotInput');
     if (input) input.value = '';
     showTypingIndicator();
-    setTimeout(function() {
+
+    chatHistory.push({ role: 'user', text: text });
+
+    fetch('/api/chatbot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: text, history: chatHistory })
+    })
+    .then(res => res.json())
+    .then(data => {
       removeTypingIndicator();
-      addChatMessage(findBotReply(text), 'bot');
-    }, 700 + Math.random() * 500);
+      if (data.fallback) {
+        var reply = findBotReply(text);
+        addChatMessage(reply, 'bot');
+        chatHistory.push({ role: 'model', text: reply });
+      } else {
+        addChatMessage(data.text, 'bot');
+        chatHistory.push({ role: 'model', text: data.text });
+      }
+    })
+    .catch(err => {
+      console.error("Chatbot API error:", err);
+      removeTypingIndicator();
+      var reply = findBotReply(text);
+      addChatMessage(reply, 'bot');
+      chatHistory.push({ role: 'model', text: reply });
+    });
   }
 
   // ---------- NOTIFICATIONS ----------
