@@ -522,48 +522,6 @@
         btn.querySelector('.spinner-small').style.display = 'none';
         btn.disabled = false;
       }
-      return;
-
-      // Legacy Store user data
-      localStorage.setItem('firstName', firstName);
-      localStorage.setItem('lastName', lastName);
-      localStorage.setItem('email', email);
-      localStorage.setItem('phone', phone || '');
-      localStorage.setItem('smartlishe_role', selectedRole);
-      localStorage.setItem('role', selectedRole);
-      localStorage.setItem('smartlishe_logged_in', 'true');
-
-      // Store profile for dashboard
-      const profile = {
-        name: firstName + ' ' + lastName,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        role: selectedRole,
-        setupComplete: true
-      };
-      localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
-
-      sessionStorage.setItem('newUser', 'true');
-
-      const btn = document.getElementById('continueBtn');
-      btn.classList.add('btn-loading');
-      btn.querySelector('.spinner-small').style.display = 'block';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        showToast('Account created successfully!');
-
-        setTimeout(() => {
-          if(selectedRole === 'Professional') {
-            // ✅ Professional goes to professional profile setup
-            window.location.href = 'professional-profile-setup.html';
-          } else {
-            // ✅ User goes to user profile setup then dashboard
-            window.location.href = 'user-profile-setup.html';
-          }
-        }, 600);
-      }, 1200);
     });
   </script>
 </body>

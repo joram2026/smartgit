@@ -552,46 +552,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     btn.querySelector('.spinner-small').style.display = 'none';
     btn.disabled = false;
   }
-  return;
-
-  const firstName = localStorage.getItem('firstName') || email.split('@')[0];
-
-  localStorage.setItem('email', email);
-  localStorage.setItem('smartlishe_logged_in', 'true');
-  localStorage.setItem('smartlishe_role', selectedRole);
-  localStorage.setItem('role', selectedRole);
-
-  let existingProfile = {};
-  try {
-    const raw = localStorage.getItem('smartlishe_profile');
-    if(raw) existingProfile = JSON.parse(raw);
-  } catch(e) {}
-
-  const profile = {
-    ...existingProfile,
-    name: firstName,
-    firstName: firstName,
-    email: email,
-    role: selectedRole,
-    setupComplete: true
-  };
-  localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
-
-  const btn = document.getElementById('loginBtn');
-  btn.classList.add('btn-loading');
-  btn.querySelector('.spinner-small').style.display = 'block';
-  btn.disabled = true;
-
-  setTimeout(() => {
-    showToast('Login successful! Redirecting...');
-    setTimeout(() => {
-      if(selectedRole === 'Professional') {
-        window.location.href = '../professional/home.html';
-      } else {
-        window.location.href = '../user/dashboard.html';
-      }
-    }, 600);
-  }, 1200);
 });
 
 console.log('🔑 Demo credentials:');
