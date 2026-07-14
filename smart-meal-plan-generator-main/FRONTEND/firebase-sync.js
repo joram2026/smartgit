@@ -95,16 +95,31 @@
     });
   }
 
-  // Load Firebase Compat SDKs
-  Promise.all([
-    loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"),
-    loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"),
-    loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js")
-  ]).then(() => {
-    initFirebase();
-  }).catch(err => {
-    console.error("Failed to load Firebase SDK:", err);
-  });
+  // Helper to wrap promises with a timeout to prevent indefinite loading spinners
+  function withTimeout(promise, ms, defaultVal = null) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms))
+    ]).catch(err => {
+      console.warn("Firebase promise timed out after " + ms + "ms:", err);
+      return defaultVal;
+    });
+  }
+
+  // Load Firebase Compat SDKs hierarchically to prevent race conditions
+  loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js")
+    .then(() => {
+      return Promise.all([
+        loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"),
+        loadScript("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js")
+      ]);
+    })
+    .then(() => {
+      initFirebase();
+    })
+    .catch(err => {
+      console.error("Failed to load Firebase SDK sequentially:", err);
+    });
 
   function initFirebase() {
     if (!firebase.apps.length) {
@@ -210,7 +225,7 @@
         updatedAt: new Date().toISOString()
       };
 
-      await db.collection('users').doc(uid).set(profile);
+      await withTimeout(db.collection('users').doc(uid).set(profile), 2500);
 
       // Store locally
       localStorage.setItem('email', email);
@@ -225,9 +240,9 @@
       
       setTimeout(() => {
         if (selectedRole === 'Professional') {
-          window.location.href = '../auth/professional-profile-setup.html';
+          window.location.href = '/auth/professional-profile-setup.html';
         } else {
-          window.location.href = '../auth/user-profile-setup.html';
+          window.location.href = '/auth/user-profile-setup.html';
         }
       }, 1000);
 
@@ -274,7 +289,7 @@
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
           };
-          await db.collection('users').doc(cred.user.uid).set(profile);
+          await withTimeout(db.collection('users').doc(cred.user.uid).set(profile), 2500);
         } else {
           throw loginErr;
         }
@@ -283,8 +298,8 @@
       const uid = cred.user.uid;
       
       // Fetch profile
-      let profileDoc = await db.collection('users').doc(uid).get();
-      let profile = profileDoc.exists ? profileDoc.data() : null;
+      let profileDoc = await withTimeout(db.collection('users').doc(uid).get(), 2500);
+      let profile = (profileDoc && profileDoc.exists) ? profileDoc.data() : null;
 
       if (!profile) {
         profile = {
@@ -297,7 +312,7 @@
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
-        await db.collection('users').doc(uid).set(profile);
+        await withTimeout(db.collection('users').doc(uid).set(profile), 2500);
       }
 
       // Sync and set localStorage
@@ -309,19 +324,25 @@
 
       // Fetch all nested data subcollections before redirecting
       window.__is_syncing_from_firestore = true;
-      const dataSnap = await db.collection('users').doc(uid).collection('data').get();
-      dataSnap.forEach(doc => {
-        localStorage.setItem('smartlishe_' + doc.id, JSON.stringify(doc.data().value));
-      });
+      try {
+        const dataSnap = await withTimeout(db.collection('users').doc(uid).collection('data').get(), 2500);
+        if (dataSnap) {
+          dataSnap.forEach(doc => {
+            localStorage.setItem('smartlishe_' + doc.id, JSON.stringify(doc.data().value));
+          });
+        }
+      } catch (e) {
+        console.warn("Failed to fetch subcollections in login:", e);
+      }
       window.__is_syncing_from_firestore = false;
 
       showToast('Login successful! Redirecting...');
       
       setTimeout(() => {
         if (profile.role === 'Professional' || selectedRole === 'Professional') {
-          window.location.href = '../professional/home.html';
+          window.location.href = '/professional/home.html';
         } else {
-          window.location.href = '../user/dashboard.html';
+          window.location.href = '/user/dashboard.html';
         }
       }, 800);
 
