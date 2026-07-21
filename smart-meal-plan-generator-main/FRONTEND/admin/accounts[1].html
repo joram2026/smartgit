@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Accounts — Smart Lishe Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .accounts-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .accounts-stats .stat-mini {
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      border: 1px solid var(--basket-line);
+    }
+    .accounts-stats .stat-mini .val {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+    .accounts-stats .stat-mini .lbl {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    .action-btns {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .action-btns .btn-sm {
+      padding: 2px 8px;
+      font-size: 0.65rem;
+      min-height: 26px;
+    }
+    .action-btns .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+    }
+    .action-btns .btn-ghost:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+    .action-btns .btn-ghost.danger { color: #dc2626; }
+    .action-btns .btn-ghost.danger:hover { background: #fce4e4; }
+    .action-btns .btn-ghost.success { color: var(--sukuma); }
+    .action-btns .btn-ghost.success:hover { background: var(--sukuma-light); }
+    .action-btns .btn-ghost.warning { color: #d97706; }
+    .action-btns .btn-ghost.warning:hover { background: #fef3c7; }
+
+    .approval-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .approval-badge.pending { background: #fef3c7; color: #92400e; }
+    .approval-badge.approved { background: #d1fae5; color: #065f46; }
+    .approval-badge.rejected { background: #fce4e4; color: #b91c1c; }
+    .approval-badge.verified { background: #dbeafe; color: #1e40af; }
+
+    .tab-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .tab-toolbar .search-box-sm {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--basket-line);
+      border-radius: 30px;
+      padding: 4px 14px;
+      max-width: 260px;
+    }
+    .tab-toolbar .search-box-sm input {
+      border: none;
+      background: transparent;
+      padding: 6px 0 6px 8px;
+      font-size: 0.82rem;
+      width: 100%;
+      outline: none;
+      font-family: var(--font-body);
+      color: var(--text-primary);
+    }
+    .tab-toolbar .search-box-sm i {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .tab-toolbar .btn {
+      min-height: 32px;
+    }
+
+    /* Modal styles */
+    .modal-field {
+      margin-bottom: 14px;
+    }
+    .modal-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .modal-field input,
+    .modal-field select,
+    .modal-field textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--basket-line);
+      background: var(--bg-body);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      transition: border 0.2s ease;
+    }
+    .modal-field input:focus,
+    .modal-field select:focus {
+      outline: none;
+      border-color: var(--sukuma);
+    }
+    .modal-field textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    .modal-field .readonly {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .status-badge.active { background: #d1fae5; color: #065f46; }
+    .status-badge.suspended { background: #fce4e4; color: #b91c1c; }
+    .status-badge.inactive { background: #fef3c7; color: #92400e; }
+
+    @media (max-width: 600px) {
+      .accounts-stats { grid-template-columns: 1fr; }
+      .tab-toolbar { flex-direction: column; align-items: stretch; }
+      .tab-toolbar .search-box-sm { max-width: 100%; }
+      .action-btns .btn-sm { font-size: 0.6rem; padding: 2px 6px; }
+      .table td, .table th { padding: 6px 8px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== AUTH CHECK ===== -->
+<script>
+(function() {
+  const role = localStorage.getItem('smartlishe_role') || localStorage.getItem('role');
+  const loggedIn = localStorage.getItem('smartlishe_logged_in') === 'true';
+  if (!loggedIn || role !== 'Admin') { window.location.href = '../auth/login.html'; }
+})();
+</script>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe Admin</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Admin</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-link" id="accountsToggle">
+        <i class="fa-solid fa-users"></i> Accounts
+        <span class="dropdown-chevron open"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown open" id="accountsDropdown">
+        <a href="accounts.html#users" class="nav-link active"><i class="fa-solid fa-user"></i> Users</a>
+        <a href="accounts.html#professionals" class="nav-link"><i class="fa-solid fa-user-md"></i> Professionals</a>
+        <a href="accounts.html#clients" class="nav-link"><i class="fa-solid fa-user-group"></i> Clients</a>
+      </div>
+      <div class="nav-link" id="operationsToggle">
+        <i class="fa-solid fa-gears"></i> Operations
+        <span class="dropdown-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown" id="operationsDropdown">
+        <a href="operations.html#billing" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="operations.html#recipes" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="operations.html#datasets" class="nav-link"><i class="fa-solid fa-database"></i> Datasets</a>
+        <a href="operations.html#reports" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+        <a href="operations.html#ai-monitoring" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+      </div>
+      <a href="support.html" class="nav-link"><i class="fa-solid fa-headset"></i> Support</a>
+      <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="profile.html" class="nav-link"><i class="fa-solid fa-user-circle"></i> Profile</a>
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='../auth/login.html';" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="topbarHamburger"><i class="fa-solid fa-bars"></i></button>
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="Search accounts...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <a href="profile.html" class="profile-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <span class="label" id="adminName">Admin</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="page-header">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-users"></i> Accounts</div>
+        <h1>Manage Users, Professionals &amp; Clients</h1>
+        <p>View, edit, and manage all accounts on the platform.</p>
+      </div>
+    </div>
+
+    <!-- Mini Stats -->
+    <div class="accounts-stats">
+      <div class="stat-mini"><div class="val" id="statUsers">0</div><div class="lbl">Total Users</div></div>
+      <div class="stat-mini"><div class="val" id="statProfessionals">0</div><div class="lbl">Professionals</div></div>
+      <div class="stat-mini"><div class="val" id="statClients">0</div><div class="lbl">Clients</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" id="accountTabs">
+      <button class="tab-btn active" data-tab="users"><i class="fa-solid fa-user"></i> Users</button>
+      <button class="tab-btn" data-tab="professionals"><i class="fa-solid fa-user-md"></i> Professionals</button>
+      <button class="tab-btn" data-tab="clients"><i class="fa-solid fa-user-group"></i> Clients</button>
+    </div>
+
+    <!-- ===== USERS TAB ===== -->
+    <div class="tab-panel active" id="tab-users">
+      <div class="tab-toolbar">
+        <div class="search-box-sm">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="userSearchInput" placeholder="Search users...">
+        </div>
+        <div>
+          <button class="btn btn-primary btn-sm" id="addUserBtn"><i class="fa-solid fa-plus"></i> Add User</button>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table class="table" id="usersTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROFESSIONALS TAB ===== -->
+    <div class="tab-panel" id="tab-professionals">
+      <div class="tab-toolbar">
+        <div class="search-box-sm">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="proSearchInput" placeholder="Search professionals...">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="badge badge-pending" id="pendingCount" style="padding:4px 12px;">0 Pending</span>
+          <button class="btn btn-primary btn-sm" id="approveAllBtn"><i class="fa-solid fa-check-double"></i> Approve All</button>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table class="table" id="professionalsTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Profession</th>
+                <th>Specialization</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="professionalsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CLIENTS TAB ===== -->
+    <div class="tab-panel" id="tab-clients">
+      <div class="tab-toolbar">
+        <div class="search-box-sm">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="clientSearchInput" placeholder="Search clients...">
+        </div>
+        <div>
+          <button class="btn btn-primary btn-sm" id="addClientBtn"><i class="fa-solid fa-plus"></i> Add Client</button>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table class="table" id="clientsTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Assigned Professional</th>
+                <th>Goal</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clientsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+  MODALS
+  ============================================================ -->
+
+<!-- ===== USER MODAL ===== -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="userModalTitle">User Details</h3>
+      <button class="modal-close" data-modal="userModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="userForm">
+      <input type="hidden" id="userFormId">
+      <div class="modal-field">
+        <label>Full Name</label>
+        <input type="text" id="userFormName" required>
+      </div>
+      <div class="modal-field">
+        <label>Email</label>
+        <input type="email" id="userFormEmail" required>
+      </div>
+      <div class="modal-field">
+        <label>Plan</label>
+        <select id="userFormPlan">
+          <option value="Free">Free</option>
+          <option value="Premium">Premium</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Status</label>
+        <select id="userFormStatus">
+          <option value="Active">Active</option>
+          <option value="Suspended">Suspended</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+      <!-- Detailed metrics section -->
+      <div id="userDetailedMetrics" style="margin-top:16px; padding-top:16px; border-top:1px solid var(--basket-line); display:none;">
+        <h4 style="font-size:0.85rem; font-weight:700; margin-bottom:12px; color:var(--shamba-green);"><i class="fa-solid fa-notes-medical"></i> Verified Health Profile</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="modal-field"><label>Weight (kg)</label><input type="text" id="userFormWeight" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+          <div class="modal-field"><label>Height (cm)</label><input type="text" id="userFormHeight" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+          <div class="modal-field"><label>Age</label><input type="text" id="userFormAge" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+          <div class="modal-field"><label>Main Goal</label><input type="text" id="userFormGoal" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+        </div>
+        <div class="modal-field" style="margin-top:12px;"><label>Allergies & Restrictions</label><input type="text" id="userFormAllergies" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+        <div class="modal-field" style="margin-top:12px;"><label>Active Health Conditions</label><input type="text" id="userFormConditions" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-modal="userModal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="userFormSubmit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== PROFESSIONAL MODAL ===== -->
+<div class="modal-overlay" id="proModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="proModalTitle">Professional Details</h3>
+      <button class="modal-close" data-modal="proModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="proForm">
+      <input type="hidden" id="proFormId">
+      <div class="modal-field">
+        <label>Full Name</label>
+        <input type="text" id="proFormName" required>
+      </div>
+      <div class="modal-field">
+        <label>Email</label>
+        <input type="email" id="proFormEmail" required>
+      </div>
+      <div class="modal-field">
+        <label>Profession</label>
+        <input type="text" id="proFormProfession" placeholder="e.g. Nutritionist, Dietitian">
+      </div>
+      <div class="modal-field">
+        <label>Specialization</label>
+        <input type="text" id="proFormSpecialization" placeholder="e.g. Clinical Nutrition, Sports">
+      </div>
+      <div class="modal-field">
+        <label>Status</label>
+        <select id="proFormStatus">
+          <option value="Pending">Pending</option>
+          <option value="Verified">Verified</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Suspended">Suspended</option>
+        </select>
+      </div>
+      <!-- Detailed bio/license section -->
+      <div id="proDetailedMetrics" style="margin-top:16px; padding-top:16px; border-top:1px solid var(--basket-line); display:none;">
+        <h4 style="font-size:0.85rem; font-weight:700; margin-bottom:12px; color:var(--shamba-green);"><i class="fa-solid fa-id-card"></i> Credentials & Verification</h4>
+        <div class="modal-field"><label>License & Registration Number</label><input type="text" id="proFormLicense" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+        <div class="modal-field" style="margin-top:12px;"><label>Professional Biography</label><textarea id="proFormBio" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line); width:100%; height:80px; resize:none; padding:8px; border-radius:var(--radius-sm); border:1px solid var(--basket-line); font-family:inherit; font-size:0.85rem;"></textarea></div>
+        <div class="modal-field" style="margin-top:12px;"><label>Selected Areas of Expertise</label><input type="text" id="proFormExpertise" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;">
+          <div class="modal-field"><label>Consultation Fee</label><input type="text" id="proFormFee" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+          <div class="modal-field"><label>Years of Experience</label><input type="text" id="proFormExperience" class="readonly" readonly style="background:var(--bg-elevated); border-color:var(--basket-line);"></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-modal="proModal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="proFormSubmit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== CLIENT MODAL ===== -->
+<div class="modal-overlay" id="clientModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="clientModalTitle">Client Details</h3>
+      <button class="modal-close" data-modal="clientModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="clientForm">
+      <input type="hidden" id="clientFormId">
+      <div class="modal-field">
+        <label>Full Name</label>
+        <input type="text" id="clientFormName" required>
+      </div>
+      <div class="modal-field">
+        <label>Email</label>
+        <input type="email" id="clientFormEmail" required>
+      </div>
+      <div class="modal-field">
+        <label>Assigned Professional</label>
+        <select id="clientFormProfessional"></select>
+      </div>
+      <div class="modal-field">
+        <label>Goal</label>
+        <select id="clientFormGoal">
+          <option value="Weight Loss">Weight Loss</option>
+          <option value="Diabetes Management">Diabetes Management</option>
+          <option value="Pregnancy Nutrition">Pregnancy Nutrition</option>
+          <option value="Heart Health">Heart Health</option>
+          <option value="General Wellness">General Wellness</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Progress (%)</label>
+        <input type="number" id="clientFormProgress" min="0" max="100" value="0">
+      </div>
+      <div class="modal-field">
+        <label>Status</label>
+        <select id="clientFormStatus">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Suspended">Suspended</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-modal="clientModal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="clientFormSubmit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== CONFIRMATION MODAL ===== -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h3 id="confirmTitle">Confirm Action</h3>
+      <button class="modal-close" data-modal="confirmModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p id="confirmMessage" style="color:var(--text-secondary);margin-bottom:20px;">Are you sure you want to perform this action?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" data-modal="confirmModal">Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// SMART LISHE — FIREBASE ADMIN ACCOUNTS DASHBOARD
+// ============================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBSHeaPxbMOGxOrRPRV7vtqedhpRxGvWHw",
+  authDomain: "smartlishe-4fe54.firebaseapp.com",
+  projectId: "smartlishe-4fe54",
+  storageBucket: "smartlishe-4fe54.firebasestorage.app",
+  messagingSenderId: "688539136675",
+  appId: "1:688539136675:web:8ed8d986e50913ed86c516"
+};
+
+const databaseId = "ai-studio-smartlishe-62742a0a-7336-4764-bba2-7c69cf67b8bf";
+
+let db = null;
+let auth = null;
+let fstore = null;
+let fauth = null;
+
+let allFirebaseUsers = [];
+
+const Store = {
+  get: function(k, fb) {
+    try { const raw = localStorage.getItem('smartlishe_' + k); return raw ? JSON.parse(raw) : fb; }
+    catch(e) { return fb; }
+  },
+  set: function(k, v) {
+    try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; }
+    catch(e) { return false; }
+  }
+};
+
+function showToast(msg, type) {
+  type = type || 'success';
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  t.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + msg + '</span>';
+  stack.appendChild(t);
+  setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px)';
+    setTimeout(function() { t.remove(); }, 300);
+  }, 3500);
+}
+window.showToast = showToast;
+
+// Helper to find a user/pro/client by id
+function getUser(id) { return allFirebaseUsers.find(u => u.id === id); }
+function getPro(id) { return allFirebaseUsers.find(p => p.id === id); }
+function getClient(id) { return allFirebaseUsers.find(c => c.id === id); }
+
+// ============================================================
+// FIREBASE INITIALIZATION & SYNC
+// ============================================================
+
+Promise.all([
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js")
+]).then(async ([appMod, authMod, firestoreMod]) => {
+  fstore = firestoreMod;
+  fauth = authMod;
+
+  const app = appMod.initializeApp(firebaseConfig);
+  auth = authMod.getAuth(app);
+  db = firestoreMod.initializeFirestore(app, {
+    experimentalForceLongPolling: true
+  }, databaseId);
+
+  // Monitor auth state to verify Admin role
+  authMod.onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = '../auth/login.html';
+      return;
+    }
+
+    try {
+      // Fetch user profile doc to verify Admin role
+      const userDocRef = firestoreMod.doc(db, 'users', user.uid);
+      const profileDoc = await firestoreMod.getDoc(userDocRef);
+      if (profileDoc.exists()) {
+        const profileData = profileDoc.data();
+        if (profileData.role !== 'Admin') {
+          showToast("Access Denied: Admin privileges required.", "error");
+          setTimeout(() => { window.location.href = '../auth/login.html'; }, 1500);
+          return;
+        }
+        // Save admin details
+        localStorage.setItem('smartlishe_role', 'Admin');
+        localStorage.setItem('role', 'Admin');
+        localStorage.setItem('smartlishe_logged_in', 'true');
+        localStorage.setItem('smartlishe_profile', JSON.stringify(profileData));
+        loadAdminInfo();
+      } else {
+        // If user document does not exist in Firestore but logged in with admin email, provision the document securely
+        if (user.email === 'admin@gmail.com') {
+          const profileData = {
+            name: 'Administrator',
+            firstName: 'Administrator',
+            lastName: '',
+            email: 'admin@gmail.com',
+            role: 'Admin',
+            setupComplete: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+          await firestoreMod.setDoc(userDocRef, profileData);
+          localStorage.setItem('smartlishe_role', 'Admin');
+          localStorage.setItem('role', 'Admin');
+          localStorage.setItem('smartlishe_logged_in', 'true');
+          localStorage.setItem('smartlishe_profile', JSON.stringify(profileData));
+          loadAdminInfo();
+        } else {
+          window.location.href = '../auth/login.html';
+          return;
+        }
+      }
+
+      // If authorized, fetch and render users
+      await refreshAllData();
+
+    } catch (err) {
+      console.error("Admin verification failed:", err);
+      window.location.href = '../auth/login.html';
+    }
+  });
+
+}).catch(err => {
+  console.error("Failed to initialize Firebase inside Admin Dashboard:", err);
+});
+
+async function refreshAllData() {
+  if (!db || !fstore) return;
+  try {
+    const querySnapshot = await fstore.getDocs(fstore.collection(db, 'users'));
+    allFirebaseUsers = [];
+    querySnapshot.forEach(doc => {
+      allFirebaseUsers.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+
+    console.log("Fetched " + allFirebaseUsers.length + " users from Firestore");
+
+    renderUsers();
+    renderProfessionals();
+    renderClients();
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    showToast("Error loading data from Firestore: " + err.message, "error");
+  }
+}
+
+// ============================================================
+// OLD STATIC DATA STORE (DEPRECATED & REMOVED)
+// ============================================================
+
+// ============================================================
+// DEPRECATED STATIC RENDERERS REMOVED
+// ============================================================
+
+// ============================================================
+// EVENT ATTACHMENT
+// ============================================================
+
+// ============================================================
+// EVENTS BINDINGS MANAGED DYNAMICALLY
+// ============================================================
+
+// ============================================================
+// USER CRUD OPERATIONS MANAGED VIA FIREBASE
+// ============================================================
+
+// ============================================================
+// PROFESSIONAL CRUD OPERATIONS MANAGED VIA FIREBASE
+// ============================================================
+
+// ============================================================
+// CLIENT CRUD OPERATIONS
+// ============================================================
+
+// ============================================================
+// CLIENT CRUD OPERATIONS MANAGED VIA FIREBASE
+// ============================================================
+
+// ============================================================
+// CONFIRMATION MODAL
+// ============================================================
+
+let confirmCallback = null;
+
+function confirmAction(title, message, callback) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMessage').textContent = message;
+  confirmCallback = callback;
+  document.getElementById('confirmModal').classList.add('open');
+}
+
+document.getElementById('confirmActionBtn').addEventListener('click', function() {
+  if (confirmCallback) { confirmCallback(); confirmCallback = null; }
+  document.getElementById('confirmModal').classList.remove('open');
+});
+
+// ============================================================
+// MODAL CLOSE HANDLERS
+// ============================================================
+
+document.querySelectorAll('.modal-close, [data-modal]').forEach(el => {
+  el.addEventListener('click', function() {
+    const id = this.dataset.modal;
+    if (id) document.getElementById(id).classList.remove('open');
+  });
+});
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// ============================================================
+// FORM SUBMISSIONS
+// ============================================================
+
+document.getElementById('userForm').addEventListener('submit', saveUser);
+document.getElementById('proForm').addEventListener('submit', savePro);
+document.getElementById('clientForm').addEventListener('submit', saveClient);
+
+// ============================================================
+// SEARCH HANDLERS
+// ============================================================
+
+document.getElementById('userSearchInput').addEventListener('input', renderUsers);
+document.getElementById('proSearchInput').addEventListener('input', renderProfessionals);
+document.getElementById('clientSearchInput').addEventListener('input', renderClients);
+
+// ============================================================
+// ADD BUTTONS
+// ============================================================
+
+document.getElementById('addUserBtn').addEventListener('click', () => openUserModal(null, false));
+document.getElementById('addClientBtn').addEventListener('click', () => openClientModal(null, false));
+
+// ============================================================
+// APPROVE ALL
+// ============================================================
+
+document.getElementById('approveAllBtn').addEventListener('click', function() {
+  const pros = getProfessionals();
+  const pending = pros.filter(p => p.status === 'Pending');
+  if (pending.length === 0) { showToast('No pending professionals to approve.', 'error'); return; }
+  confirmAction('Approve All', `Approve ${pending.length} pending professional${pending.length > 1 ? 's' : ''}?`, function() {
+    pending.forEach(p => p.status = 'Verified');
+    saveProfessionals(pros);
+    renderProfessionals();
+    showToast(`${pending.length} professional${pending.length > 1 ? 's' : ''} approved.`);
+  });
+});
+
+// ============================================================
+// TABS
+// ============================================================
+
+function initTabs() {
+  const container = document.getElementById('accountTabs');
+  const tabs = container.querySelectorAll('.tab-btn');
+  const panels = {
+    users: document.getElementById('tab-users'),
+    professionals: document.getElementById('tab-professionals'),
+    clients: document.getElementById('tab-clients')
+  };
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      const target = this.dataset.tab;
+      Object.keys(panels).forEach(function(key) {
+        panels[key].classList.toggle('active', key === target);
+      });
+      history.pushState(null, '', '#' + target);
+      // Re-render the active tab
+      if (target === 'users') renderUsers();
+      else if (target === 'professionals') renderProfessionals();
+      else if (target === 'clients') renderClients();
+    });
+  });
+
+  const hash = window.location.hash.replace('#', '');
+  if (hash && panels[hash]) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === hash));
+    Object.keys(panels).forEach(function(key) {
+      panels[key].classList.toggle('active', key === hash);
+    });
+  }
+}
+
+// ============================================================
+// THEME & SIDEBAR
+// ============================================================
+
+function initTheme() {
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  if (saved === 'dark') document.body.classList.add('dark-mode');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      Store.set('theme', isDark ? 'dark' : 'light');
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    });
+  }
+}
+
+function initSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  const topbarHamburger = document.getElementById('topbarHamburger');
+
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+  if (hamburger) hamburger.addEventListener('click', openSidebar);
+  if (topbarHamburger) topbarHamburger.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  function toggleDropdown(headerId, dropdownId) {
+    const header = document.getElementById(headerId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!header || !dropdown) return;
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isOpen = dropdown.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.dropdown-chevron').forEach(c => c.classList.remove('open'));
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        header.querySelector('.dropdown-chevron').classList.add('open');
+      }
+    });
+  }
+  toggleDropdown('accountsToggle', 'accountsDropdown');
+  toggleDropdown('operationsToggle', 'operationsDropdown');
+
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) closeSidebar();
+    });
+  });
+}
+
+function loadAdminInfo() {
+  const profile = Store.get('profileData', null);
+  const profileRaw = localStorage.getItem('smartlishe_profile');
+  let name = 'Admin';
+  if (profileRaw) {
+    try { const p = JSON.parse(profileRaw); if (p.name) name = p.name; } catch(e) {}
+  }
+  if (profile && profile.name) name = profile.name;
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+}
+
+function initNotifications() {
+  document.getElementById('notifBtn').addEventListener('click', function() {
+    showToast('You have ' + (getProfessionals().filter(p => p.status === 'Pending').length) + ' pending professional approvals.');
+  });
+}
+
+function initSearch() {
+  document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      showToast('Searching for "' + e.target.value.trim() + '"...');
+    }
+  });
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  initSidebar();
+  loadAdminInfo();
+  initTabs();
+  renderUsers();
+  renderProfessionals();
+  renderClients();
+  initNotifications();
+  initSearch();
+});
+</script>
+</body>
+</html>

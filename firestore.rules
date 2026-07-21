@@ -2,6 +2,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
     // Helper functions
     function isSignedIn() {
       return request.auth != null;
@@ -11,16 +16,32 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Match rules
+    // Role check via database lookup
+    function isAdmin() {
+      return isSignedIn() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
+    }
+
+    // Match rules for users collection
     match /users/{userId} {
-      // Any authenticated user can read profiles (e.g. clients/professionals lookup)
+      // Authenticated users or admins can read profiles
       allow read: if isSignedIn();
-      // Only the user themselves can manage their profile
-      allow create, update, delete: if isOwner(userId);
+      
+      // Prevent privilege escalation: only allow setting Admin role if email is admin@gmail.com
+      allow create: if isOwner(userId) && 
+        (request.resource.data.role != 'Admin' || request.resource.data.email == 'admin@gmail.com');
+        
+      // Only owner can update (without changing their role), or admin can do anything
+      allow update: if (isOwner(userId) && 
+        (request.resource.data.role == resource.data.role || (request.resource.data.role == 'Admin' && request.resource.data.email == 'admin@gmail.com'))) || 
+        isAdmin();
+        
+      allow delete: if isAdmin();
 
       match /data/{dataId} {
-        // Only the owner can access their personalized data subcollection
-        allow read, write: if isOwner(userId);
+        // Users can access their own data, and Admins can view/update all data (e.g., to verify profiles)
+        allow read, write: if isOwner(userId) || isAdmin();
       }
     }
   }

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Professional Profile — Smart Lishe</title>
+  <script src="/firebase-sync.js"></script>
   <link rel="stylesheet" href="auth.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -666,6 +667,19 @@
 
       Store.set('professionalProfile', profileData);
       Store.set('profileComplete', true);
+
+      // Update the main profile document so the admin can query it immediately
+      const currentProfileRaw = localStorage.getItem('smartlishe_profile');
+      let currentProfile = {};
+      if (currentProfileRaw) {
+        try { currentProfile = JSON.parse(currentProfileRaw); } catch(e) {}
+      }
+      currentProfile.name = fullName;
+      currentProfile.setupComplete = true;
+      currentProfile.status = 'Pending';
+      currentProfile.profession = title || 'Professional';
+      currentProfile.specialization = specialization || '';
+      localStorage.setItem('smartlishe_profile', JSON.stringify(currentProfile));
 
       const btn = document.getElementById('submitBtn');
       btn.classList.add('btn-loading');

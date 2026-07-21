@@ -191,13 +191,15 @@
       const cred = await createUserWithEmailAndPassword(authInstance, email, password);
       const uid = cred.user.uid;
 
+      const actualRole = email.toLowerCase() === 'admin@gmail.com' ? 'Admin' : selectedRole;
+
       const profile = {
         name: firstName + ' ' + lastName,
         firstName: firstName,
         lastName: lastName,
         email: email,
         phone: phone,
-        role: selectedRole,
+        role: actualRole,
         setupComplete: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -210,15 +212,17 @@
       localStorage.setItem('email', email);
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('lastName', lastName);
-      localStorage.setItem('smartlishe_role', selectedRole);
-      localStorage.setItem('role', selectedRole);
+      localStorage.setItem('smartlishe_role', actualRole);
+      localStorage.setItem('role', actualRole);
       localStorage.setItem('smartlishe_logged_in', 'true');
       localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
 
       showToast('Account created successfully on the backend!');
       
       setTimeout(() => {
-        if (selectedRole === 'Professional') {
+        if (actualRole === 'Admin') {
+          window.location.href = '/admin/accounts[1].html';
+        } else if (actualRole === 'Professional') {
           window.location.href = '/auth/professional-profile-setup.html';
         } else {
           window.location.href = '/auth/user-profile-setup.html';
@@ -283,12 +287,13 @@
       let profile = profileDoc.exists() ? profileDoc.data() : null;
 
       if (!profile) {
+        const actualRole = email.toLowerCase() === 'admin@gmail.com' ? 'Admin' : selectedRole;
         profile = {
           name: email.split('@')[0],
           firstName: email.split('@')[0],
           lastName: '',
           email: email,
-          role: selectedRole,
+          role: actualRole,
           setupComplete: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -296,11 +301,13 @@
         await setDoc(userDocRef, profile);
       }
 
+      const finalRole = profile.role || (email.toLowerCase() === 'admin@gmail.com' ? 'Admin' : selectedRole);
+
       // Sync and set localStorage
       localStorage.setItem('email', email);
       localStorage.setItem('smartlishe_logged_in', 'true');
-      localStorage.setItem('smartlishe_role', profile.role || selectedRole);
-      localStorage.setItem('role', profile.role || selectedRole);
+      localStorage.setItem('smartlishe_role', finalRole);
+      localStorage.setItem('role', finalRole);
       localStorage.setItem('smartlishe_profile', JSON.stringify(profile));
 
       // Fetch all nested data subcollections before redirecting
@@ -319,7 +326,9 @@
       showToast('Login successful! Redirecting...');
       
       setTimeout(() => {
-        if (profile.role === 'Professional' || selectedRole === 'Professional') {
+        if (finalRole === 'Admin') {
+          window.location.href = '/admin/accounts[1].html';
+        } else if (finalRole === 'Professional') {
           window.location.href = '/professional/home.html';
         } else {
           window.location.href = '/user/dashboard.html';
