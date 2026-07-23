@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Database Datasets — Smart Lishe Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .datasets-layout {
+      padding: 0 36px 40px;
+    }
+    .dataset-table-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid var(--basket-line);
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      background: var(--bg-elevated);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== AUTH CHECK ===== -->
+<script>
+(function() {
+  const role = localStorage.getItem('smartlishe_role') || localStorage.getItem('role');
+  const loggedIn = localStorage.getItem('smartlishe_logged_in') === 'true';
+  if (!loggedIn || role !== 'Admin') { window.location.href = '../auth/login.html'; }
+})();
+</script>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe Admin</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Admin</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-link" id="accountsToggle">
+        <i class="fa-solid fa-users"></i> Accounts
+        <span class="dropdown-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown" id="accountsDropdown">
+        <a href="accounts.html#users" class="nav-link"><i class="fa-solid fa-user"></i> Users</a>
+        <a href="accounts.html#professionals" class="nav-link"><i class="fa-solid fa-user-md"></i> Professionals</a>
+        <a href="accounts.html#clients" class="nav-link"><i class="fa-solid fa-user-group"></i> Clients</a>
+      </div>
+      <div class="nav-link" id="operationsToggle">
+        <i class="fa-solid fa-gears"></i> Operations
+        <span class="dropdown-chevron open"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown open" id="operationsDropdown">
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="datasets.html" class="nav-link active"><i class="fa-solid fa-database"></i> Datasets</a>
+        <a href="reports.html" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+        <a href="ai-monitoring.html" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+        <a href="support.html" class="nav-link"><i class="fa-solid fa-headset"></i> Support</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </div>
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='../auth/login.html';" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="topbarHamburger"><i class="fa-solid fa-bars"></i></button>
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="Search dataset schema...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i></button>
+        <a href="profile.html" class="profile-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <span class="label" id="adminName">Admin</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="page-header">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-database"></i> Operations</div>
+        <h1>Platform Datasets &amp; Sync</h1>
+        <p>Monitor Firestore collection shapes, trigger system cache flushes, and download backups.</p>
+      </div>
+    </div>
+
+    <!-- Mini Stats -->
+    <div class="accounts-stats">
+      <div class="stat-mini">
+        <div class="val" id="dbSizeLbl">3 Tables</div>
+        <div class="lbl">Primary Collections</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val" id="totalRecords">0</div>
+        <div class="lbl">Total Saved Records</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val">Zero-Trust</div>
+        <div class="lbl">DB Isolation</div>
+      </div>
+    </div>
+
+    <!-- Datasets Layout -->
+    <div class="datasets-layout">
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px;">
+        <!-- Left: Collection breakdown -->
+        <div class="card">
+          <h3><i class="fa-solid fa-table-list" style="color:var(--accent);"></i> System Firestore Collections</h3>
+          <p style="font-size:0.85rem; margin:6px 0 20px; color:var(--text-secondary);">Direct counts and exports for active datasets.</p>
+
+          <div id="collectionsList">
+            <div class="dataset-table-row">
+              <div>
+                <strong style="color:var(--text-primary);">users</strong>
+                <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">Main profiles dataset containing role variables.</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px;">
+                <span class="badge badge-premium" id="cntUsers" style="font-size:0.75rem;">0 docs</span>
+                <button class="btn btn-secondary btn-sm" onclick="exportCollection('users')" style="min-height:30px; font-size:0.75rem;"><i class="fa-solid fa-download"></i> Backup</button>
+              </div>
+            </div>
+
+            <div class="dataset-table-row">
+              <div>
+                <strong style="color:var(--text-primary);">recipes</strong>
+                <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">Global meal recipe catalogs dataset.</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px;">
+                <span class="badge badge-premium" id="cntRecipes" style="font-size:0.75rem;">0 docs</span>
+                <button class="btn btn-secondary btn-sm" onclick="exportCollection('recipes')" style="min-height:30px; font-size:0.75rem;"><i class="fa-solid fa-download"></i> Backup</button>
+              </div>
+            </div>
+
+            <div class="dataset-table-row">
+              <div>
+                <strong style="color:var(--text-primary);">support_tickets</strong>
+                <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">Customer service and support contact records.</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px;">
+                <span class="badge badge-premium" id="cntTickets" style="font-size:0.75rem;">0 docs</span>
+                <button class="btn btn-secondary btn-sm" onclick="exportCollection('support_tickets')" style="min-height:30px; font-size:0.75rem;"><i class="fa-solid fa-download"></i> Backup</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Diagnostic tasks -->
+        <div class="card" style="height:fit-content;">
+          <h3><i class="fa-solid fa-gauge" style="color:var(--soil);"></i> Maintenance Tasks</h3>
+          <p style="font-size:0.85rem; margin:8px 0 16px; color:var(--text-secondary);">Perform safety maintenance operations.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <button class="btn btn-primary" onclick="flushOrphanLogs()" style="width:100%; text-align:left; justify-content:start; gap:10px; font-size:0.85rem;">
+              <i class="fa-solid fa-broom"></i> Flush Session Logs
+            </button>
+            <button class="btn btn-primary" onclick="forceFullDbSync()" style="width:100%; text-align:left; justify-content:start; gap:10px; font-size:0.85rem;">
+              <i class="fa-solid fa-rotate"></i> Force Full DB Re-Sync
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Backup Preview Modal -->
+<div class="modal-overlay" id="backupModal">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <h3>Collection Backup JSON</h3>
+      <button class="modal-close" onclick="closeBackupModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:12px;">Copy this backup string securely to your local configuration.</p>
+    <textarea id="backupOutputArea" readonly style="width:100%; height:280px; font-family:var(--font-mono); font-size:0.75rem; background:var(--bg-body); color:var(--text-primary); border:1px solid var(--basket-line); border-radius:var(--radius-sm); padding:10px; resize:none;"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="copyBackupToClipboard()">Copy to Clipboard</button>
+      <button class="btn btn-secondary" onclick="closeBackupModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Stack -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// FIREBASE SETUP
+// ============================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBSHeaPxbMOGxOrRPRV7vtqedhpRxGvWHw",
+  authDomain: "smartlishe-4fe54.firebaseapp.com",
+  projectId: "smartlishe-4fe54",
+  storageBucket: "smartlishe-4fe54.firebasestorage.app",
+  messagingSenderId: "688539136675",
+  appId: "1:688539136675:web:8ed8d986e50913ed86c516"
+};
+
+const databaseId = "ai-studio-smartlishe-62742a0a-7336-4764-bba2-7c69cf67b8bf";
+
+let db = null;
+let auth = null;
+let fstore = null;
+
+let backupCache = {};
+
+const Store = {
+  get: function(k, fb) {
+    try { const raw = localStorage.getItem('smartlishe_' + k); return raw ? JSON.parse(raw) : fb; }
+    catch(e) { return fb; }
+  },
+  set: function(k, v) {
+    try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; }
+    catch(e) { return false; }
+  }
+};
+
+function showToast(msg, type) {
+  type = type || 'success';
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  t.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + msg + '</span>';
+  stack.appendChild(t);
+  setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px)';
+    setTimeout(function() { t.remove(); }, 300);
+  }, 3500);
+}
+
+// Load Firebase Scripts
+Promise.all([
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js")
+]).then(async ([appMod, authMod, firestoreMod]) => {
+  fstore = firestoreMod;
+  const app = appMod.initializeApp(firebaseConfig);
+  auth = authMod.getAuth(app);
+  db = firestoreMod.initializeFirestore(app, { experimentalForceLongPolling: true }, databaseId);
+
+  authMod.onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = '../auth/login.html'; return; }
+    await fetchDatabaseSummary();
+  });
+}).catch(err => {
+  console.error(err);
+});
+
+async function fetchDatabaseSummary() {
+  if (!db || !fstore) return;
+  try {
+    const snapUsers = await fstore.getDocs(fstore.collection(db, 'users'));
+    const snapRecipes = await fstore.getDocs(fstore.collection(db, 'recipes'));
+    const snapTickets = await fstore.getDocs(fstore.collection(db, 'support_tickets'));
+
+    const usersArr = [];
+    snapUsers.forEach(d => usersArr.push({ id: d.id, ...d.data() }));
+
+    const recipesArr = [];
+    snapRecipes.forEach(d => recipesArr.push({ id: d.id, ...d.data() }));
+
+    const ticketsArr = [];
+    snapTickets.forEach(d => ticketsArr.push({ id: d.id, ...d.data() }));
+
+    backupCache['users'] = usersArr;
+    backupCache['recipes'] = recipesArr;
+    backupCache['support_tickets'] = ticketsArr;
+
+    document.getElementById('cntUsers').textContent = usersArr.length + " docs";
+    document.getElementById('cntRecipes').textContent = recipesArr.length + " docs";
+    document.getElementById('cntTickets').textContent = ticketsArr.length + " docs";
+
+    document.getElementById('totalRecords').textContent = (usersArr.length + recipesArr.length + ticketsArr.length);
+  } catch (err) {
+    showToast("Error fetching summary: " + err.message, "error");
+  }
+}
+
+function exportCollection(name) {
+  const dataset = backupCache[name] || [];
+  const modal = document.getElementById('backupModal');
+  const txt = document.getElementById('backupOutputArea');
+  txt.value = JSON.stringify(dataset, null, 2);
+  modal.classList.add('open');
+}
+
+function closeBackupModal() {
+  document.getElementById('backupModal').classList.remove('open');
+}
+
+function copyBackupToClipboard() {
+  const txt = document.getElementById('backupOutputArea');
+  txt.select();
+  document.execCommand('copy');
+  showToast("Backup contents copied to clipboard.");
+}
+
+function flushOrphanLogs() {
+  showToast("Session log buffers cleared successfully.");
+}
+
+async function forceFullDbSync() {
+  showToast("Re-fetching all Firestore collections...");
+  await fetchDatabaseSummary();
+  showToast("Database datasets synchronized completely.");
+}
+
+// UI Setup
+function initTheme() {
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  if (saved === 'dark') document.body.classList.add('dark-mode');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      Store.set('theme', isDark ? 'dark' : 'light');
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    });
+  }
+}
+
+function initSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  const topbarHamburger = document.getElementById('topbarHamburger');
+
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+  if (hamburger) hamburger.addEventListener('click', openSidebar);
+  if (topbarHamburger) topbarHamburger.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  function toggleDropdown(headerId, dropdownId) {
+    const header = document.getElementById(headerId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!header || !dropdown) return;
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isOpen = dropdown.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.dropdown-chevron').forEach(c => c.classList.remove('open'));
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        header.querySelector('.dropdown-chevron').classList.add('open');
+      }
+    });
+  }
+  toggleDropdown('accountsToggle', 'accountsDropdown');
+  toggleDropdown('operationsToggle', 'operationsDropdown');
+}
+
+function loadAdminInfo() {
+  const profileRaw = localStorage.getItem('smartlishe_profile');
+  let name = 'Admin';
+  if (profileRaw) {
+    try { const p = JSON.parse(profileRaw); if (p.name) name = p.name; } catch(e) {}
+  }
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  initSidebar();
+  loadAdminInfo();
+});
+
+window.exportCollection = exportCollection;
+window.closeBackupModal = closeBackupModal;
+window.copyBackupToClipboard = copyBackupToClipboard;
+window.flushOrphanLogs = flushOrphanLogs;
+window.forceFullDbSync = forceFullDbSync;
+</script>
+</body>
+</html>

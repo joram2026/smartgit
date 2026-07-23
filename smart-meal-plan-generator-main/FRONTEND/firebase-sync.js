@@ -191,7 +191,7 @@
       const cred = await createUserWithEmailAndPassword(authInstance, email, password);
       const uid = cred.user.uid;
 
-      const actualRole = email.toLowerCase() === 'admin@gmail.com' ? 'Admin' : selectedRole;
+      const actualRole = (email.toLowerCase() === 'admin@gmail.com' || email.toLowerCase() === 'admin2@gmail.com') ? 'Admin' : selectedRole;
 
       const profile = {
         name: firstName + ' ' + lastName,
@@ -221,7 +221,7 @@
       
       setTimeout(() => {
         if (actualRole === 'Admin') {
-          window.location.href = '/admin/accounts[1].html';
+          window.location.href = '/admin/accounts.html';
         } else if (actualRole === 'Professional') {
           window.location.href = '/auth/professional-profile-setup.html';
         } else {
@@ -287,7 +287,7 @@
       let profile = profileDoc.exists() ? profileDoc.data() : null;
 
       if (!profile) {
-        const actualRole = email.toLowerCase() === 'admin@gmail.com' ? 'Admin' : selectedRole;
+        const actualRole = (email.toLowerCase() === 'admin@gmail.com' || email.toLowerCase() === 'admin2@gmail.com') ? 'Admin' : selectedRole;
         profile = {
           name: email.split('@')[0],
           firstName: email.split('@')[0],
@@ -301,7 +301,7 @@
         await setDoc(userDocRef, profile);
       }
 
-      const finalRole = profile.role || (email.toLowerCase() === 'admin@gmail.com' ? 'Admin' : selectedRole);
+      const finalRole = profile.role || ((email.toLowerCase() === 'admin@gmail.com' || email.toLowerCase() === 'admin2@gmail.com') ? 'Admin' : selectedRole);
 
       // Sync and set localStorage
       localStorage.setItem('email', email);
@@ -327,7 +327,7 @@
       
       setTimeout(() => {
         if (finalRole === 'Admin') {
-          window.location.href = '/admin/accounts[1].html';
+          window.location.href = '/admin/accounts.html';
         } else if (finalRole === 'Professional') {
           window.location.href = '/professional/home.html';
         } else {

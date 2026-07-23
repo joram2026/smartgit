@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Customer Support — Smart Lishe Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 2fr;
+      gap: 24px;
+      padding: 0 36px 40px;
+    }
+    .ticket-item-card {
+      padding: 14px;
+      border: 1px solid var(--basket-line);
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      background: var(--bg-elevated);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .ticket-item-card:hover {
+      border-color: var(--accent);
+    }
+    .ticket-item-card.active {
+      border-color: var(--accent);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-soft);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .status-dot.open { background: #dc2626; }
+    .status-dot.resolved { background: var(--sukuma); }
+    .status-dot.investigating { background: var(--soil); }
+    @media (max-width: 992px) {
+      .support-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== AUTH CHECK ===== -->
+<script>
+(function() {
+  const role = localStorage.getItem('smartlishe_role') || localStorage.getItem('role');
+  const loggedIn = localStorage.getItem('smartlishe_logged_in') === 'true';
+  if (!loggedIn || role !== 'Admin') { window.location.href = '../auth/login.html'; }
+})();
+</script>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe Admin</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Admin</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-link" id="accountsToggle">
+        <i class="fa-solid fa-users"></i> Accounts
+        <span class="dropdown-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown" id="accountsDropdown">
+        <a href="accounts.html#users" class="nav-link"><i class="fa-solid fa-user"></i> Users</a>
+        <a href="accounts.html#professionals" class="nav-link"><i class="fa-solid fa-user-md"></i> Professionals</a>
+        <a href="accounts.html#clients" class="nav-link"><i class="fa-solid fa-user-group"></i> Clients</a>
+      </div>
+      <div class="nav-link" id="operationsToggle">
+        <i class="fa-solid fa-gears"></i> Operations
+        <span class="dropdown-chevron open"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown open" id="operationsDropdown">
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="datasets.html" class="nav-link"><i class="fa-solid fa-database"></i> Datasets</a>
+        <a href="reports.html" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+        <a href="ai-monitoring.html" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+        <a href="support.html" class="nav-link active"><i class="fa-solid fa-headset"></i> Support</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </div>
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='../auth/login.html';" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="topbarHamburger"><i class="fa-solid fa-bars"></i></button>
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="Search ticket details...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i></button>
+        <a href="profile.html" class="profile-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <span class="label" id="adminName">Admin</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="page-header">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-headset"></i> Customer Service</div>
+        <h1>Support Tickets Hub</h1>
+        <p>Resolve incoming user inquiries, submit feedback, and configure ticket resolution pipelines.</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="accounts-stats">
+      <div class="stat-mini">
+        <div class="val" id="cntOpenTickets">0</div>
+        <div class="lbl">Open Tickets</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val">12 mins</div>
+        <div class="lbl">Avg Response Speed</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val" id="cntResolvedTickets">0</div>
+        <div class="lbl">Resolved Tickets</div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="support-grid">
+      <!-- Left List -->
+      <div class="card" style="padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="font-size:1.1rem;"><i class="fa-solid fa-inbox" style="color:var(--accent);"></i> Tickets List</h3>
+          <button class="btn btn-secondary btn-sm" onclick="seedTestInquiry()" style="font-size:0.75rem; min-height:28px;"><i class="fa-solid fa-plus"></i> Test Ticket</button>
+        </div>
+        <div id="ticketsListContainer" style="max-height:500px; overflow-y:auto; padding-right:4px;">
+          <div class="empty-state">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:1.8rem; margin-bottom:8px;"></i>
+            <div>Syncing tickets database...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Conversation Details -->
+      <div class="card" id="ticketDetailsPanel" style="display:none; display:flex; flex-direction:column; justify-content:space-between; min-height:480px;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:start; border-bottom:1px solid var(--basket-line); padding-bottom:12px; margin-bottom:16px;">
+            <div>
+              <h3 id="detSubject" style="font-family:var(--font-display); font-size:1.2rem; color:var(--text-primary);">Ticket Subject</h3>
+              <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;" id="detSender">Sender: loading...</div>
+            </div>
+            <select id="detStatusSelect" onchange="updateTicketStatus()" style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--basket-line); background:var(--bg-body); font-size:0.82rem; font-weight:700;">
+              <option value="Open">Open</option>
+              <option value="Investigating">Investigating</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </div>
+
+          <div style="background:var(--bg-elevated); padding:16px; border:1px solid var(--basket-line); border-radius:var(--radius-sm); margin-bottom:20px;">
+            <div style="font-weight:700; font-size:0.8rem; text-transform:uppercase; color:var(--text-secondary); margin-bottom:6px;">Inquiry Message</div>
+            <p id="detMessage" style="font-size:0.92rem; color:var(--text-primary); line-height:1.5;"></p>
+          </div>
+
+          <div id="replyHistoryArea" style="margin-top:20px; display:none;">
+            <div style="font-weight:700; font-size:0.8rem; text-transform:uppercase; color:var(--text-secondary); margin-bottom:8px;">Response Logs</div>
+            <div id="replyHistoryList" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+        </div>
+
+        <form id="replyForm" onsubmit="submitReply(event)" style="border-top:1px solid var(--basket-line); padding-top:16px; margin-top:20px;">
+          <div class="modal-field">
+            <label style="font-weight:700;">Submit Reply Message</label>
+            <textarea id="replyText" rows="3" placeholder="Write response to user..." required style="width:100%; padding:10px; border-radius:var(--radius-sm); border:1px solid var(--basket-line); background:var(--bg-body); color:var(--text-primary); resize:vertical; font-size:0.9rem;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Send Reply</button>
+        </form>
+      </div>
+
+      <!-- Detail Fallback -->
+      <div class="card" id="ticketDetailsPlaceholder" style="display:flex; align-items:center; justify-content:center; text-align:center; min-height:480px; color:var(--text-muted);">
+        <div>
+          <i class="fa-regular fa-comments" style="font-size:3rem; margin-bottom:16px; color:var(--accent); opacity:0.6;"></i>
+          <h3>No Ticket Selected</h3>
+          <p style="font-size:0.85rem; margin-top:4px;">Select a support ticket from the list to view conversations and resolve inquiries.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast Stack -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// FIREBASE SETUP
+// ============================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBSHeaPxbMOGxOrRPRV7vtqedhpRxGvWHw",
+  authDomain: "smartlishe-4fe54.firebaseapp.com",
+  projectId: "smartlishe-4fe54",
+  storageBucket: "smartlishe-4fe54.firebasestorage.app",
+  messagingSenderId: "688539136675",
+  appId: "1:688539136675:web:8ed8d986e50913ed86c516"
+};
+
+const databaseId = "ai-studio-smartlishe-62742a0a-7336-4764-bba2-7c69cf67b8bf";
+
+let db = null;
+let auth = null;
+let fstore = null;
+let allTickets = [];
+let activeTicketId = null;
+
+const Store = {
+  get: function(k, fb) {
+    try { const raw = localStorage.getItem('smartlishe_' + k); return raw ? JSON.parse(raw) : fb; }
+    catch(e) { return fb; }
+  },
+  set: function(k, v) {
+    try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; }
+    catch(e) { return false; }
+  }
+};
+
+function showToast(msg, type) {
+  type = type || 'success';
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  t.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + msg + '</span>';
+  stack.appendChild(t);
+  setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px)';
+    setTimeout(function() { t.remove(); }, 300);
+  }, 3500);
+}
+
+// Load Firebase Scripts
+Promise.all([
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js")
+]).then(async ([appMod, authMod, firestoreMod]) => {
+  fstore = firestoreMod;
+  const app = appMod.initializeApp(firebaseConfig);
+  auth = authMod.getAuth(app);
+  db = firestoreMod.initializeFirestore(app, { experimentalForceLongPolling: true }, databaseId);
+
+  authMod.onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = '../auth/login.html'; return; }
+    await fetchTickets();
+  });
+}).catch(err => {
+  console.error(err);
+});
+
+async function fetchTickets() {
+  if (!db || !fstore) return;
+  try {
+    const snap = await fstore.getDocs(fstore.collection(db, 'support_tickets'));
+    allTickets = [];
+    snap.forEach(doc => {
+      allTickets.push({ id: doc.id, ...doc.data() });
+    });
+
+    renderTickets();
+    if (activeTicketId) { selectTicket(activeTicketId); }
+  } catch (err) {
+    showToast("Error loading tickets: " + err.message, "error");
+  }
+}
+
+async function seedTestInquiry() {
+  if (!db || !fstore) return;
+  const seeds = [
+    { subject: "MPESA Payment Failed", sender: "Alice Mwangi", email: "alice@gmail.com", message: "My transaction went through but my profile still says Free tier. Please assist.", status: "Open", replyText: "", createdAt: new Date().toISOString() },
+    { subject: "AI Meal Plan not loading", sender: "David Kimani", email: "david@gmail.com", message: "I keep getting an error when generating a keto dinner plan. Help!", status: "Open", replyText: "", createdAt: new Date().toISOString() }
+  ];
+  const item = seeds[Math.floor(Math.random() * seeds.length)];
+  try {
+    const ref = fstore.doc(fstore.collection(db, 'support_tickets'));
+    await fstore.setDoc(ref, item);
+    showToast("Test ticket seeded successfully!");
+    await fetchTickets();
+  } catch (err) {
+    showToast("Seed error: " + err.message, "error");
+  }
+}
+
+function renderTickets() {
+  const container = document.getElementById('ticketsListContainer');
+  if (!container) return;
+
+  const openTickets = allTickets.filter(t => t.status === 'Open' || !t.status);
+  const resolvedTickets = allTickets.filter(t => t.status === 'Resolved');
+
+  document.getElementById('cntOpenTickets').textContent = openTickets.length;
+  document.getElementById('cntResolvedTickets').textContent = resolvedTickets.length;
+
+  if (allTickets.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text-muted);">No support inquiries found. Click "Test Ticket" to seed.</div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  allTickets.forEach(t => {
+    const isSelected = t.id === activeTicketId;
+    const item = document.createElement('div');
+    item.className = 'ticket-item-card' + (isSelected ? ' active' : '');
+    item.onclick = () => selectTicket(t.id);
+    
+    const statusVal = t.status || 'Open';
+    const statusClass = statusVal.toLowerCase();
+
+    item.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; font-weight:700; color:var(--text-primary); font-size:0.9rem;">
+        <span>${t.subject || 'Inquiry'}</span>
+        <span class="badge ${statusVal === 'Resolved' ? 'badge-free' : 'badge-premium'}" style="font-size:0.65rem; padding:1px 6px;">${statusVal}</span>
+      </div>
+      <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:6px;">Sender: ${t.sender || 'Anonymous'}</div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function selectTicket(id) {
+  activeTicketId = id;
+  const t = allTickets.find(item => item.id === id);
+  if (!t) return;
+
+  document.getElementById('ticketDetailsPlaceholder').style.display = 'none';
+  const panel = document.getElementById('ticketDetailsPanel');
+  panel.style.display = 'flex';
+
+  document.getElementById('detSubject').textContent = t.subject || 'Inquiry';
+  document.getElementById('detSender').textContent = `Sender: ${t.sender || 'Anonymous'} (${t.email || ''})`;
+  document.getElementById('detMessage').textContent = t.message || '';
+  document.getElementById('detStatusSelect').value = t.status || 'Open';
+
+  // Render reply history
+  const historyArea = document.getElementById('replyHistoryArea');
+  const historyList = document.getElementById('replyHistoryList');
+  if (t.replyText) {
+    historyArea.style.display = 'block';
+    historyList.innerHTML = `
+      <div style="padding:10px; background:var(--bg-body); border:1px solid var(--basket-line); border-radius:var(--radius-sm); font-size:0.85rem; border-left:3px solid var(--accent);">
+        <div style="font-weight:700; font-size:0.75rem; color:var(--accent); margin-bottom:4px;">Admin Response:</div>
+        <p style="color:var(--text-primary); line-height:1.4;">${t.replyText}</p>
+      </div>
+    `;
+  } else {
+    historyArea.style.display = 'none';
+  }
+
+  // Highlight item in list
+  document.querySelectorAll('.ticket-item-card').forEach(el => el.classList.remove('active'));
+  renderTickets();
+}
+
+async function updateTicketStatus() {
+  if (!activeTicketId || !db || !fstore) return;
+  const status = document.getElementById('detStatusSelect').value;
+  try {
+    const docRef = fstore.doc(db, 'support_tickets', activeTicketId);
+    await fstore.setDoc(docRef, { status }, { merge: true });
+    showToast("Ticket status updated to " + status);
+    await fetchTickets();
+  } catch (err) {
+    showToast("Status update failed: " + err.message, "error");
+  }
+}
+
+async function submitReply(e) {
+  e.preventDefault();
+  if (!activeTicketId || !db || !fstore) return;
+  const replyText = document.getElementById('replyText').value.trim();
+  if (!replyText) return;
+
+  try {
+    const docRef = fstore.doc(db, 'support_tickets', activeTicketId);
+    await fstore.setDoc(docRef, { 
+      replyText, 
+      status: 'Resolved',
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+
+    showToast("Reply sent & ticket marked as Resolved!");
+    document.getElementById('replyText').value = '';
+    await fetchTickets();
+  } catch (err) {
+    showToast("Reply submission failed: " + err.message, "error");
+  }
+}
+
+// UI Setup
+function initTheme() {
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  if (saved === 'dark') document.body.classList.add('dark-mode');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      Store.set('theme', isDark ? 'dark' : 'light');
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    });
+  }
+}
+
+function initSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  const topbarHamburger = document.getElementById('topbarHamburger');
+
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+  if (hamburger) hamburger.addEventListener('click', openSidebar);
+  if (topbarHamburger) topbarHamburger.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  function toggleDropdown(headerId, dropdownId) {
+    const header = document.getElementById(headerId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!header || !dropdown) return;
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isOpen = dropdown.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.dropdown-chevron').forEach(c => c.classList.remove('open'));
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        header.querySelector('.dropdown-chevron').classList.add('open');
+      }
+    });
+  }
+  toggleDropdown('accountsToggle', 'accountsDropdown');
+  toggleDropdown('operationsToggle', 'operationsDropdown');
+}
+
+function loadAdminInfo() {
+  const profileRaw = localStorage.getItem('smartlishe_profile');
+  let name = 'Admin';
+  if (profileRaw) {
+    try { const p = JSON.parse(profileRaw); if (p.name) name = p.name; } catch(e) {}
+  }
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  initSidebar();
+  loadAdminInfo();
+});
+
+window.seedTestInquiry = seedTestInquiry;
+window.selectTicket = selectTicket;
+window.updateTicketStatus = updateTicketStatus;
+window.submitReply = submitReply;
+</script>
+</body>
+</html>

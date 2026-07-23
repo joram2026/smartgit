@@ -8,179 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="admin.css">
-  <style>
-    .accounts-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .accounts-stats .stat-mini {
-      background: var(--bg-card);
-      border-radius: var(--radius-sm);
-      padding: 14px 18px;
-      border: 1px solid var(--basket-line);
-    }
-    .accounts-stats .stat-mini .val {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.4rem;
-    }
-    .accounts-stats .stat-mini .lbl {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-    .action-btns {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-    .action-btns .btn-sm {
-      padding: 2px 8px;
-      font-size: 0.65rem;
-      min-height: 26px;
-    }
-    .action-btns .btn-ghost {
-      background: transparent;
-      color: var(--text-secondary);
-      border: none;
-    }
-    .action-btns .btn-ghost:hover {
-      background: var(--bg-elevated);
-      color: var(--text-primary);
-    }
-    .action-btns .btn-ghost.danger { color: #dc2626; }
-    .action-btns .btn-ghost.danger:hover { background: #fce4e4; }
-    .action-btns .btn-ghost.success { color: var(--sukuma); }
-    .action-btns .btn-ghost.success:hover { background: var(--sukuma-light); }
-    .action-btns .btn-ghost.warning { color: #d97706; }
-    .action-btns .btn-ghost.warning:hover { background: #fef3c7; }
-
-    .approval-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-    .approval-badge.pending { background: #fef3c7; color: #92400e; }
-    .approval-badge.approved { background: #d1fae5; color: #065f46; }
-    .approval-badge.rejected { background: #fce4e4; color: #b91c1c; }
-    .approval-badge.verified { background: #dbeafe; color: #1e40af; }
-
-    .tab-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .tab-toolbar .search-box-sm {
-      display: flex;
-      align-items: center;
-      background: var(--bg-card);
-      border: 1px solid var(--basket-line);
-      border-radius: 30px;
-      padding: 4px 14px;
-      max-width: 260px;
-    }
-    .tab-toolbar .search-box-sm input {
-      border: none;
-      background: transparent;
-      padding: 6px 0 6px 8px;
-      font-size: 0.82rem;
-      width: 100%;
-      outline: none;
-      font-family: var(--font-body);
-      color: var(--text-primary);
-    }
-    .tab-toolbar .search-box-sm i {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
-    .tab-toolbar .btn {
-      min-height: 32px;
-    }
-
-    /* Modal styles */
-    .modal-field {
-      margin-bottom: 14px;
-    }
-    .modal-field label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-    .modal-field input,
-    .modal-field select,
-    .modal-field textarea {
-      width: 100%;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--basket-line);
-      background: var(--bg-body);
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      color: var(--text-primary);
-      transition: border 0.2s ease;
-    }
-    .modal-field input:focus,
-    .modal-field select:focus {
-      outline: none;
-      border-color: var(--sukuma);
-    }
-    .modal-field textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-    .modal-field .readonly {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      justify-content: flex-end;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-    }
-    .empty-state i {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      opacity: 0.5;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-    .status-badge.active { background: #d1fae5; color: #065f46; }
-    .status-badge.suspended { background: #fce4e4; color: #b91c1c; }
-    .status-badge.inactive { background: #fef3c7; color: #92400e; }
-
-    @media (max-width: 600px) {
-      .accounts-stats { grid-template-columns: 1fr; }
-      .tab-toolbar { flex-direction: column; align-items: stretch; }
-      .tab-toolbar .search-box-sm { max-width: 100%; }
-      .action-btns .btn-sm { font-size: 0.6rem; padding: 2px 6px; }
-      .table td, .table th { padding: 6px 8px; font-size: 0.75rem; }
-    }
-  </style>
 </head>
 <body>
 
@@ -227,15 +54,14 @@
         <span class="dropdown-chevron"><i class="fa-solid fa-chevron-down"></i></span>
       </div>
       <div class="nav-dropdown" id="operationsDropdown">
-        <a href="operations.html#billing" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
-        <a href="operations.html#recipes" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
-        <a href="operations.html#datasets" class="nav-link"><i class="fa-solid fa-database"></i> Datasets</a>
-        <a href="operations.html#reports" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
-        <a href="operations.html#ai-monitoring" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="datasets.html" class="nav-link"><i class="fa-solid fa-database"></i> Datasets</a>
+        <a href="reports.html" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+        <a href="ai-monitoring.html" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+        <a href="support.html" class="nav-link"><i class="fa-solid fa-headset"></i> Support</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
       </div>
-      <a href="support.html" class="nav-link"><i class="fa-solid fa-headset"></i> Support</a>
-      <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
-      <a href="profile.html" class="nav-link"><i class="fa-solid fa-user-circle"></i> Profile</a>
       <div style="margin-top:12px;">
         <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='../auth/login.html';" style="color:var(--char);">
           <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -663,12 +489,12 @@ Promise.all([
         loadAdminInfo();
       } else {
         // If user document does not exist in Firestore but logged in with admin email, provision the document securely
-        if (user.email === 'admin@gmail.com') {
+        if (user.email === 'admin@gmail.com' || user.email === 'admin2@gmail.com') {
           const profileData = {
-            name: 'Administrator',
-            firstName: 'Administrator',
-            lastName: '',
-            email: 'admin@gmail.com',
+            name: user.email === 'admin2@gmail.com' ? 'Admin Two' : 'Administrator',
+            firstName: user.email === 'admin2@gmail.com' ? 'Admin' : 'Administrator',
+            lastName: user.email === 'admin2@gmail.com' ? 'Two' : '',
+            email: user.email,
             role: 'Admin',
             setupComplete: true,
             createdAt: new Date().toISOString(),
@@ -723,36 +549,579 @@ async function refreshAllData() {
 }
 
 // ============================================================
-// OLD STATIC DATA STORE (DEPRECATED & REMOVED)
+// FIREBASE-BACKED DATA CATEGORIZATION & RENDERING
 // ============================================================
 
-// ============================================================
-// DEPRECATED STATIC RENDERERS REMOVED
-// ============================================================
+function getUsers() {
+  return allFirebaseUsers.filter(u => u.role === 'User' || !u.role);
+}
 
-// ============================================================
-// EVENT ATTACHMENT
-// ============================================================
+function getProfessionals() {
+  return allFirebaseUsers.filter(u => u.role === 'Professional');
+}
 
-// ============================================================
-// EVENTS BINDINGS MANAGED DYNAMICALLY
-// ============================================================
+function getClients() {
+  return allFirebaseUsers.filter(u => u.role === 'Client' || (u.role === 'User' && (u.assignedProfessional || u.professional)));
+}
+
+function updateStats() {
+  const users = getUsers();
+  const pros = getProfessionals();
+  const clients = getClients();
+
+  const statU = document.getElementById('statUsers');
+  const statP = document.getElementById('statProfessionals');
+  const statC = document.getElementById('statClients');
+
+  if (statU) statU.textContent = users.length;
+  if (statP) statP.textContent = pros.length;
+  if (statC) statC.textContent = clients.length;
+
+  const pendingPros = pros.filter(p => p.status === 'Pending' || !p.status);
+  const pCount = document.getElementById('pendingCount');
+  if (pCount) {
+    pCount.textContent = pendingPros.length + ' Pending';
+    if (pendingPros.length > 0) {
+      pCount.className = 'badge badge-pending';
+    } else {
+      pCount.className = 'badge badge-free';
+    }
+  }
+}
+
+function renderUsers() {
+  const tbody = document.getElementById('usersTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const users = getUsers();
+  const searchEl = document.getElementById('userSearchInput');
+  const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const filtered = users.filter(u => 
+    (u.name || '').toLowerCase().includes(search) || 
+    (u.email || '').toLowerCase().includes(search)
+  );
+
+  updateStats();
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-regular fa-folder-open"></i><div>No users found</div></div></td></tr>`;
+    return;
+  }
+
+  filtered.forEach(u => {
+    const tr = document.createElement('tr');
+    
+    const nameVal = u.name || 'Unnamed';
+    const initial = nameVal.charAt(0).toUpperCase();
+    const emailVal = u.email || 'No Email';
+    const plan = u.plan || 'Free';
+    const status = u.status || 'Active';
+    const joinedDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Jul 2026';
+
+    const planBadge = plan === 'Premium' ? 'badge-premium' : 'badge-free';
+    const statusClass = status.toLowerCase();
+
+    tr.innerHTML = `
+      <td>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="client-avatar" style="background:var(--sukuma); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:0.85rem;">${initial}</div>
+          <div>
+            <strong style="color:var(--text-primary); font-size:0.9rem;">${nameVal}</strong>
+          </div>
+        </div>
+      </td>
+      <td>${emailVal}</td>
+      <td><span class="badge ${planBadge}">${plan}</span></td>
+      <td><span class="status-badge ${statusClass}">${status}</span></td>
+      <td>${joinedDate}</td>
+      <td style="text-align:right;">
+        <div class="action-btns">
+          <button class="btn-sm" onclick="openUserModal('${u.id}', true)" title="View & Edit User"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-sm danger" onclick="deleteUser('${u.id}')" title="Delete User"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderProfessionals() {
+  const tbody = document.getElementById('professionalsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const pros = getProfessionals();
+  const searchEl = document.getElementById('proSearchInput');
+  const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const filtered = pros.filter(p => 
+    (p.name || '').toLowerCase().includes(search) || 
+    (p.email || '').toLowerCase().includes(search) ||
+    (p.profession || '').toLowerCase().includes(search) ||
+    (p.specialization || '').toLowerCase().includes(search)
+  );
+
+  updateStats();
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fa-regular fa-folder-open"></i><div>No professionals found</div></div></td></tr>`;
+    return;
+  }
+
+  filtered.forEach(p => {
+    const tr = document.createElement('tr');
+    
+    const nameVal = p.name || 'Unnamed Professional';
+    const initial = nameVal.charAt(0).toUpperCase();
+    const emailVal = p.email || 'No Email';
+    const profession = p.profession || 'Nutritionist';
+    const specialization = p.specialization || 'General Practice';
+    const status = p.status || 'Pending';
+
+    let statusClass = 'pending';
+    if (status === 'Verified' || status === 'Approved') statusClass = 'verified';
+    else if (status === 'Rejected') statusClass = 'rejected';
+    else if (status === 'Suspended') statusClass = 'suspended';
+
+    tr.innerHTML = `
+      <td>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="client-avatar" style="background:var(--soil); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:0.85rem;">${initial}</div>
+          <div>
+            <strong style="color:var(--text-primary); font-size:0.9rem;">${nameVal}</strong><br>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${emailVal}</span>
+          </div>
+        </div>
+      </td>
+      <td>${profession}</td>
+      <td>${specialization}</td>
+      <td><span class="approval-badge ${statusClass}">${status}</span></td>
+      <td style="text-align:right;">
+        <div class="action-btns">
+          ${status === 'Pending' ? `
+            <button class="btn-sm success" onclick="approveProfessional('${p.id}')" title="Approve Professional"><i class="fa-solid fa-check"></i></button>
+            <button class="btn-sm danger" onclick="rejectProfessional('${p.id}')" title="Reject Professional"><i class="fa-solid fa-xmark"></i></button>
+          ` : ''}
+          <button class="btn-sm" onclick="openProModal('${p.id}')" title="View & Edit Professional"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-sm danger" onclick="deleteProfessional('${p.id}')" title="Delete Professional"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderClients() {
+  const tbody = document.getElementById('clientsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const clients = getClients();
+  const searchEl = document.getElementById('clientSearchInput');
+  const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const filtered = clients.filter(c => 
+    (c.name || '').toLowerCase().includes(search) || 
+    (c.email || '').toLowerCase().includes(search) ||
+    (c.assignedProfessional || c.professional || '').toLowerCase().includes(search)
+  );
+
+  updateStats();
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-regular fa-folder-open"></i><div>No clients found</div></div></td></tr>`;
+    return;
+  }
+
+  filtered.forEach(c => {
+    const tr = document.createElement('tr');
+    
+    const nameVal = c.name || 'Unnamed Client';
+    const initial = nameVal.charAt(0).toUpperCase();
+    const emailVal = c.email || 'No Email';
+    const profVal = c.assignedProfessional || c.professional || 'None Assigned';
+    const goalVal = c.goal || c.metrics?.goal || 'General Wellness';
+    const progressVal = c.progress !== undefined ? c.progress : 0;
+    const status = c.status || 'Active';
+
+    const statusClass = status.toLowerCase();
+
+    tr.innerHTML = `
+      <td>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="client-avatar" style="background:var(--accent-2); color:var(--soil); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;">${initial}</div>
+          <div>
+            <strong style="color:var(--text-primary); font-size:0.9rem;">${nameVal}</strong><br>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${emailVal}</span>
+          </div>
+        </div>
+      </td>
+      <td>${profVal}</td>
+      <td><span style="font-size:0.85rem; font-weight:600;">${goalVal}</span></td>
+      <td>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="flex:1; background:var(--basket-line); height:6px; border-radius:3px; min-width:60px; overflow:hidden;">
+            <div style="background:var(--sukuma); width:${progressVal}%; height:100%;"></div>
+          </div>
+          <span style="font-size:0.75rem; font-weight:700; font-family:var(--font-mono);">${progressVal}%</span>
+        </div>
+      </td>
+      <td><span class="status-badge ${statusClass}">${status}</span></td>
+      <td style="text-align:right;">
+        <div class="action-btns">
+          <button class="btn-sm" onclick="openClientModal('${c.id}', true)" title="View & Edit Client"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-sm danger" onclick="deleteClient('${c.id}')" title="Delete Client"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
 
 // ============================================================
 // USER CRUD OPERATIONS MANAGED VIA FIREBASE
 // ============================================================
 
+function openUserModal(id, isEdit) {
+  const modal = document.getElementById('userModal');
+  const form = document.getElementById('userForm');
+  const title = document.getElementById('userModalTitle');
+  const detailsSec = document.getElementById('userDetailedMetrics');
+  
+  if (form) form.reset();
+  
+  if (isEdit && id) {
+    if (title) title.textContent = 'Edit User Details';
+    const u = getUser(id);
+    if (!u) return;
+    
+    const elId = document.getElementById('userFormId');
+    const elName = document.getElementById('userFormName');
+    const elEmail = document.getElementById('userFormEmail');
+    const elPlan = document.getElementById('userFormPlan');
+    const elStatus = document.getElementById('userFormStatus');
+
+    if (elId) elId.value = u.id;
+    if (elName) elName.value = u.name || '';
+    if (elEmail) elEmail.value = u.email || '';
+    if (elPlan) elPlan.value = u.plan || 'Free';
+    if (elStatus) elStatus.value = u.status || 'Active';
+    
+    if (detailsSec) detailsSec.style.display = 'block';
+    const elWeight = document.getElementById('userFormWeight');
+    const elHeight = document.getElementById('userFormHeight');
+    const elAge = document.getElementById('userFormAge');
+    const elGoal = document.getElementById('userFormGoal');
+    const elAllergies = document.getElementById('userFormAllergies');
+    const elConditions = document.getElementById('userFormConditions');
+
+    if (elWeight) elWeight.value = u.weight || u.metrics?.weight || '—';
+    if (elHeight) elHeight.value = u.height || u.metrics?.height || '—';
+    if (elAge) elAge.value = u.age || u.metrics?.age || '—';
+    if (elGoal) elGoal.value = u.goal || u.metrics?.goal || '—';
+    if (elAllergies) elAllergies.value = u.allergies || u.metrics?.allergies || 'None';
+    if (elConditions) elConditions.value = u.conditions || u.metrics?.conditions || 'None';
+  } else {
+    if (title) title.textContent = 'Add New User';
+    const elId = document.getElementById('userFormId');
+    if (elId) elId.value = '';
+    if (detailsSec) detailsSec.style.display = 'none';
+  }
+  
+  if (modal) modal.classList.add('open');
+}
+
+async function saveUser(e) {
+  if (e) e.preventDefault();
+  const id = document.getElementById('userFormId').value;
+  const name = document.getElementById('userFormName').value;
+  const email = document.getElementById('userFormEmail').value;
+  const plan = document.getElementById('userFormPlan').value;
+  const status = document.getElementById('userFormStatus').value;
+
+  const data = {
+    name,
+    email,
+    plan,
+    status,
+    role: 'User',
+    updatedAt: new Date().toISOString()
+  };
+
+  try {
+    if (id) {
+      const docRef = fstore.doc(db, 'users', id);
+      await fstore.setDoc(docRef, data, { merge: true });
+      showToast('User updated successfully.');
+    } else {
+      const newDocRef = fstore.doc(fstore.collection(db, 'users'));
+      data.createdAt = new Date().toISOString();
+      await fstore.setDoc(newDocRef, data);
+      showToast('User created successfully.');
+    }
+    const modal = document.getElementById('userModal');
+    if (modal) modal.classList.remove('open');
+    await refreshAllData();
+  } catch (err) {
+    showToast('Failed to save user: ' + err.message, 'error');
+  }
+}
+
+async function deleteUser(id) {
+  confirmAction('Delete User', 'Are you sure you want to permanently delete this user?', async function() {
+    try {
+      await fstore.deleteDoc(fstore.doc(db, 'users', id));
+      showToast('User deleted successfully.');
+      await refreshAllData();
+    } catch (e) {
+      showToast('Error deleting user: ' + e.message, 'error');
+    }
+  });
+}
+
 // ============================================================
 // PROFESSIONAL CRUD OPERATIONS MANAGED VIA FIREBASE
 // ============================================================
 
-// ============================================================
-// CLIENT CRUD OPERATIONS
-// ============================================================
+function openProModal(id) {
+  const modal = document.getElementById('proModal');
+  const form = document.getElementById('proForm');
+  const title = document.getElementById('proModalTitle');
+  const detailsSec = document.getElementById('proDetailedMetrics');
+  
+  if (form) form.reset();
+  
+  if (id) {
+    if (title) title.textContent = 'Edit Professional Details';
+    const p = getPro(id);
+    if (!p) return;
+    
+    const elId = document.getElementById('proFormId');
+    const elName = document.getElementById('proFormName');
+    const elEmail = document.getElementById('proFormEmail');
+    const elProfession = document.getElementById('proFormProfession');
+    const elSpecialization = document.getElementById('proFormSpecialization');
+    const elStatus = document.getElementById('proFormStatus');
+
+    if (elId) elId.value = p.id;
+    if (elName) elName.value = p.name || '';
+    if (elEmail) elEmail.value = p.email || '';
+    if (elProfession) elProfession.value = p.profession || 'Nutritionist';
+    if (elSpecialization) elSpecialization.value = p.specialization || 'General Practice';
+    if (elStatus) elStatus.value = p.status || 'Pending';
+    
+    if (detailsSec) detailsSec.style.display = 'block';
+    const elLicense = document.getElementById('proFormLicense');
+    const elBio = document.getElementById('proFormBio');
+    const elExpertise = document.getElementById('proFormExpertise');
+    const elFee = document.getElementById('proFormFee');
+    const elExperience = document.getElementById('proFormExperience');
+
+    if (elLicense) elLicense.value = p.license || p.credentials?.license || '—';
+    if (elBio) elBio.value = p.bio || p.credentials?.bio || 'No biography details provided.';
+    if (elExpertise) elExpertise.value = p.expertise || p.credentials?.expertise || 'Clinical Nutrition';
+    if (elFee) elFee.value = p.fee || p.credentials?.fee || 'KSh 1,500';
+    if (elExperience) elExperience.value = p.experience || p.credentials?.experience || '—';
+  } else {
+    if (title) title.textContent = 'Add Professional';
+    const elId = document.getElementById('proFormId');
+    if (elId) elId.value = '';
+    if (detailsSec) detailsSec.style.display = 'none';
+  }
+  
+  if (modal) modal.classList.add('open');
+}
+
+async function approveProfessional(id) {
+  try {
+    const docRef = fstore.doc(db, 'users', id);
+    await fstore.setDoc(docRef, { status: 'Verified' }, { merge: true });
+    showToast('Professional has been approved.');
+    await refreshAllData();
+  } catch (err) {
+    showToast('Failed to approve: ' + err.message, 'error');
+  }
+}
+
+async function rejectProfessional(id) {
+  try {
+    const docRef = fstore.doc(db, 'users', id);
+    await fstore.setDoc(docRef, { status: 'Rejected' }, { merge: true });
+    showToast('Professional registration has been rejected.');
+    await refreshAllData();
+  } catch (err) {
+    showToast('Failed to reject: ' + err.message, 'error');
+  }
+}
+
+async function deleteProfessional(id) {
+  confirmAction('Delete Professional', 'Are you sure you want to permanently delete this professional?', async function() {
+    try {
+      await fstore.deleteDoc(fstore.doc(db, 'users', id));
+      showToast('Professional deleted successfully.');
+      await refreshAllData();
+    } catch (e) {
+      showToast('Error deleting professional: ' + e.message, 'error');
+    }
+  });
+}
+
+async function savePro(e) {
+  if (e) e.preventDefault();
+  const id = document.getElementById('proFormId').value;
+  const name = document.getElementById('proFormName').value;
+  const email = document.getElementById('proFormEmail').value;
+  const profession = document.getElementById('proFormProfession').value;
+  const specialization = document.getElementById('proFormSpecialization').value;
+  const status = document.getElementById('proFormStatus').value;
+
+  const data = {
+    name,
+    email,
+    profession,
+    specialization,
+    status,
+    role: 'Professional',
+    updatedAt: new Date().toISOString()
+  };
+
+  try {
+    if (id) {
+      const docRef = fstore.doc(db, 'users', id);
+      await fstore.setDoc(docRef, data, { merge: true });
+      showToast('Professional details saved.');
+    } else {
+      const newDocRef = fstore.doc(fstore.collection(db, 'users'));
+      data.createdAt = new Date().toISOString();
+      await fstore.setDoc(newDocRef, data);
+      showToast('Professional created successfully.');
+    }
+    const modal = document.getElementById('proModal');
+    if (modal) modal.classList.remove('open');
+    await refreshAllData();
+  } catch (err) {
+    showToast('Failed to save professional: ' + err.message, 'error');
+  }
+}
 
 // ============================================================
 // CLIENT CRUD OPERATIONS MANAGED VIA FIREBASE
 // ============================================================
+
+function openClientModal(id, isEdit) {
+  const modal = document.getElementById('clientModal');
+  const form = document.getElementById('clientForm');
+  const title = document.getElementById('clientModalTitle');
+  const profSelect = document.getElementById('clientFormProfessional');
+  
+  if (form) form.reset();
+  
+  if (profSelect) {
+    profSelect.innerHTML = '<option value="">None — Independent</option>';
+    getProfessionals().forEach(p => {
+      profSelect.innerHTML += `<option value="${p.name}">${p.name} (${p.profession || 'Nutritionist'})</option>`;
+    });
+  }
+
+  if (isEdit && id) {
+    if (title) title.textContent = 'Edit Client Details';
+    const c = getClient(id);
+    if (!c) return;
+    
+    const elId = document.getElementById('clientFormId');
+    const elName = document.getElementById('clientFormName');
+    const elEmail = document.getElementById('clientFormEmail');
+    const elGoal = document.getElementById('clientFormGoal');
+    const elProgress = document.getElementById('clientFormProgress');
+    const elStatus = document.getElementById('clientFormStatus');
+
+    if (elId) elId.value = c.id;
+    if (elName) elName.value = c.name || '';
+    if (elEmail) elEmail.value = c.email || '';
+    if (profSelect) profSelect.value = c.assignedProfessional || c.professional || '';
+    if (elGoal) elGoal.value = c.goal || c.metrics?.goal || 'General Wellness';
+    if (elProgress) elProgress.value = c.progress !== undefined ? c.progress : 0;
+    if (elStatus) elStatus.value = c.status || 'Active';
+  } else {
+    if (title) title.textContent = 'Add New Client';
+    const elId = document.getElementById('clientFormId');
+    if (elId) elId.value = '';
+    const elProgress = document.getElementById('clientFormProgress');
+    if (elProgress) elProgress.value = 0;
+  }
+  
+  if (modal) modal.classList.add('open');
+}
+
+async function saveClient(e) {
+  if (e) e.preventDefault();
+  const id = document.getElementById('clientFormId').value;
+  const name = document.getElementById('clientFormName').value;
+  const email = document.getElementById('clientFormEmail').value;
+  const professionalVal = document.getElementById('clientFormProfessional').value;
+  const goal = document.getElementById('clientFormGoal').value;
+  const progress = parseInt(document.getElementById('clientFormProgress').value) || 0;
+  const status = document.getElementById('clientFormStatus').value;
+
+  const data = {
+    name,
+    email,
+    assignedProfessional: professionalVal,
+    professional: professionalVal,
+    goal,
+    progress,
+    status,
+    role: 'Client',
+    updatedAt: new Date().toISOString()
+  };
+
+  try {
+    if (id) {
+      const docRef = fstore.doc(db, 'users', id);
+      await fstore.setDoc(docRef, data, { merge: true });
+      showToast('Client details saved.');
+    } else {
+      const newDocRef = fstore.doc(fstore.collection(db, 'users'));
+      data.createdAt = new Date().toISOString();
+      await fstore.setDoc(newDocRef, data);
+      showToast('Client created successfully.');
+    }
+    const modal = document.getElementById('clientModal');
+    if (modal) modal.classList.remove('open');
+    await refreshAllData();
+  } catch (err) {
+    showToast('Failed to save client: ' + err.message, 'error');
+  }
+}
+
+async function deleteClient(id) {
+  confirmAction('Delete Client', 'Are you sure you want to permanently delete this client?', async function() {
+    try {
+      await fstore.deleteDoc(fstore.doc(db, 'users', id));
+      showToast('Client deleted successfully.');
+      await refreshAllData();
+    } catch (e) {
+      showToast('Error deleting client: ' + e.message, 'error');
+    }
+  });
+}
+
+// Bind functions to window scope for HTML inline clicks
+window.openUserModal = openUserModal;
+window.deleteUser = deleteUser;
+window.saveUser = saveUser;
+window.openProModal = openProModal;
+window.approveProfessional = approveProfessional;
+window.rejectProfessional = rejectProfessional;
+window.deleteProfessional = deleteProfessional;
+window.savePro = savePro;
+window.openClientModal = openClientModal;
+window.deleteClient = deleteClient;
+window.saveClient = saveClient;
+window.refreshAllData = refreshAllData;
+window.renderUsers = renderUsers;
+window.renderProfessionals = renderProfessionals;
+window.renderClients = renderClients;
+
 
 // ============================================================
 // CONFIRMATION MODAL

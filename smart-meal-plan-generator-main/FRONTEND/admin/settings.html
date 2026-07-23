@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Platform Settings — Smart Lishe Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .settings-layout {
+      padding: 0 36px 40px;
+    }
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 992px) {
+      .settings-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== AUTH CHECK ===== -->
+<script>
+(function() {
+  const role = localStorage.getItem('smartlishe_role') || localStorage.getItem('role');
+  const loggedIn = localStorage.getItem('smartlishe_logged_in') === 'true';
+  if (!loggedIn || role !== 'Admin') { window.location.href = '../auth/login.html'; }
+})();
+</script>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe Admin</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Admin</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-link" id="accountsToggle">
+        <i class="fa-solid fa-users"></i> Accounts
+        <span class="dropdown-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown" id="accountsDropdown">
+        <a href="accounts.html#users" class="nav-link"><i class="fa-solid fa-user"></i> Users</a>
+        <a href="accounts.html#professionals" class="nav-link"><i class="fa-solid fa-user-md"></i> Professionals</a>
+        <a href="accounts.html#clients" class="nav-link"><i class="fa-solid fa-user-group"></i> Clients</a>
+      </div>
+      <div class="nav-link" id="operationsToggle">
+        <i class="fa-solid fa-gears"></i> Operations
+        <span class="dropdown-chevron open"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown open" id="operationsDropdown">
+        <a href="billing.html" class="nav-link"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="datasets.html" class="nav-link"><i class="fa-solid fa-database"></i> Datasets</a>
+        <a href="reports.html" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+        <a href="ai-monitoring.html" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+        <a href="support.html" class="nav-link"><i class="fa-solid fa-headset"></i> Support</a>
+        <a href="settings.html" class="nav-link active"><i class="fa-solid fa-gear"></i> Settings</a>
+      </div>
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='../auth/login.html';" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="topbarHamburger"><i class="fa-solid fa-bars"></i></button>
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="Search system settings...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i></button>
+        <a href="profile.html" class="profile-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <span class="label" id="adminName">Admin</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="page-header">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-gear"></i> Control Panel</div>
+        <h1>Platform System Settings</h1>
+        <p>Configure regional branding parameters, localization formats, and system variables.</p>
+      </div>
+    </div>
+
+    <!-- Mini Stats -->
+    <div class="accounts-stats">
+      <div class="stat-mini">
+        <div class="val">v2.4.1</div>
+        <div class="lbl">App Release Version</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val">Connected</div>
+        <div class="lbl">Firestore DB Engine</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val">Sandboxed</div>
+        <div class="lbl">Server Context</div>
+      </div>
+    </div>
+
+    <!-- Settings Layout -->
+    <div class="settings-layout">
+      <div class="settings-grid">
+        <!-- Left: General Config forms -->
+        <div class="card">
+          <h3><i class="fa-solid fa-sliders" style="color:var(--accent);"></i> General Platform Configurations</h3>
+          <p style="font-size:0.85rem; margin:6px 0 20px; color:var(--text-secondary);">These configurations guide general branding assets and metadata.</p>
+
+          <form id="generalSettingsForm" onsubmit="saveSettings(event)">
+            <div class="modal-field">
+              <label>Application Branding Heading</label>
+              <input type="text" id="appName" placeholder="e.g. Smart Lishe Planner" required>
+            </div>
+
+            <div class="modal-field">
+              <label>Support Contact Gate Address</label>
+              <input type="email" id="supportEmail" placeholder="e.g. help@smartlishe.com" required>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+              <div class="modal-field">
+                <label>Platform Currency Index</label>
+                <select id="currencyFormat">
+                  <option value="KSh">KSh (Kenyan Shilling)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                </select>
+              </div>
+              <div class="modal-field">
+                <label>Default Meal Tier Limit</label>
+                <input type="number" id="mealLimit" placeholder="e.g. 5 suggestions" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:12px; width:100%;"><i class="fa-solid fa-save"></i> Save Settings Parameters</button>
+          </form>
+        </div>
+
+        <!-- Right: Developer Diagnostics -->
+        <div class="card" style="height:fit-content;">
+          <h3><i class="fa-solid fa-shield-halved" style="color:var(--soil);"></i> System Security Policy</h3>
+          <p style="font-size:0.85rem; margin:8px 0 16px; color:var(--text-secondary);">Manage system authorization policies.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg-elevated); border-radius:var(--radius-sm); border:1px solid var(--basket-line); font-size:0.8rem;">
+              <span>Enforce Admin MFA</span>
+              <span class="badge badge-premium" style="font-size:0.7rem;">Enabled</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg-elevated); border-radius:var(--radius-sm); border:1px solid var(--basket-line); font-size:0.8rem;">
+              <span>Enable Professional Registrations</span>
+              <span class="badge badge-free" style="font-size:0.7rem;">Always On</span>
+            </div>
+            <button class="btn btn-secondary" onclick="resetConfigCache()" style="width:100%; justify-content:center; font-size:0.82rem;">
+              <i class="fa-solid fa-arrow-rotate-left"></i> Reset System Cache
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast Stack -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// UI State & Persistence
+const Store = {
+  get: function(k, fb) {
+    try { const raw = localStorage.getItem('smartlishe_' + k); return raw ? JSON.parse(raw) : fb; }
+    catch(e) { return fb; }
+  },
+  set: function(k, v) {
+    try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; }
+    catch(e) { return false; }
+  }
+};
+
+function showToast(msg, type) {
+  type = type || 'success';
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  t.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + msg + '</span>';
+  stack.appendChild(t);
+  setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px)';
+    setTimeout(function() { t.remove(); }, 300);
+  }, 3500);
+}
+
+function saveSettings(e) {
+  e.preventDefault();
+  const config = {
+    appName: document.getElementById('appName').value,
+    supportEmail: document.getElementById('supportEmail').value,
+    currencyFormat: document.getElementById('currencyFormat').value,
+    mealLimit: document.getElementById('mealLimit').value
+  };
+  Store.set('config', config);
+  showToast("Platform configurations saved securely.");
+}
+
+function resetConfigCache() {
+  localStorage.removeItem('smartlishe_config');
+  loadSettings();
+  showToast("Configuration cache purged to default parameters.");
+}
+
+function loadSettings() {
+  const config = Store.get('config', {
+    appName: "Smart Lishe Planner",
+    supportEmail: "support@smartlishe.com",
+    currencyFormat: "KSh",
+    mealLimit: "5"
+  });
+  document.getElementById('appName').value = config.appName;
+  document.getElementById('supportEmail').value = config.supportEmail;
+  document.getElementById('currencyFormat').value = config.currencyFormat;
+  document.getElementById('mealLimit').value = config.mealLimit;
+}
+
+function initTheme() {
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  if (saved === 'dark') document.body.classList.add('dark-mode');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      Store.set('theme', isDark ? 'dark' : 'light');
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    });
+  }
+}
+
+function initSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  const topbarHamburger = document.getElementById('topbarHamburger');
+
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+  if (hamburger) hamburger.addEventListener('click', openSidebar);
+  if (topbarHamburger) topbarHamburger.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  function toggleDropdown(headerId, dropdownId) {
+    const header = document.getElementById(headerId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!header || !dropdown) return;
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isOpen = dropdown.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.dropdown-chevron').forEach(c => c.classList.remove('open'));
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        header.querySelector('.dropdown-chevron').classList.add('open');
+      }
+    });
+  }
+  toggleDropdown('accountsToggle', 'accountsDropdown');
+  toggleDropdown('operationsToggle', 'operationsDropdown');
+}
+
+function loadAdminInfo() {
+  const profileRaw = localStorage.getItem('smartlishe_profile');
+  let name = 'Admin';
+  if (profileRaw) {
+    try { const p = JSON.parse(profileRaw); if (p.name) name = p.name; } catch(e) {}
+  }
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  initSidebar();
+  loadAdminInfo();
+  loadSettings();
+});
+
+window.saveSettings = saveSettings;
+window.resetConfigCache = resetConfigCache;
+</script>
+</body>
+</html>

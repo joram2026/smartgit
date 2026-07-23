@@ -28,13 +28,13 @@ service cloud.firestore {
       // Authenticated users or admins can read profiles
       allow read: if isSignedIn();
       
-      // Prevent privilege escalation: only allow setting Admin role if email is admin@gmail.com
+      // Prevent privilege escalation: only allow setting Admin role if email is admin@gmail.com or admin2@gmail.com
       allow create: if isOwner(userId) && 
-        (request.resource.data.role != 'Admin' || request.resource.data.email == 'admin@gmail.com');
+        (request.resource.data.role != 'Admin' || request.resource.data.email == 'admin@gmail.com' || request.resource.data.email == 'admin2@gmail.com');
         
       // Only owner can update (without changing their role), or admin can do anything
       allow update: if (isOwner(userId) && 
-        (request.resource.data.role == resource.data.role || (request.resource.data.role == 'Admin' && request.resource.data.email == 'admin@gmail.com'))) || 
+        (request.resource.data.role == resource.data.role || (request.resource.data.role == 'Admin' && (request.resource.data.email == 'admin@gmail.com' || request.resource.data.email == 'admin2@gmail.com')))) || 
         isAdmin();
         
       allow delete: if isAdmin();
@@ -43,6 +43,21 @@ service cloud.firestore {
         // Users can access their own data, and Admins can view/update all data (e.g., to verify profiles)
         allow read, write: if isOwner(userId) || isAdmin();
       }
+    }
+
+    // Match rules for recipes collection
+    match /recipes/{recipeId} {
+      // Authenticated users can read recipes
+      allow read: if isSignedIn();
+      
+      // Only administrators can create, update, or delete recipes
+      allow write: if isAdmin();
+    }
+
+    // Match rules for support_tickets collection
+    match /support_tickets/{ticketId} {
+      // Only administrators can read and write support tickets
+      allow read, write: if isAdmin();
     }
   }
 }

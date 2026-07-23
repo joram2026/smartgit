@@ -23,6 +23,35 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["key", "updatedAt"]
+    },
+    "Recipe": {
+      "title": "Recipe",
+      "description": "Represents a Kenyan/local healthy recipe curated by admins",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 200 },
+        "calories": { "type": "integer" },
+        "time": { "type": "integer" },
+        "category": { "type": "string", "maxLength": 100 },
+        "ingredients": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "calories", "time", "category", "ingredients"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Represents a support ticket/inquiry created by or for a user",
+      "type": "object",
+      "properties": {
+        "subject": { "type": "string", "maxLength": 200 },
+        "sender": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 100 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["Open", "Resolved"] },
+        "replyText": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["subject", "sender", "email", "message", "status"]
     }
   },
   "firestore": {
@@ -33,6 +62,14 @@
     "/users/{userId}/data/{dataId}": {
       "schema": "SyncData",
       "description": "Flexible subcollection for cloud-synced local state keys"
+    },
+    "/recipes/{recipeId}": {
+      "schema": "Recipe",
+      "description": "Master recipe dataset managed by Admin roles"
+    },
+    "/support_tickets/{ticketId}": {
+      "schema": "SupportTicket",
+      "description": "Support tickets/inquiries submitted by users, managed by Admins"
     }
   }
 }

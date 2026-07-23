@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Billing Operations — Smart Lishe Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .billing-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.1fr;
+      gap: 24px;
+      padding: 0 36px 40px;
+    }
+    .user-billing-card {
+      padding: 16px;
+      border: 1px solid var(--basket-line);
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      background: var(--bg-elevated);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .user-billing-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .tier-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+    .tier-badge.premium { background: var(--soil-light); color: var(--soil); }
+    .tier-badge.free { background: var(--bg-body); color: var(--text-secondary); border: 1px solid var(--basket-line); }
+    @media (max-width: 992px) {
+      .billing-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== AUTH CHECK ===== -->
+<script>
+(function() {
+  const role = localStorage.getItem('smartlishe_role') || localStorage.getItem('role');
+  const loggedIn = localStorage.getItem('smartlishe_logged_in') === 'true';
+  if (!loggedIn || role !== 'Admin') { window.location.href = '../auth/login.html'; }
+})();
+</script>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<div class="mobile-topbar">
+  <div class="brand-mini">
+    <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+    <span>Smart Lishe Admin</span>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark"><i class="fa-solid fa-seedling"></i></div>
+      <div class="name">Smart Lishe<span>Admin</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <div class="nav-link" id="accountsToggle">
+        <i class="fa-solid fa-users"></i> Accounts
+        <span class="dropdown-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown" id="accountsDropdown">
+        <a href="accounts.html#users" class="nav-link"><i class="fa-solid fa-user"></i> Users</a>
+        <a href="accounts.html#professionals" class="nav-link"><i class="fa-solid fa-user-md"></i> Professionals</a>
+        <a href="accounts.html#clients" class="nav-link"><i class="fa-solid fa-user-group"></i> Clients</a>
+      </div>
+      <div class="nav-link" id="operationsToggle">
+        <i class="fa-solid fa-gears"></i> Operations
+        <span class="dropdown-chevron open"><i class="fa-solid fa-chevron-down"></i></span>
+      </div>
+      <div class="nav-dropdown open" id="operationsDropdown">
+        <a href="billing.html" class="nav-link active"><i class="fa-solid fa-credit-card"></i> Billing</a>
+        <a href="recipes.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Recipes</a>
+        <a href="datasets.html" class="nav-link"><i class="fa-solid fa-database"></i> Datasets</a>
+        <a href="reports.html" class="nav-link"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+        <a href="ai-monitoring.html" class="nav-link"><i class="fa-solid fa-robot"></i> AI Monitoring</a>
+        <a href="support.html" class="nav-link"><i class="fa-solid fa-headset"></i> Support</a>
+        <a href="settings.html" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+      </div>
+      <div style="margin-top:12px;">
+        <a href="#" class="nav-link" onclick="event.preventDefault(); localStorage.clear(); sessionStorage.clear(); window.location.href='../auth/login.html';" style="color:var(--char);">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle">
+        <span><i class="fa-solid fa-moon" id="themeIcon"></i> Dark mode</span>
+        <span class="switch"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="topbarHamburger"><i class="fa-solid fa-bars"></i></button>
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="Search invoices...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i></button>
+        <a href="profile.html" class="profile-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <span class="label" id="adminName">Admin</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="page-header">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-credit-card"></i> Operations</div>
+        <h1>Billing &amp; Subscription Control</h1>
+        <p>Promote user plans, monitor transactions history, and adjust payment preferences.</p>
+      </div>
+    </div>
+
+    <!-- Mini Billing Stats -->
+    <div class="accounts-stats">
+      <div class="stat-mini">
+        <div class="val" id="premiumCount">0</div>
+        <div class="lbl">Premium Users</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val" id="recurringRevenue">KSh 0</div>
+        <div class="lbl">Est. Monthly Rev.</div>
+      </div>
+      <div class="stat-mini">
+        <div class="val">KSh 1,499</div>
+        <div class="lbl">Monthly Plan Fee</div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="billing-grid">
+      <!-- Left: User subscriptions toggle list -->
+      <div class="card">
+        <div class="tab-toolbar">
+          <h3><i class="fa-solid fa-user-shield" style="color:var(--accent);"></i> Account Tiers &amp; Plans</h3>
+          <div class="search-box-sm">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="userSearch" placeholder="Search user tiers...">
+          </div>
+        </div>
+
+        <div id="usersBillingList" style="margin-top:16px;">
+          <div class="empty-state">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:12px;"></i>
+            <div>Syncing subscriptions dataset...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Pricing model / Manual code generation -->
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div class="card">
+          <h3><i class="fa-solid fa-key" style="color:var(--soil);"></i> Generate Activation Key</h3>
+          <p style="font-size:0.85rem; margin:8px 0 16px; color:var(--text-secondary);">Create single-use pre-paid license vouchers.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <select class="form-input" id="keyPlanDuration" style="width:100%; padding:10px; border-radius:var(--radius-sm); border:1px solid var(--basket-line); background:var(--bg-body); font-size:0.85rem;">
+              <option value="1">1 Month Premium</option>
+              <option value="3">3 Months Premium</option>
+              <option value="12">1 Year Premium</option>
+            </select>
+            <button class="btn btn-primary" onclick="generateVoucherCode()" style="width:100%;">Create Code</button>
+            <div id="generatedVoucherArea" style="display:none; margin-top:8px; padding:12px; background:var(--bg-elevated); border:1.5px dashed var(--accent); border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:1.1rem; text-align:center; font-weight:700; color:var(--accent);">
+              CODE
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><i class="fa-solid fa-history" style="color:var(--sukuma);"></i> Recent Payments</h3>
+          <p style="font-size:0.85rem; margin:8px 0 14px; color:var(--text-secondary);">Simulated/Sync MPESA webhook stream.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:10px;" id="simTransactions">
+            <div style="padding:10px; background:var(--bg-elevated); border-radius:var(--radius-sm); font-size:0.78rem; border:1px solid var(--basket-line);">
+              <div style="display:flex; justify-content:space-between; font-weight:700;">
+                <span>MPESA / QK29JSH38</span>
+                <span style="color:var(--sukuma);">+KSh 1,499</span>
+              </div>
+              <div style="color:var(--text-secondary); margin-top:4px;">User: Alice Mwangi • Jul 20, 2026</div>
+            </div>
+            <div style="padding:10px; background:var(--bg-elevated); border-radius:var(--radius-sm); font-size:0.78rem; border:1px solid var(--basket-line);">
+              <div style="display:flex; justify-content:space-between; font-weight:700;">
+                <span>STRIPE / ch_3M8fGj9</span>
+                <span style="color:var(--sukuma);">+KSh 1,499</span>
+              </div>
+              <div style="color:var(--text-secondary); margin-top:4px;">User: Kelvin Korir • Jul 18, 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast Stack -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ============================================================
+// FIREBASE SETUP
+// ============================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBSHeaPxbMOGxOrRPRV7vtqedhpRxGvWHw",
+  authDomain: "smartlishe-4fe54.firebaseapp.com",
+  projectId: "smartlishe-4fe54",
+  storageBucket: "smartlishe-4fe54.firebasestorage.app",
+  messagingSenderId: "688539136675",
+  appId: "1:688539136675:web:8ed8d986e50913ed86c516"
+};
+
+const databaseId = "ai-studio-smartlishe-62742a0a-7336-4764-bba2-7c69cf67b8bf";
+
+let db = null;
+let auth = null;
+let fstore = null;
+let allUsers = [];
+
+const Store = {
+  get: function(k, fb) {
+    try { const raw = localStorage.getItem('smartlishe_' + k); return raw ? JSON.parse(raw) : fb; }
+    catch(e) { return fb; }
+  },
+  set: function(k, v) {
+    try { localStorage.setItem('smartlishe_' + k, JSON.stringify(v)); return true; }
+    catch(e) { return false; }
+  }
+};
+
+function showToast(msg, type) {
+  type = type || 'success';
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  const icon = type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check';
+  t.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + msg + '</span>';
+  stack.appendChild(t);
+  setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px)';
+    setTimeout(function() { t.remove(); }, 300);
+  }, 3500);
+}
+
+// Load Firebase Scripts
+Promise.all([
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"),
+  import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js")
+]).then(async ([appMod, authMod, firestoreMod]) => {
+  fstore = firestoreMod;
+  const app = appMod.initializeApp(firebaseConfig);
+  auth = authMod.getAuth(app);
+  db = firestoreMod.initializeFirestore(app, { experimentalForceLongPolling: true }, databaseId);
+
+  authMod.onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = '../auth/login.html'; return; }
+    await fetchAllUsers();
+  });
+}).catch(err => {
+  console.error(err);
+});
+
+async function fetchAllUsers() {
+  if (!db || !fstore) return;
+  try {
+    const querySnapshot = await fstore.getDocs(fstore.collection(db, 'users'));
+    allUsers = [];
+    querySnapshot.forEach(doc => {
+      allUsers.push({ id: doc.id, ...doc.data() });
+    });
+    renderBillingUsers();
+  } catch (err) {
+    showToast("Firestore Fetch Error: " + err.message, "error");
+  }
+}
+
+function renderBillingUsers() {
+  const container = document.getElementById('usersBillingList');
+  if (!container) return;
+
+  const search = document.getElementById('userSearch').value.toLowerCase().trim();
+  const filtered = allUsers.filter(u => 
+    (u.role === 'User' || !u.role) &&
+    ((u.name || '').toLowerCase().includes(search) || (u.email || '').toLowerCase().includes(search))
+  );
+
+  const premiumUsers = allUsers.filter(u => (u.role === 'User' || !u.role) && u.plan === 'Premium');
+  document.getElementById('premiumCount').textContent = premiumUsers.length;
+  document.getElementById('recurringRevenue').textContent = 'KSh ' + (premiumUsers.length * 1499).toLocaleString();
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-face-frown"></i><div>No client records found.</div></div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  filtered.forEach(u => {
+    const isPremium = u.plan === 'Premium';
+    const card = document.createElement('div');
+    card.className = 'user-billing-card';
+    card.innerHTML = `
+      <div>
+        <div style="font-weight:700; color:var(--text-primary); font-size:0.95rem;">${u.name || 'Unnamed User'}</div>
+        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">${u.email || 'No Email'}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span class="tier-badge ${isPremium ? 'premium' : 'free'}">${u.plan || 'Free'}</span>
+        <button class="btn ${isPremium ? 'btn-secondary' : 'btn-primary'} btn-sm" onclick="toggleUserTier('${u.id}', '${u.plan || 'Free'}')" style="min-height:30px; font-size:0.75rem; padding:4px 12px;">
+          ${isPremium ? 'Downgrade' : 'Activate Premium'}
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+async function toggleUserTier(userId, currentPlan) {
+  if (!db || !fstore) return;
+  const newPlan = currentPlan === 'Premium' ? 'Free' : 'Premium';
+  try {
+    const docRef = fstore.doc(db, 'users', userId);
+    await fstore.setDoc(docRef, { plan: newPlan, updatedAt: new Date().toISOString() }, { merge: true });
+    showToast("User updated successfully to " + newPlan);
+    await fetchAllUsers();
+  } catch (err) {
+    showToast("Error updating plan: " + err.message, "error");
+  }
+}
+
+function generateVoucherCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "SL-";
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  const area = document.getElementById('generatedVoucherArea');
+  area.textContent = code;
+  area.style.display = 'block';
+  showToast("Voucher " + code + " created successfully!");
+}
+
+// UI Setup
+function initTheme() {
+  const saved = Store.get('theme', 'light');
+  document.body.setAttribute('data-theme', saved);
+  if (saved === 'dark') document.body.classList.add('dark-mode');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      Store.set('theme', isDark ? 'dark' : 'light');
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    });
+  }
+}
+
+function initSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburgerBtn');
+  const topbarHamburger = document.getElementById('topbarHamburger');
+
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+  if (hamburger) hamburger.addEventListener('click', openSidebar);
+  if (topbarHamburger) topbarHamburger.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  function toggleDropdown(headerId, dropdownId) {
+    const header = document.getElementById(headerId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!header || !dropdown) return;
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isOpen = dropdown.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.dropdown-chevron').forEach(c => c.classList.remove('open'));
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        header.querySelector('.dropdown-chevron').classList.add('open');
+      }
+    });
+  }
+  toggleDropdown('accountsToggle', 'accountsDropdown');
+  toggleDropdown('operationsToggle', 'operationsDropdown');
+}
+
+function loadAdminInfo() {
+  const profileRaw = localStorage.getItem('smartlishe_profile');
+  let name = 'Admin';
+  if (profileRaw) {
+    try { const p = JSON.parse(profileRaw); if (p.name) name = p.name; } catch(e) {}
+  }
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  initSidebar();
+  loadAdminInfo();
+  document.getElementById('userSearch').addEventListener('input', renderBillingUsers);
+});
+
+window.toggleUserTier = toggleUserTier;
+window.generateVoucherCode = generateVoucherCode;
+</script>
+</body>
+</html>
